@@ -1,0 +1,243 @@
+// Sing variables
+// -------------------------
+// -------------------------
+
+$enable-shadows:            true !default;
+
+$glyphicons-halflings-include-bonus: false !default;
+$glyphicons-halflings-class-prefix: glyphicon !default;
+$glyphicons-halflings-font-base-size: 14px !default;
+$glyphicons-halflings-font-path: '~/fonts/glyphicons' !default;
+
+$fa-font-path: "~font-awesome/fonts";
+
+$colorpicker-img-path: "~bootstrap-colorpicker/dist/img/bootstrap-colorpicker" !default;
+
+/*
+ * Typography
+ * ======================================================================== */
+$font-size-initial:       14px; // reset default browser value from 16px to 13px
+$font-size-base:          1rem !default;
+$font-size-lg:            1.25rem !default;
+$font-size-sm:            0.875rem !default;
+$font-size-larger:        1.1rem;
+$font-size-mini:          0.9rem;
+$font-size-index:         0.7rem;
+
+$small-font-size: 85% !default;
+
+$font-family-base: 'Montserrat', sans-serif;
+$font-family-sans-serif: 'Montserrat', sans-serif;
+
+// Color system
+//
+
+$white:    #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #d6dee5 !default;
+$gray-400: #c1ccd3 !default;
+$gray-500: #a3aeb7 !default;
+$gray-600: #798892 !default;
+$gray-700: #495057 !default;
+$gray-800: #3c484f !default;
+$gray-900: #29323a !default;
+$black:    #000 !default;
+$gray-light: $gray-100 !default;
+
+
+$blue:    #547fff !default;
+$indigo:  #7f3ddb !default;
+$purple:  #9964e3 !default;
+$pink:    #e54e9a !default;
+$red:     #f55d5d !default;
+$orange:  #ff7d47 !default;
+$yellow:  #ffc247 !default;
+$green:   #68ca66 !default;
+$teal:    #3abf94 !default;
+$cyan:    #17a2b8 !default;
+
+$theme-colors: (
+  'primary': $blue,
+  'secondary': $gray-600,
+  'success': $teal,
+  'info': $purple,
+  'warning': $yellow,
+  'danger': $red,
+  'dark': $gray-800,
+  'inverse': $gray-700,
+  'gray': $gray-300,
+  'light': $gray-100,
+  'default': #e9ecef,
+  'primary-light': #dee4ee,
+  'success-light': #ecfaec,
+  'info-light': #f2fafa,
+  'warning-light': #fdf7e6,
+  'danger-light': #fff2ef,
+) !default;
+
+$link-color: #218bc3;
+
+$text-color: $gray-700 !default;
+
+$font-weight-bold: 700 !default;
+$font-weight-semi-bold: 600 !default;
+$font-weight-normal: 400 !default;
+$font-weight-thin: 300 !default;
+$font-weight-base: $font-weight-thin !default;
+
+$headings-font-weight: $font-weight-normal !default;
+
+$addition-bg: $gray-100 !default;
+
+$body-bg: #f9fbfd !default;
+$body-bg-light: lighten($body-bg, 3%);
+
+//== Components
+//
+
+$padding-base-vertical:     0.28rem !default;
+$padding-base-horizontal:   0.57rem !default;
+
+$padding-large-vertical:    0.75rem !default;
+$padding-large-horizontal:  1.25rem !default;
+
+$padding-small-vertical:    0.25rem !default;
+$padding-small-horizontal:  0.75rem !default;
+
+$margin-base-vertical:     0.5rem !default;
+$margin-base-horizontal:   1rem !default;
+
+$margin-large-vertical:    0.75rem !default;
+$margin-large-horizontal:  1.25rem !default;
+
+$margin-small-vertical:    0.25rem !default;
+$margin-small-horizontal:  0.75rem !default;
+
+$border-radius:          .3rem !default;
+$border-radius-lg:       .35rem !default;
+$border-radius-sm:       .25rem !default;
+
+$nav-link-padding: 14px;
+
+$pagination-active-bg:  $gray-200;
+
+//== Sidebar
+//
+
+$sidebar-width-open: 224px;
+$sidebar-width-closed: 50px;
+$sidebar-transition-time: 0.3s !default;
+$sidebar-padding-horizontal: 11px;
+$sidebar-slim-scroll-width: 4px;
+$sidebar-width: $sidebar-width-open + $sidebar-slim-scroll-width !default;
+
+$sidebar-border: 1px solid darken($body-bg, 2%);
+
+$sidebar-item-border-color: transparent !default;
+$sidebar-item-active-color: $yellow !default;
+
+$chat-sidebar-width: 250px + $sidebar-slim-scroll-width !default;
+
+$breadcrumb-divider: '>';
+$breadcrumb-padding-y: 0;
+$breadcrumb-bg: transparent;
+
+$badge-font-weight: 600;
+
+$widget-bg: #fff;
+$widget-title-color: #444;
+$widget-shadow-designated: -1px 0 8px rgba(0, 0, 0, .2);
+$widget-border-radius: $border-radius-lg;
+
+
+$input-btn-line-height: 1.5;
+
+$input-btn-padding-y-sm: 0.4rem;
+$input-btn-padding-x-sm: 0.8rem;
+
+$input-height-small: 30px;
+
+//== Navbar
+//
+
+$navbar-height:  60px !default;
+$navbar-padding-y: 0 !default;
+$navbar-padding-x: 0 !default;
+
+$navbar-dashboard-color:             $text-color !default;
+$navbar-dashboard-border:            transparent !default;
+
+// Navbar links
+$navbar-dashboard-link-color:                $text-color !default;
+
+// Navbar links
+$navbar-dashboard-link-hover-color:          $gray-800 !default;
+$navbar-dashboard-link-hover-bg:             transparent !default;
+$navbar-dashboard-link-active-color:         $gray-700 !default;
+$navbar-dashboard-link-active-bg:            $gray-300 !default;
+$navbar-dashboard-link-disabled-color:       $gray-400 !default;
+$navbar-dashboard-link-disabled-bg:          transparent !default;
+
+// Navbar brand label
+$navbar-dashboard-brand-color:               $navbar-dashboard-link-color !default;
+$navbar-dashboard-brand-hover-color:         darken($navbar-dashboard-brand-color, 10%) !default;
+$navbar-dashboard-brand-hover-bg:            transparent !default;
+
+// Navbar toggle
+$navbar-dashboard-toggle-hover-bg:           #ddd !default;
+$navbar-dashboard-toggle-icon-bar-bg:        #888 !default;
+$navbar-dashboard-toggle-border-color:       #ddd !default;
+
+
+// Content
+// -------------------------
+
+$content-padding: 40px;
+$content-padding-top: $content-padding + $navbar-height !default;
+
+// Screens
+// -------------------------
+
+$screen-lg-height: 670px !default;
+
+
+//== Buttons
+//
+$btn-default-bg: $addition-bg !default;
+$btn-default-border: rgba(0, 0, 0, 0.15) !default;
+
+//$btn-default-bg: $addition-bg !default;
+//$btn-default-border: $addition-bg !default;
+
+//== Alerts
+//
+$alert-transparent: 0.25;
+
+// Dropdowns
+$dropdown-link-color: $text-color;
+
+// Widgets
+// -------------------------
+$widget-padding-vertical: 15px !default;
+$widget-padding-horizontal: 20px !default;
+$widget-bg-color: $white;
+
+//== Navs
+//
+$nav-tabs-active-link-hover-bg: $white !default;
+$nav-tabs-active-link-hover-color: $gray-700 !default;
+
+//== Forms
+//
+$input-border-focus: #4d90fe !default; //webkit focus color
+$legend-color: lighten($text-color, 15%) !default;
+
+$pre-bg: #f5f5f5 !default;
+
+$cursor-disabled: not-allowed !default;
+
+//*  Popover  */
+$popover-bg: #ebeff1 !default;
+$popover-arrow-outer-color: $popover-bg !default;
+$popover-arrow-color: $popover-bg !default;

@@ -1,0 +1,45 @@
+<td class="sorting_1" style="vertical-align: middle">
+        <small>{{company.companyname}}  </small>
+</td>
+<td class="hidden-sm-down">
+  <small ng-if="company.address1!=null">
+{{company.address1}}
+</small>
+<br ng-if="company.address1!=null">
+<small>
+    {{company.city}},  {{company.zip}}
+</small>
+  
+</td>
+<td class="hidden-sm-down">
+        <small>
+                {{company.address2}}
+            </small>
+            <br>
+            <small>
+                {{company.corpcity}},  {{company.corpzip}}
+            </small>
+             
+</td>
+<td class="hidden-sm-down">
+        <small>
+                {{company.emailID}}
+            </small>
+            <br>
+            <small>
+                {{company.phoneno}}
+            </small>
+            <br>
+            <small>
+                {{company.workphoneno}}
+            </small>
+</td>
+ 
+<td class="no-warp">
+    <a [routerLink]="['/pinga/client/companies/company/users', company.companyLocationId]" class="icon-btn" (click)="redirectToUser()" ><span class="glyphicon glyphicon-user"></span> <small>Manage Users</small></a>
+    <br>
+    <a [routerLink]="['/pinga/client/companies/company/projects', company.companyLocationId]" class="icon-btn" (click)="redirectToProject()"><span class="fa fa-folder-open"></span> <small>Manage Projects</small></a>
+    <br>
+    <a [routerLink]="['/pinga/client/companies/company/config']" (click)="getConfigDetails(company.companyLocationId)" class="icon-btn"><span class="glyphicon glyphicon-cog"></span> <small>Configuration</small></a>
+</td>
+

@@ -1,0 +1,173 @@
+<td class="sorting_1">
+  <span class="fw-semi-bold">{{ user.firstname}}</span>
+  <br>{{user.middlename}} {{user.lastname}}</td>
+<td class="hidden-sm-down">{{user.emailid}}</td>
+<td class="hidden-sm-down">{{user.mobilephone}}</td>
+<td class="hidden-sm-down">
+  <span class="fw-semi-bold">{{user.rolename}}</span>
+</td>
+<td class="no-warp">
+  <a [routerLink]="['/pinga/client/users/user/edit']" (click)="onEdit(user.appLoginID)" class="icon-btn">
+    <span class="glyphicon glyphicon-edit"></span>
+    <small>Edit</small>
+  </a>
+  <br>
+  <ng-container *ngIf="user.isActive == 0">
+    <a href="#" class="icon-btn" data-toggle="modal" data-target="activate_user1" (click)="openActivateUser($event, activateUser)">
+      <span class="glyphicon glyphicon-check"></span>
+      <small>Activate</small>
+    </a>
+  </ng-container>
+  <ng-container *ngIf="user.isActive == 1">
+    <a href="#" class="icon-btn" data-toggle="modal" data-target="de_activate_user1" (click)="openDeactivateUser($event, deactivateUser)">
+      <span class="glyphicon glyphicon-check"></span>
+      <small>Deactivate</small>
+    </a>
+  </ng-container>
+  <br>
+  <a href="#" class="icon-btn" data-toggle="modal" data-target="#reset_password1" (click)="openResetPassword($event, resetPassword)">
+    <span class="fa fa-asterisk"></span>
+    <small>Reset Password</small>
+  </a>
+  <br>
+  <a href="#" class="icon-btn" data-toggle="modal" data-target="#send_email1" (click)="openSendEmail($event,sendEmail)">
+    <span class="fa fa-envelope"></span>
+    <small>Send Email</small>
+  </a>
+  <br>
+  <a href="#" class="icon-btn" data-toggle="modal" data-target="#send_sms1" (click)="openSendSms($event, sendSms)">
+    <span class="fa fa-envelope-o"></span>
+    <small>Send SMS</small>
+  </a>
+</td>
+
+<ng-template #sendEmail>
+  <div class="modal-header" style="border: none">
+    <h5 class="modal-title text-xl-center fw-bold mt">
+      Send Email</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modalRef?.hide(); clearEmailContent(); resetForm('sendMail')">×</button>
+  </div>
+  <form [formGroup]="sendMail" (ngSubmit)="sendNewMail(sendMail.value, user.appLoginID)">
+    <div class="modal-body bg-gray-lighter">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="form-group">
+            <input type="text" [ngClass]="{'form-control':true,'inputNotValid':erStatus}" placeholder="Email Address" formControlName="formEmail" name="formEmail" [(ngModel)]="user.emailid">
+            <div *ngIf="submitted && !sendMail.controls['formEmail'].valid || sendMail.controls['formEmail'].touched && !sendMail.controls['formEmail'].valid">
+                <span class="help-block" *ngIf="sendMail.controls['formEmail'].hasError('required') ">Email is required</span>
+                <span class="help-block" *ngIf="sendMail.controls['formEmail'].hasError('pattern') ">
+                  Please enter valid email
+                </span>
+              </div>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="form-group">
+            <input type="text" [ngClass]="{'form-control':true,'inputNotValid':erStatus}" placeholder="Subject" formControlName="formSubject"  name="formSubject">
+            <div *ngIf="submitted && !sendMail.controls['formSubject'].valid || sendMail.controls['formSubject'].touched && !sendMail.controls['formSubject'].valid">
+                <span class="help-block" *ngIf="sendMail.controls['formSubject'].hasError('required') ">Subject is required</span>
+              </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <!-- <textarea [froalaEditor]="options" formControlName="formMessage" name="formMessage"></textarea> -->
+          <!-- <textarea id="" cols="60" rows="10" style="width:100%; display: block" formControlName="formMessage" name="formMessage"></textarea> -->
+          <app-ngx-editor [config]="editorConfig" [spellcheck]="true" [(ngModel)]="htmlContent" height="140px" minHeight="50px" formControlName="formMessage" name="formMessage" style="background-color: #fff !important"></app-ngx-editor>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" style="border: none">
+      <button class="btn btn-primary btn-special" id="email-info" data-dismiss="modal" type="submit">
+        Send</button>
+      <button type="button" class="btn btn-gray" data-dismiss="modal" (click)="modalRef?.hide(); clearEmailContent();resetForm('sendMail')">
+        Cancel</button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #sendSms>
+  <div class="modal-header" style="border: none">
+    <h5 class="modal-title text-xl-center fw-bold mt">
+      Send SMS</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modalRef?.hide(); clearSmsContent(); resetForm('smsForm')"> ×</button>
+  </div>
+  <form [formGroup]="smsForm" (ngSubmit)="sendNewSms(smsForm.value, user.appLoginID)">
+  <div class="modal-body bg-gray-lighter">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="form-group" style="margin-bottom: 30px">
+          <input type="number" [ngClass]="{'form-control':true,'inputNotValid':erSmsStatus}" formControlName="mobileNo" [(ngModel)]="user.mobilephone" placeholder="Mobile Number" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" onKeyDown="if(this.value.length==10 && event.keyCode!=8) return false;">
+          <div *ngIf="smsSubmitted && !smsForm.controls['mobileNo'].valid || smsForm.controls['mobileNo'].touched && !smsForm.controls['mobileNo'].valid">
+            <span class="help-block" *ngIf="smsForm.controls['mobileNo'].hasError('required') ">Mobile is required</span>
+            <span class="help-block" *ngIf="smsForm.controls['mobileNo'].hasError('minlength') ">
+              Please enter valid mobile number
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+          <!-- <textarea [froalaEditor]="smsOptions" formControlName="message" name="message"></textarea> -->
+          <textarea id="" cols="60" rows="10" style="width:100%; display: block" formControlName="message" name="message"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer" style="border: none">
+    <button type="submit" class="btn btn-primary btn-special" id="email-info" data-dismiss="modal">
+      Send</button>
+    <button type="button" class="btn btn-gray" data-dismiss="modal" (click)="modalRef?.hide(); clearSmsContent(); resetForm('smsForm')">
+      Cancel</button>
+  </div>
+</form>
+</ng-template>
+
+<ng-template #activateUser>
+  <div class="modal-header" style="border: none">
+    <h5 class="modal-title text-xl-center fw-bold mt">Activate</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modalRef?.hide()">×</button>
+  </div>
+  <div class="modal-body text-xs-center">
+    <p>An activation email will be sent to the user.</p>
+    <p>Please confirm.</p>
+  </div>
+  <div class="modal-footer" style="border: none">
+    <button type="button" class="btn btn-primary btn-special" id="active-info" data-dismiss="modal" (click)="activate(user.appLoginID); modalRef?.hide()">Proceed</button>
+    <button type="button" class="btn btn-gray" data-dismiss="modal" (click)="modalRef?.hide()">Close</button>
+  </div>
+</ng-template>
+
+<ng-template #deactivateUser>
+  <div class="modal-header" style="border: none">
+    <h5 class="modal-title text-xl-center fw-bold mt">Deactivate</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modalRef?.hide()">×</button>
+  </div>
+  <div class="modal-body text-xs-center">
+    <p>Are you sure you want to Deactivate user?</p>
+    <p>Please confirm.</p>
+  </div>
+  <div class="modal-footer" style="border: none">
+    <button type="button" class="btn btn-primary btn-special" id="active-info" data-dismiss="modal" (click)="deactivate(user.appLoginID); modalRef?.hide()">Proceed</button>
+    <button type="button" class="btn btn-gray" data-dismiss="modal" (click)="modalRef?.hide()">Close</button>
+  </div>
+</ng-template>
+
+<ng-template #resetPassword>
+  <div class="modal-header" style="border: none">
+    <h5 class="modal-title text-xl-center fw-bold mt">
+      Reset Password</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modalRef?.hide()">
+      ×</button>
+  </div>
+
+
+  <div class="modal-body text-xs-center">
+    <p>
+      An email will be sent to the user with temporary password.</p>
+    <p>
+      Please confirm.</p>
+  </div>
+  <div class="modal-footer" style="border: none">
+    <button type="button" class="btn btn-primary btn-special" id="reset-password-info" data-dismiss="modal" (click)="resetPass(user.appLoginID); modalRef?.hide()">
+      Proceed</button>
+    <button type="button" class="btn btn-gray" data-dismiss="modal" (click)="modalRef?.hide()">Close</button>
+  </div>
+</ng-template>

@@ -1,0 +1,32 @@
+<td class="sorting_1">
+  <a (click)="goTo(unit)" class="unitNumber">{{ unit.unitNo }}</a> 
+</td>
+<!-- <td class="hidden-sm-down" *ngIf="userRole=='Client Admin'">
+  <span class="fw-semi-bold">{{ unit.locationName }}</span>
+</td> -->
+<td class="hidden-sm-down">
+  <small>
+    {{ unit.projectName }}
+  </small>
+  <br>
+  <small>
+    {{ unit.city }}
+  </small>
+</td>
+<td class="hidden-sm-down">
+  <small>{{ unit.towerName }}</small>
+</td>
+<td class="hidden-sm-down">
+  <small>{{ unit.applicationNo }}</small>
+</td>
+<td>
+  <a (click)="goToInvoiceList(unit)" class="icon-btn">
+    <span class="fa fa-exclamation-circle"></span>
+    <small>Invoices</small> 
+  </a>
+  <br>
+  <a (click)="goToReceiptList(unit)" class="icon-btn">
+    <span class="glyphicon glyphicon-list"></span>
+    <small>Receipts</small>
+  </a> 
+</td>

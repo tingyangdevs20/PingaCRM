@@ -1,0 +1,97 @@
+<div class="content-wrap">
+  <div id="content" class="content" role="main">
+    <pa-bread-crumb></pa-bread-crumb>
+    <h1 class="page-title">Units
+      <span class="fw-semi-bold">Details</span>
+    </h1>
+    <div class="row">
+      <div class="col-md-12">
+        <section class="widget">
+          <div class="widget-body">
+            <form class="form-horizontal" role="form">
+              <div class="row">
+                <div class="col-lg-6">
+                  <fieldset>
+                    <legend>
+                      <strong>Unit</strong> Details</legend>
+                    <div class="form-group row">
+                      <label class="col-md-4 form-control-label text-md-right">Unit #</label>
+                      <div class="col-md-7">
+                        <p class="name mb-0">{{ unitDetail.unitNo }}</p> 
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-4 form-control-label text-md-right">Tower</label>
+                      <div class="col-md-7">
+                        <p class="name mb-0"> {{ unitDetail.towerName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-4 form-control-label text-md-right">Project</label>
+                      <div class="col-md-7">
+                        <p class="name mb-0">{{unitDetail.projectName}}</p>
+                      </div>
+                    </div>
+                    <!-- <div class="form-group row">
+                      <label class="col-md-4 form-control-label text-md-right">Company</label>
+                      <div class="col-md-7">
+                        <p class="name mb-0">{{unitDetail.companyName}}</p> 
+                      </div>
+                    </div> -->
+                    <div class="form-group row">
+                      <label class="col-md-4 form-control-label text-md-right">Booking Date</label>
+                      <div class="col-md-7">
+                        <p class="name mb-0">{{unitDetail.appDate | date}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-4 form-control-label text-md-right">Area</label>
+                      <div class="col-md-7">
+                        <p class="name mb-0">{{unitDetail.area}}</p>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+                <div class="col-lg-6">
+                  <fieldset>
+                    <legend>
+                      <strong>Application</strong> Details</legend>
+                    <div class="form-group row">
+                      <label class="col-md-4 form-control-label text-md-right">Application #</label>
+                      <div class="col-md-7">
+                        <p class="name mb-0">{{unitDetail.applicationNo}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-4 form-control-label text-md-right">Application Date</label>
+                      <div class="col-md-7">
+                        <p class="name mb-0">{{unitDetail.appDate | date}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-4 form-control-label text-md-right">Primary Applicant</label>
+                      <div class="col-md-7">
+                        <p class="name mb-0">{{unitDetail.applicantName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-4 form-control-label text-md-right">Address</label>
+                      <div class="col-md-7">
+                        <p class="context mb-0"></p>
+                        <p class="context mb-0">{{unitDetail.address1}} {{unitDetail.address2}}</p>
+                        <p class="context mb-0">{{unitDetail.city}}</p>
+                        <p class="context mb-0 m-r-1">{{unitDetail.state}}, {{unitDetail.country}}, {{unitDetail.zip}}</p>
+                        <p class="context mb-0 m-r-1"></p>
+                        <p class="context mb-0 m-r-1"></p>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

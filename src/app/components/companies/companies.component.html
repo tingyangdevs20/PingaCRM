@@ -1,0 +1,115 @@
+<div class="content-wrap">
+  <div id="content" class="content" role="main">
+    <pa-bread-crumb></pa-bread-crumb>
+    <h1 class="page-title">Manage
+      <span class="fw-semi-bold">Companies</span>
+    </h1>
+    <div class="widget">
+      <section>
+        <div class="widget-body">
+          <div class="mt">
+            <div class="float-right mb">
+            </div>
+            <div>
+              <ngx-datatable
+                [rows]="companies"
+                [columnMode]="'force'"
+                [headerHeight]="50"
+                [footerHeight]="50"
+                [rowHeight]="300"
+                [scrollbarH]="true"
+                [scrollbarV]="false"
+                [rowHeight]="'auto'"
+                [limit]="8">
+                <ngx-datatable-column name="COMPANYNAME">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="fw-semi-bold" (click)="sortTableBy('COMPANYNAME');">COMPANY NAME</span>
+                  </ng-template>
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                    <small>{{value}}</small>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="registeredaddr">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="fw-semi-bold" >REGISTERD ADDRESS</span>
+                  </ng-template>
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                    <span ><small>{{value.addr1}}</small></span>,&nbsp;
+                    <span ><small>{{value.zip}}</small></span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="billingaddr">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="fw-semi-bold" >BILLING ADDRESS</span>
+                  </ng-template>
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                    <span ><small>{{value.addr2}}</small></span>,&nbsp;
+                    <span ><small>{{value.corpzip}}</small></span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="fw-semi-bold" >CONTACT INFO</span>
+                  </ng-template>
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                    <span ><small>{{value.email}}</small></span><br>
+                    <span ><small>{{value.phoneno}}</small></span><br>
+                    <span ><small>{{value.workphoneno}}</small></span>
+                    <!-- <a href="#" >{{value}}</a> -->
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="fw-semi-bold">ACTIONS</span>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <a class="icon-btn" [routerLink]="['/pinga/client/companies/company/users', row.companyLocationId]" (click)="redirectToUser(row.companyname)"><span class="glyphicon glyphicon-user"></span><small>Manage Users</small></a><br>
+                    <a class="icon-btn" [routerLink]="['/pinga/client/companies/company/projects', row.companyLocationId]" (click)="redirectToProject(row.companyname)"><span class="fa fa-folder-open"></span><small>Manage Projects</small></a><br>
+                    <a class="icon-btn" [routerLink]="['/pinga/client/companies/company/config']" (click)="getConfigDetails(row.companyLocationId)"><span class="glyphicon glyphicon-cog"></span><small>Configuration</small></a><br>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-footer>
+                  <ng-template
+                    ngx-datatable-footer-template
+                    let-rowCount="rowCount"
+                    let-pageSize="pageSize"
+                    let-selectedCount="selected"
+                    let-curPage="curPage"
+                    let-offset="offset"                    
+                  >
+                  <!-- <div style="padding: 5px 10px">
+                    <div>
+                      Showing&nbsp;&nbsp;&nbsp;{{(curPage - 1) == 0? 1 : (curPage - 1) * 10}} - {{curPage * 10}}&nbsp;&nbsp;of&nbsp;&nbsp;{{ rowCount }}&nbsp;entries
+                    </div>
+                  </div> -->
+
+                  <div class="page-count">
+                    Showing&nbsp;&nbsp;&nbsp;{{rowCount > 0 ? (curentPage - 1) * 10 + 1 : 0}} - {{rowCount > 0 ? curentPage * 10 > rowCount ? rowCount : curentPage * 10 : 0}}&nbsp;&nbsp;of&nbsp;&nbsp;{{ rowCount > 0 ? rowCount : 0 }}&nbsp;entries
+                  </div>
+                  <datatable-pager
+                    [pagerLeftArrowIcon]="'datatable-icon-left'"
+                    [pagerRightArrowIcon]="'datatable-icon-right'"
+                    [pagerPreviousIcon]="'datatable-icon-prev'"
+                    [pagerNextIcon]="'datatable-icon-skip'"
+                    [page]="curPage"
+                    [size]="pageSize"
+                    [count]="rowCount"
+                    [hidden]="!((rowCount / pageSize) > 1)"
+                    (change)="getPageData($event)">
+                  </datatable-pager>
+
+                    <!-- <div>
+                      Showing {{(curPage - 1) == 0? 1 : (curPage - 1) * 10}} - {{curPage * 10}} of {{ rowCount }}
+                      Rows: {{ rowCount }} | Size: {{ pageSize }} | Current:
+                      {{ curPage }} | Offset: {{ offset }}                      
+                    </div> -->
+                  </ng-template>                  
+                </ngx-datatable-footer>
+              </ngx-datatable>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

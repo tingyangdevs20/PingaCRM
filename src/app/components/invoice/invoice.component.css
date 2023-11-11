@@ -1,0 +1,77 @@
+.payFormBody{border: 1px solid #ddd;font-weight: 400;}
+.payFormBody td {border: 0px;padding-left:25px;padding-right:25px;}
+.payFormBody tr:first-child td{padding: 25px 25px 20px;}
+.payFormBody tr:nth-child(2) td{padding-top:0px;padding-bottom:0px;}
+.payFormBody tr:nth-child(3) td{padding-bottom:30px;}
+.payFormBody tr:last-child td{padding: 40px 25px 20px;}
+.payFormBody tr:last-child td:last-child{text-align: right;}
+.payFormBody .select2,.amoutInput{width:170px !important}
+.payModal .mt {margin-top: 1rem;}
+@media screen and (max-width:380px){
+    .payFormBody tr:first-child td{padding: 20px 20px 20px 10px;}
+    .payFormBody td {border: 0px;padding-left:10px;padding-right:10px;}
+    .payFormBody .select2,.amoutInput{width:135px !important}
+    .mobilebtn {
+      position: absolute;
+    margin-top: -9%;
+    }
+}
+
+.check{
+
+    opacity:0.5;
+
+}
+
+#tooltip {
+    z-index: 999;
+    position: relative;
+    display: inline-block;
+     /* If you want dots under the hoverable text */
+  }
+
+  /* Tooltip text */
+  #tooltip #tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+  }
+
+  /* Show the tooltip text when you mouse over the tooltip container */
+  #tooltip:hover #tooltiptext {
+    visibility: visible;
+  }
+  .meterCheck{
+    pointer-events: none;
+    opacity: 0.7;
+  }
+  .astrictField {
+    color: red;
+    margin-top: -7px;
+    /* position: absolute; */
+    font-size: 14px;
+    margin-left: 3px;
+  }
+  .prjctVal {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  .reviewCheck {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+.editDisabled {
+  pointer-events: none;
+  opacity: 0.3;
+}
+::ng-deep .select2-container {
+  width: 160px !important;
+}

@@ -1,0 +1,12 @@
+input.ng-invalid.ng-touched,input.ng-invalid.inputNotValid{border: 1px solid #f44336}
+.help-block{color:#f44336}
+.lPad-sm .abc-checkbox{top:8px !important;}
+.abc-checkbox label::before{top:0px;left:0px;margin:0}
+.abc-checkbox label::after{top:0px;left:-2px;margin:0;padding-left:0}
+.checkBox-wrp{width: 17px;height: 17px;display: inline-block;margin-bottom: 0;padding: 0;position: relative;}
+.checkBox-wrp input{width: 17px;height: 17px;display: inline-block;margin: 0;top: 0;left: 0;}
+.abc-checkbox label{margin:0;width: 17px;height: 17px;position: absolute;top:0;left: 0;padding-left:0}
+@media (max-width:767px){    
+    .lPad-sm{padding-left:15px}
+    .abc-checkbox label::after { left: 3px;}
+}

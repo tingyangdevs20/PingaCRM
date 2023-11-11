@@ -1,0 +1,594 @@
+
+<div class="content-wrap scratchHeight">
+  <div id="content" class="content" role="main">
+    <pa-bread-crumb></pa-bread-crumb>
+    <h1 class="page-title">
+      <span class="fw-semi-bold">All Invoices</span> List</h1>
+      <div class="widget">
+        <section>
+          <div class="widget-body">
+            <div class="">
+              <ng-container *ngIf="bindCompany">
+                <div class="btn-group company-select" style="margin-right: 10px" *ngIf="loginUserRole == 'Client Admin'">
+                  <!-- <select2 [data]="companyList" [width]='120' (valueChanged)="onCompanySelect($event)">
+                  </select2> -->
+                  <ngx-select-dropdown
+                    class="ngx-select-dropdown"
+                    (change)="onCompanySelect($event)"
+                    tabindex="0"
+                    [multiple]="false"
+                    [(ngModel)] = "companyList[0]"
+                    [config] = "configSel"
+                    [options]="companyList">
+                  </ngx-select-dropdown>
+                </div>
+              </ng-container>
+              <div class="btn-group location-select" style="margin-right: 10px" *ngIf="loginUserRole == 'Client Admin'">
+                <!-- <select2 [data]="locationList" [width]='100' (valueChanged)="onLocationSelect($event)">
+                </select2> -->
+                <ngx-select-dropdown
+                  class="ngx-select-dropdown"
+                  (change)="onLocationSelect($event)"
+                  tabindex="0"
+                  [multiple]="false"
+                  [config] = "configSel"
+                  [(ngModel)] = "locationList[0]"
+                  [options]="locationList">
+                </ngx-select-dropdown>
+              </div>
+              <div class="btn-group project-select" style="margin-right: 10px" *ngIf="loginUserRole == 'Client Admin'">
+                <!-- <select2 [data]="projectList" [width]='180' (valueChanged)="onProjectSelect($event)">
+                </select2> -->
+                <ngx-select-dropdown
+                  class="ngx-select-dropdown"
+                  (change)="onProjectSelect($event)"
+                  tabindex="0"
+                  [multiple]="false"
+                  [config] = "configSel"
+                  [(ngModel)] = "projectList[0]"
+                  [options]="projectList">
+                </ngx-select-dropdown>
+              </div>
+              <div class="btn-group select_unit inv_select_unit" style="margin-right: 10px" *ngIf="loginUserRole == 'Client Admin'">
+                <!-- <select2 [data]="unitNoList" [width]='100' (valueChanged)="onUnitSelect($event)">
+                </select2> -->
+                <ngx-select-dropdown
+                  class="ngx-select-dropdown"
+                  (change)="onUnitSelect($event)"
+                  tabindex="0"
+                  [multiple]="false"
+                  [config] = "configSel"
+                  [(ngModel)] = "unitNoList[0]"
+                  [options]="unitNoList">
+                </ngx-select-dropdown>
+              </div>
+              <div class="btn-group select_unit inv_select_unit" style="margin-right: 10px" *ngIf="loginUserRole == 'Buyer'">
+                <ngx-select-dropdown
+                  class="ngx-select-dropdown"
+                  (change)="onUnitSelect($event)"
+                  tabindex="0"
+                  [multiple]="false"
+                  [config] = "configSel"
+                  [(ngModel)] = "unitNoList2[0]"
+                  [options]="unitNoList2">
+                </ngx-select-dropdown>
+              </div>
+              <div class="btn-group width-200 dateRange" *ngIf="loginUserRole == 'Buyer'">
+                <input type="text" class="form-control date-range" placeholder="Select From Date - To Date" bsDaterangepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', containerClass: 'theme-orange' }"
+                  (bsValueChange)="getDateRange($event)" readonly="">
+              </div>
+              <div class="float-right mb">
+                <div class="input-group input-group-rounded">
+                  <button class="btn border-radius btn-success pull-md-right btn-special" (click)="openPay(payNow)">Pay Now</button>
+                </div>
+              </div>
+            </div>
+            <div class="mt">
+
+              <div>
+                <ngx-datatable
+                  class="table table-striped table-hover"
+                  [rows]="invoices"
+                  [columnMode]="'force'"
+                  [rowHeight]="67"
+                  [headerHeight]="50"                  
+                  [footerHeight]="50"
+                  [count]="count"
+                  [scrollbarH]="true"
+                  [scrollbarV]="false"
+                  [externalPaging]="true"
+                  [limit]="10">
+                  <ngx-datatable-column name="invoiceNo">
+                    <ng-template ngx-datatable-header-template>
+                      <span class="fw-semi-bold" (click)="sortTableBy('invoiceNo');">INVOICE NO.</span>
+                    </ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      {{value}}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="invoiceDate">
+                    <ng-template ngx-datatable-header-template>
+                      <span class="fw-semi-bold" (click)="sortTableBy('invoiceDate');">INVOICE DATE</span>
+                    </ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      <span>{{value | date}}</span>
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="installDate">
+                    <ng-template ngx-datatable-header-template>
+                      <span class="fw-semi-bold" (click)="sortTableBy('installDate');">DUE DATE</span>
+                    </ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      <span>{{value | date}}</span>
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="due" [width]="100">
+                    <ng-template ngx-datatable-header-template>
+                      <span class="fw-semi-bold" (click)="sortTableBy('due');">DUE</span>
+                    </ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      <span class="fw-semi-bold">र&nbsp;{{value}}</span><br>
+                      <!-- <a href="#" >{{value}}</a> -->
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="tax" [width]="100">
+                    <ng-template ngx-datatable-header-template>
+                      <span class="fw-semi-bold" (click)="sortTableBy('tax');">TAX</span>
+                    </ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      <span class="fw-semi-bold">र&nbsp;{{value}}</span><br>
+                      <!-- <a href="#" >{{value}}</a> -->
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="netDue" [width]='100'>
+                    <ng-template ngx-datatable-header-template>
+                      <span class="fw-semi-bold" (click)="sortTableBy('netDue');">TOTAL DUE</span>
+                    </ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      <span class="fw-semi-bold">र&nbsp;{{value}}</span><br>
+                      <!-- <a href="#" >{{value}}</a> -->
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="recivedAmount" [width]='100'>
+                    <ng-template ngx-datatable-header-template>
+                      <span class="fw-semi-bold" (click)="sortTableBy('recivedAmount');">RECEIVED</span>
+                    </ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      <span class="fw-semi-bold">र&nbsp;{{value}}</span><br>
+                      <!-- <a href="#" >{{value}}</a> -->
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="status">
+                    <ng-template ngx-datatable-header-template>
+                      <span class="fw-semi-bold" >STATUS</span>
+                    </ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      <!-- <span class="fw-semi-bold label label-pill label-warning">{{value}}</span> -->
+                      <span *ngIf="value == 'Due'" class="fw-semi-bold label label-pill label-warning">{{value}}</span>
+                      <span *ngIf="value == 'Paid'" class="fw-semi-bold label label-pill label-success">{{value}}</span>
+                      <!-- <a href="#" >{{value}}</a> -->
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="contanctinfo">
+                    <ng-template ngx-datatable-header-template>
+                      <span class="fw-semi-bold">ACTION</span>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      <a href="#" class="icon-btn" (click)="openCharge(viewCharge, $event); showCharge(row)">
+                        <small>View Charges</small>
+                      </a><br>
+                      <ng-container *ngIf="row.status === 'OverDue' || row.status === 'Due'">
+                        <a href="#" *ngIf="row.isPaymentGatewayConfigured == 1" class="icon-btn" data-toggle="modal" data-target="#Div1"
+                          (click)="openPay(payNow); onPayNow(row);">
+                          <span class="fa fa-credit-card"></span>&nbsp;
+                          <small>Pay Now</small>
+                        </a>
+                        <a href="#" *ngIf="row.isPaymentGatewayConfigured == 0" [class.check]="row.isPaymentGatewayConfigured == 0"
+                          class="icon-btn" id="tooltip" data-toggle="modal" data-target="#Div1">
+                          <span class="fa fa-credit-card"></span>
+                          <span id="tooltiptext">Payment Gateway is not configured for this project. Please contact your
+                            administrator.</span>
+                          <small>Pay Now</small>
+                        </a>
+                      </ng-container>
+                      <!-- <a class="icon-btn" href=""><span class="fa fa-credit-card"></span>&nbsp;<small>Pay Now</small></a><br> -->
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-footer>
+                    <ng-template
+                      ngx-datatable-footer-template
+                      let-rowCount="rowCount"
+                      let-pageSize="pageSize"
+                      let-selectedCount="selected"
+                      let-curPage="curPage"
+                      let-offset="offset"                    
+                    >
+                    <!-- <div style="padding: 5px 10px">
+                      <div>
+                        Showing&nbsp;&nbsp;&nbsp;{{(curPage - 1) == 0? 1 : (curPage - 1) * 10}} - {{curPage * 10}}&nbsp;&nbsp;of&nbsp;&nbsp;{{ rowCount }}&nbsp;entries
+                      </div>
+                    </div> -->
+
+                    <div class="page-count">
+                      Showing&nbsp;&nbsp;&nbsp;{{rowCount > 0 ? (curentPage - 1) * 10 + 1 : 0}} - {{rowCount > 0 ? curentPage * 10 > rowCount ? rowCount : curentPage * 10 : 0}}&nbsp;&nbsp;of&nbsp;&nbsp;{{ rowCount > 0 ? rowCount : 0 }}&nbsp;entries
+                    </div>
+                    <datatable-pager
+                      [pagerLeftArrowIcon]="'datatable-icon-left'"
+                      [pagerRightArrowIcon]="'datatable-icon-right'"
+                      [pagerPreviousIcon]="'datatable-icon-prev'"
+                      [pagerNextIcon]="'datatable-icon-skip'"
+                      [page]="curPage"
+                      [size]="pageSize"
+                      [count]="rowCount"
+                      [hidden]="!((rowCount / pageSize) > 1)"
+                      (change)="getPageData($event)">
+                    </datatable-pager>
+
+                      <!-- <div>
+                        Showing {{(curPage - 1) == 0? 1 : (curPage - 1) * 10}} - {{curPage * 10}} of {{ rowCount }}
+                        Rows: {{ rowCount }} | Size: {{ pageSize }} | Current:
+                        {{ curPage }} | Offset: {{ offset }}                      
+                      </div> -->
+                    </ng-template>                  
+                  </ngx-datatable-footer>
+                </ngx-datatable>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+  </div>
+</div>
+
+<ng-template #payNow>
+
+  <div class="modal-header payModal" style="border: none">
+    <h5 class="modal-title text-xl-center fw-bold mt" id="H1">Payment option</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="CloseModal()">
+      ×</button>
+  </div>
+  <div class="modal-body">
+
+    <form (ngSubmit)="onPaymentSubmit();CloseModal()" [formGroup]="paymentForm">
+      <table class="table payFormBody">
+        <thead>
+          <tr>
+            <td>Projects<span class="astrictField">*</span>&nbsp;:</td>
+            <td>
+              <div class="btn-group" style="margin-right: 10px" id="myModal">
+                <!-- <select class="form-control selectpicker slUnitValidate" data-style="btn-default" data-[width]="auto" tabindex="-1" (valueChanged)="onProjectSelect2($event)">
+                  <option *ngFor="let option of allProjects" role="menuitem">
+                    <a class="dropdown-item">{{option.text}}</a>
+                  </option>
+                </select> -->
+                <ngx-select-dropdown
+                  class="ngx-select-dropdown"
+                  (change)="onProjectSelect2($event)"
+                  tabindex="0"
+                  [multiple]="false"
+                  [config] = "configSel"
+                  [options]="allProjects">
+                </ngx-select-dropdown>
+              </div>
+            </td>
+
+          </tr>
+          <tr>
+            <td>Unit No<span class="astrictField">*</span>&nbsp;:</td>
+            <td>
+              <div class="btn-group" style="margin-right: 10px" id="myModal">
+                <!-- <select2 [data]="unitNoList2" [class.reviewCheck]="isReview" [width]='100' [disabled]="isPaymentCinfigure == 0 || unitCheck == 0" (valueChanged)="onUnitSelect3($event)" [ngClass]="{'slUnitValidate':slUnitValidate}">
+                </select2> -->
+
+                <!-- <select class="form-control selectpicker slUnitValidate slUnitValidate" data-style="btn-default" data-[width]="auto" tabindex="-1" [disabled]="isPaymentCinfigure == 0 || unitCheck == 0" (valueChanged)="onUnitSelect3($event)">
+                  <option *ngFor="let option of unitNoList2" role="menuitem">
+                    <a class="dropdown-item">{{option.text}}</a>
+                  </option>
+                </select> -->
+                <ngx-select-dropdown
+                  class="ngx-select-dropdown"
+                  [disabled]="isPaymentCinfigure == 0 || unitCheck == 0"
+                  (change)="onUnitSelect3($event)"
+                  tabindex="0"
+                  [multiple]="false"
+                  [config] = "configSel"
+                  [options]="unitNoList2">
+                </ngx-select-dropdown>
+              </div>
+            </td>
+
+          </tr>
+          <tr>
+            <td>Payment Mode<span class="astrictField">*</span>&nbsp;:</td>
+            <td>
+              <div class="btn-group" style="margin-right: 10px" id="myModal">
+                <!-- <select2 [data]="paymentTypes" [class.reviewCheck]="isReview" [width]='100' [disabled]="!isProject" (valueChanged)="onPaymentSelect($event)" [ngClass]="{'slUnitValidate':slUnitValidate}">
+                </select2> -->
+
+                <!-- <select class="form-control selectpicker slUnitValidate slUnitValidate" [class.reviewCheck]="isReview" [disabled]="!isProject" id="simple-select" data-style="btn-default" data-[width]="auto" tabindex="-1" (valueChanged)="onPaymentSelect($event)">
+                  <option *ngFor="let option of paymentTypes" role="menuitem">
+                    <a class="dropdown-item">{{option.text}}</a>
+                  </option>
+                </select> -->
+                <ngx-select-dropdown
+                  class="ngx-select-dropdown"
+                  [disabled]="!isProject"
+                  (change)="onPaymentSelect($event)"
+                  tabindex="0"
+                  [multiple]="false"
+                  [config] = "configSel"
+                  [options]="paymentTypes">
+                </ngx-select-dropdown>
+              </div>
+            </td>
+
+          </tr>
+          <!-- Cheque -->
+          <tr *ngIf="isdemandDreft || isChaque">
+            <td>Bank Name<span class="astrictField">*</span>&nbsp;:</td>
+            <td>
+              <div class="btn-group" style="margin-right: 10px" id="myModal">
+                <!-- <select2 [data]="BankNameList" formControlName="bankname"  (valueChanged)="onBankSelect($event)" [class.reviewCheck]="isReview" [width]='100' [ngClass]="{'slUnitValidate':slUnitValidate}">
+                </select2> -->
+
+                <!-- <select class="form-control selectpicker slUnitValidate slUnitValidate" formControlName="bankname"  (valueChanged)="onBankSelect($event)" [class.reviewCheck]="isReview" data-style="btn-default" data-[width]="auto" tabindex="-1">
+                  <option *ngFor="let option of BankNameList" role="menuitem">
+                    <a class="dropdown-item">{{option.text}}</a>
+                  </option>
+                </select> -->
+
+                <ngx-select-dropdown
+                  class="ngx-select-dropdown"
+                  formControlName="bankname"
+                  [class.reviewCheck]="isReview"
+                  (change)="onBankSelect($event)"
+                  tabindex="0"
+                  [multiple]="false"
+                  [config] = "configSel"
+                  [options]="BankNameList">
+                </ngx-select-dropdown>
+                <!-- <div *ngIf="paymentForm.controls.bankname.invalid && paymentForm.controls.bankname.touched">
+                  <div *ngIf="paymentForm.controls.bankname.errors.required" class="text text-danger">Bank Name required</div>
+                </div> -->
+              </div>
+            </td>
+
+          </tr>
+
+          <tr *ngIf="isdemandDreft || isChaque">
+            <td>Branch Name<span class="astrictField">*</span>&nbsp;:</td>
+            <td>
+              <input type="text" maxlength="100" [class.reviewCheck]="isReview" (keyup)="setBranchName($event)" formControlName="branchname" name="branchname" placeholder="Enter BranchName" class="form-control amoutInput"
+                required>
+               <!-- <div *ngIf="paymentForm.controls.branchname.invalid && paymentForm.controls.branchname.touched">
+                <div *ngIf="paymentForm.controls.branchname.errors.required" class="text text-danger">Branch Name required</div>
+                <div *ngIf="paymentForm.controls.branchname.errors.maxlength" class="text text-danger">maxlength 100 Digit</div>
+              </div> -->
+            </td>
+          </tr>
+          <tr *ngIf="isdemandDreft || isChaque">
+            <td>Instrument No.<span class="astrictField">*</span>&nbsp;:</td>
+            <td>
+              <input type="text" maxlength="20" [class.reviewCheck]="isReview" name="instrumentno" (keyup)="setInstrumentNo($event)" formControlName="instrumentno" placeholder="Enter Instrument No." class="form-control amoutInput"
+               onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" required>
+            </td>
+          </tr>
+          <tr *ngIf="isdemandDreft || isChaque">
+            <td>Instrument Date<span class="astrictField">*</span>&nbsp;:</td>
+            <td>
+              <input type="text" [class.reviewCheck]="isReview" class="form-control" (change)="setDate($event)"  formControlName="instrumentdate" placeholder="Enter Instrument Date" class="form-control amoutInput" 
+              [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', showWeekNumbers: false }" #dp="bsDatepicker"  bsDatepicker >
+            </td>
+          </tr>
+          <tr *ngIf="isOffline">
+            <td>Card Issuer:</td>
+            <td>
+              <input type="text" maxlength="100" [class.reviewCheck]="isReview" name="amount" formControlName="cardissuer" placeholder="Enter Issuer" class="form-control amoutInput"
+               required>
+               <!-- <div *ngIf="paymentForm.controls.cardissuer.invalid && paymentForm.controls.cardissuer.touched">
+                <div *ngIf="paymentForm.controls.cardissuer.errors.required" class="text text-danger">Card Issuer required</div>
+                <div *ngIf="paymentForm.controls.cardissuer.errors.maxlength" class="text text-danger">enter in limit</div>
+              </div> -->
+            </td>
+          </tr>
+          <tr *ngIf="isOffline">
+            <td>Card Type:</td>
+            <td>
+              <div class="btn-group" style="margin-right: 10px" id="myModal">
+                <ngx-select-dropdown
+                  formControlName="bankname"
+                  class="ngx-select-dropdown"
+                  (change)="onCardTypeSelect($event); onUnitSelect3($event);"
+                  [class.reviewCheck]="isReview"
+                  tabindex="0"
+                  [multiple]="false"
+                  [(ngModel)] = "cardTypes[0]"
+                  [config] = "configSel"
+                  [options]="cardTypes">
+                </ngx-select-dropdown>
+              </div>
+            </td>
+
+          </tr>
+          <tr *ngIf="isOffline">
+            <td>Card Number (Last 4 Only):</td>
+            <td>
+              <input type="text" maxlength="4" id="cardno" [class.reviewCheck]="isReview" formControlName="cardnumber" placeholder="Enter Cardnumber" class="form-control amoutInput"
+              onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57">
+             <!-- <div *ngIf="paymentForm.controls.cardnumber.invalid && paymentForm.controls.cardnumber.touched">
+              <div *ngIf="paymentForm.controls.cardnumber.errors.required" class="text text-danger">Card Number required</div>
+              <div *ngIf="paymentForm.controls.cardnumber.errors.maxlength" class="text text-danger">Enter Only 4 digit</div>
+            </div> -->
+            </td>
+          </tr>
+          <!-- Demand Draft -->
+          <tr>
+            <td>
+              <b> Payment For-</b>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+
+            <td *ngIf="paymentMod==0 || paymentMod==2">
+                <div class="form-check abc-radio" [class.reviewCheck]="isReview">
+                    <input class="form-check-input" [class.reviewCheck]="isReview" type="radio" name="payment" (change)="getPaymentAgainst($event)" value="paymentAgainstBill" id="paymentAgainstBill">
+                    <label class="form-check-label" for="paymentAgainstBill">Payment Against Bill</label>
+                </div>
+            </td>
+            <td *ngIf="paymentMod==1 || paymentMod==2">
+              <div class="form-check abc-radio" [class.reviewCheck]="isReview">
+                <input class="form-check-input" [class.reviewCheck]="isReview" type="radio" name="payment" (change)="getPrepay($event)" value="prepay" id="payment" >
+                <label class="form-check-label" for="payment">Prepay</label>
+            </div>
+          </td>
+
+        </tr>
+        <tr *ngIf = "PrepayMeterCheck == 2">
+          <td>Meter No:</td>
+          <td>
+            <div class="btn-group" style="margin-right: 10px" id="myModal">
+              <ngx-select-dropdown
+                formControlName="bankname"
+                class="ngx-select-dropdown"
+                (change)="onMeterSelect($event);"
+                [class.reviewCheck]="isReview"
+                tabindex="0"
+                [multiple]="false"
+                [(ngModel)] = "meterNoList[0]"
+                [config] = "configSel"
+                [options]="meterNoList">
+              </ngx-select-dropdown>
+            </div>
+          </td>
+        </tr>
+          <tr>
+            <td>Amount<span class="astrictField">*</span>&nbsp;:</td>
+            <td>
+              <input type="number" name="amount" [class.reviewCheck]="isReview" [(ngModel)]='amount' placeholder="Enter Amount" (keyup)="unitValue($event)" class="form-control amoutInput" formControlName="amount"
+              [class.notConfigure]="isPaymentCinfigure == 0" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" required>
+              <p class="errorMsg" style="color: red;">{{ValidationMsg}}.</p>
+            </td>
+          </tr>
+          <!-- notConfigure -->
+          <tr>
+
+            <td>
+              <ng-container *ngIf="isPaymentCinfigure == 0">
+                <p class="errorMsg">Payment Gateway is not configured for this project. Please contact your administrator.
+
+                </p>
+              </ng-container>
+            </td>
+            <td></td>
+          </tr>
+          <!-- <tr *ngIf="!isReview"> <td><p> * Please enter values for the mandatory fields to continue.</p></td>
+          </tr> -->
+          <tr>
+            <td>
+              
+            </td>
+            <td class="mobilebtn">
+              <button type="submit" *ngIf="!isReview" [class.prjctVal]="isDisable" class="btn border-radius btn-success btn-special" (click)="reviewForm()" > Review</button>
+              <button type="submit" *ngIf="isReview" class="btn border-radius btn-success btn-special" (click)="previousForm()" style="margin-right: 10px;"> Previous</button>
+              <button type="submit" *ngIf="isReview" class="btn border-radius btn-success btn-special" [class.notConfigure]="isPaymentCinfigure == 0" [disabled]="!meterValue || !unitNumberCheck" [ngClass]="{'meterCheck':!amountCheck}" > Submit</button>
+            </td>
+          </tr>
+        </thead>
+      </table>
+      <p *ngIf="!isReview"> * Please enter values for the mandatory fields to continue. <br>
+        *  <span *ngIf="isBothpaymentFlag">Paytm and HDFC are payment gateways.</span><span *ngIf="isPaytmFlag">Paytm is payment gateways.</span><span *ngIf="isHdfcFlag">HDFC is payment gateways.</span> The payment options for Credit Card, Debit Card, UPI, NetBanking etc. will be available as per the Company agreement with these providers
+      </p>
+    </form>
+
+  </div>
+</ng-template>
+
+<form #pt method="post" id="paytmform" name="redirect" action='{{paytmURL}}'>
+  <ng-container *ngIf="selectPaymentModeId == 1 || selectedPaymentMode == 'Online Payment - PayTm' ">
+  <input type='hidden' name='MID' [value]="mid">
+  <input type='hidden' name='CHANNEL_ID' [value]="channel_id">
+  <input type='hidden' name='INDUSTRY_TYPE_ID' [value]="industry_type_id">
+  <input type='hidden' name='WEBSITE' [value]="website">
+  <input type='hidden' name='CALLBACK_URL' [value]="callback_url">
+  <input type='hidden' name='CUST_ID' [value]="cust_id">
+  <input type='hidden' name='ORDER_ID' [value]="order_id">
+  <input type='hidden' name='TXN_AMOUNT' [value]="txn_amount">
+  <input type='hidden' name='MOBILE_NO' [value]="mobileNo">
+  <input type='hidden' name='CHECKSUMHASH' [value]="checksum">
+  <input type='hidden' name='EMAIL' [value]="emailAdd">
+</ng-container>
+<ng-container *ngIf="selectPaymentModeId == 2
+|| selectPaymentModeId == 9
+|| selectedPaymentMode == 'Online Payment - HDFC'
+|| selectedPaymentMode == 'Online Payment - PayU'">
+  <input type='hidden' name='amount' [value]="hdfc_amount">
+  <input type='hidden' name='email' [value]="hdfc_email">
+  <input type='hidden' name='firstname' [value]="first_name">
+  <input type='hidden' name='curl' [value]="c_url">
+  <input type='hidden' name='furl' [value]="f_url">
+  <input type='hidden' name='hash' [value]="hav_val">
+  <input type="hidden" name="key" [value]="hdfc_key">
+  <input type='hidden' name='productinfo' [value]="product_info">
+  <input type='hidden' name='surl' [value]="s_url">
+  <input type='hidden' name='txnid' [value]="txnid">
+  <input type='hidden' name='phone' [value]="mobileNo">
+  <input type='hidden' name='udf1' [value]="mobileNo">
+  <input type='hidden' name='udf2' [value]="udf_2">
+  <input type='hidden' name='udf3' [value]="udf_3">
+  <input type='hidden' name='udf4' [value]="udf_4">
+  <input type='hidden' name='udf5' [value]="udf_5">
+</ng-container>
+</form>
+<!-- <ngx-ui-loader fgsColor="#d35400" overlayColor="rgba(40,40,40,0.3)" pbColor="rgba(0,0,0,0)" hasProgressBar=false>
+</ngx-ui-loader> -->
+
+<ng-template #viewCharge>
+  <div class="modal-header" style="border: none">
+    <h5 class="modal-title text-xl-center fw-bold mt" id="myModalLabel18">Charges List</h5>
+    <button type="button" class="close" (click)="modalRef?.hide()" aria-hidden="true">
+      ×</button>
+  </div>
+  <div class="modal-body">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>
+            Charge Name
+          </th>
+          <th>
+            Due
+          </th>
+          <th>
+            Tax
+          </th>
+          <th>
+            Net Due
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container>
+          <tr *ngFor="let chargeVal of charge">
+            <td>
+              {{chargeVal.chargeName }}
+            </td>
+            <td>
+              <span class="fw-semi-bold">&#2352;&nbsp;{{ chargeVal.due }}</span>
+            </td>
+            <td>
+              <span class="fw-semi-bold">&#2352;&nbsp;{{ chargeVal.tax }}</span>
+            </td>
+            <td>
+              <span class="fw-semi-bold">&#2352;&nbsp;{{ chargeVal.netDue }}</span>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer" style="border: none">
+    <button type="button" class="btn btn-gray" (click)="modalRef?.hide()">
+      Close</button>
+  </div>
+</ng-template>

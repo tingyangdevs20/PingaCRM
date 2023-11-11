@@ -1,0 +1,27 @@
+<td class="sorting_1">{{receipt.receiptNo}} <span *ngIf="receipt.status == 'InProcess'">*</span></td>
+<td>{{ receipt.receiptDate  | date:'dd MMM y'}} <span *ngIf="receipt.status === 'InProcess'">*</span></td>
+<td class="hidden-sm-down">{{receipt.type}}
+  <span> </span>
+</td>
+<td class="hidden-sm-down">{{receipt.paymentMode}}</td>
+<td class="hidden-sm-down">{{receipt.instrumentNo}}</td>
+<td class="hidden-sm-down">{{receipt.bank}}</td>
+<td>
+  <span class="fw-semi-bold">&#2352;&nbsp;{{receipt.amount| number:'1.0-0'}}</span>
+</td>
+<td class="hidden-sm-down">
+    <span class="label label-pill label-warning" *ngIf="receipt.status=='InProcess'">In Process</span>
+  <span class="label label-pill label-success" *ngIf="receipt.status=='Paid'">Paid</span>
+  
+</td>
+<td>
+  <button *ngIf="receipt.receiptNo && receipt.isPrintable == '1'" class="btn btn-primary hidden-print" (click)="openPrintPreview($event,receipt.receiptNo,receipt.paymentMode,printLayoutNotDefinedTemplate)"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></button>
+</td>
+
+<ng-template #printLayoutNotDefinedTemplate>  
+  <div class="modal-header" style="border: none">
+    <h5 class="modal-title text-xl-center fw-bold mt" id="myModalLabel18">Print Layout not defined for the selected receipt.</h5>
+    <button type="button" class="close" (click)="modalRef?.hide()" aria-hidden="true">
+      ×</button>
+  </div>
+</ng-template>  

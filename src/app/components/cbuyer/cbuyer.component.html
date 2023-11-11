@@ -1,0 +1,219 @@
+<td class="p-l-0 sorting_1">
+  <div class="checkbox left-subtraction-10 abc-checkbox">
+    <input id="checkbox{{index+1}}" type="checkbox" class="checkbox" data-check-all="" [checked]="checkState" (change)="getBuyerIds($event, cbuyer.appLoginId)">
+    <label for="checkbox{{index+1}}"></label>
+  </div>
+</td>
+<td class="special">
+  <p>
+      <a [routerLink]="['/pinga/client/buyers/buyer/buyer-detail']" (click)="sendBuyerID($event, cbuyer.appLoginId)">
+        <span class="fw-semi-bold">{{ cbuyer.buyerName }}</span>
+        <br>
+      </a>
+  </p>
+</td>
+<td class="special">
+  <small *ngFor="let unit of cbuyer.unitDetails; let i = index">
+    <a href="#" (click)="goTo(unit, $event)">{{ unit.unitNo }}</a><span *ngIf="i > -1">,</span>
+  </small>
+</td>
+<!-- <td class="hidden-sm-down">
+  <small>{{ cbuyer.mailingAddress }}</small>
+  <br>
+  <small>{{ cbuyer.area }}</small>
+  <br>
+  <small>{{ cbuyer.city }}, {{ cbuyer.state }}</small>
+  <br>
+  <small>{{ cbuyer.country }}, {{ cbuyer.pincode }}</small>
+</td> -->
+<td class="hidden-sm-down">
+  <small>{{ cbuyer.mailingAddress }}</small>
+  <br>
+  <small>{{ cbuyer.area }}</small>
+  <br>
+  <!-- <small>{{ cbuyer.city }}, {{ cbuyer.state }}</small> -->
+  <small *ngIf="(cbuyer.city == null || cbuyer.city == ' ') && (cbuyer.state == null || cbuyer.state == ' ' )"></small>
+  <small *ngIf="(cbuyer.city != null && cbuyer.city != ' ') && (cbuyer.state != null && cbuyer.state != ' ' )">{{cbuyer.city}} , {{cbuyer.state}}</small>
+  <small *ngIf="(cbuyer.city == null || cbuyer.city == ' ') && (cbuyer.state != null || cbuyer.state != ' ' )">{{cbuyer.state}}</small>
+  <small *ngIf="(cbuyer.city != null || cbuyer.city != ' ') && (cbuyer.state == null || cbuyer.state == ' ' )">{{cbuyer.city}}</small>
+  <br>
+  <!-- <small>{{ cbuyer.country }}, {{ cbuyer.pincode }}</small> -->
+  <small *ngIf="(cbuyer.country == null || cbuyer.country == ' ') && (cbuyer.pincode == null || cbuyer.pincode == ' ' )"></small>
+  <small *ngIf="(cbuyer.country != null && cbuyer.country != ' ') && (cbuyer.pincode != null && cbuyer.pincode != ' ' )">{{ cbuyer.country }}, {{ cbuyer.pincode }}</small>
+  <small *ngIf="(cbuyer.country == null || cbuyer.country == ' ') && (cbuyer.pincode != null || cbuyer.pincode != ' ' )">{{cbuyer.pincode}}</small>
+  <small *ngIf="(cbuyer.country != null || cbuyer.country != ' ') && (cbuyer.pincode == null || cbuyer.pincode == ' ' )">{{cbuyer.country}}</small>
+</td>
+<td class="hidden-sm-down">
+  <small>{{ cbuyer.emaiID }}</small>
+  <br>
+  <small>{{ cbuyer.phoneNo }}</small>
+  <br>
+  <small>{{ cbuyer.mobileNo }}</small>
+</td>
+<td class="no-warp">
+  <div class="hidden-lg-down hidden-lg-up">
+    <a href="#" class="icon-btn">
+      <span class="glyphicon glyphicon-edit"></span>
+      <small>Edit</small>
+    </a>
+    <br>
+  </div>
+  <ng-container *ngIf="cbuyer.isActive == 0">
+    <a href="#" class="icon-btn" data-toggle="modal" data-target="activate_user1" (click)="openActivateUser($event, activateUser)">
+      <span class="glyphicon glyphicon-check"></span>
+      <small>Activate</small>
+    </a>
+  </ng-container>
+  <ng-container *ngIf="cbuyer.isActive == 1">
+    <a href="#" class="icon-btn" data-toggle="modal" data-target="de_activate_user1" (click)="openDeactivateUser($event, deactivateUser)">
+      <span class="glyphicon glyphicon-check"></span>
+      <small>Deactivate</small>
+    </a>
+  </ng-container>
+  <br>
+  <a href="#" class="icon-btn" data-toggle="modal" data-target="#reset_password1" (click)="openResetPassword($event, resetPassword)">
+    <span class="fa fa-asterisk"></span>
+    <small>Reset Password</small>
+  </a>
+  <br>
+  <a href="#" class="icon-btn" data-toggle="modal" data-target="#send_email1" (click)="openSendEmail($event,sendEmail)">
+    <span class="fa fa-envelope"></span>
+    <small>Send Email</small>
+  </a>
+  <br>
+  <a href="#" class="icon-btn" data-toggle="modal" data-target="#send_sms1" (click)="openSendSms($event, sendSms)">
+    <span class="fa fa-envelope-o"></span>
+    <small>Send SMS</small>
+  </a>
+</td>
+
+<ng-template #sendEmail>
+  <div class="modal-header" style="border: none">
+    <h5 class="modal-title text-xl-center fw-bold mt">
+      Send Email</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modalRef?.hide();resetForm('sendMail'); clearEmailContent()">×</button>
+  </div>
+  <form [formGroup]="sendMail" (ngSubmit)="sendNewMail(sendMail.value, cbuyer.appLoginId)">
+    <div class="modal-body bg-gray-lighter">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="form-group">
+            <input type="email" [ngClass]="{'form-control':true,'inputNotValid':erStatus}" placeholder="Email Address" formControlName="formEmail" name="formEmail" [(ngModel)]="cbuyer.emaiID">
+            <div *ngIf="submitted && !sendMail.controls['formEmail'].valid || sendMail.controls['formEmail'].touched && !sendMail.controls['formEmail'].valid">
+                <span class="help-block" *ngIf="sendMail.controls['formEmail'].hasError('required') ">Email is required</span>
+                <span class="help-block" *ngIf="sendMail.controls['formEmail'].hasError('pattern') ">
+                  Please enter valid email
+                </span>
+              </div>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="form-group">
+            <input type="text" [ngClass]="{'form-control':true,'inputNotValid':erStatus}" placeholder="Subject" formControlName="formSubject" name="formSubject">
+                <div  *ngIf="submitted && !sendMail.controls['formSubject'].valid || sendMail.controls['formSubject'].touched && !sendMail.controls['formSubject'].valid">
+                    <span class="help-block" *ngIf="sendMail.controls['formSubject'].hasError('required') ">Subject is required</span>
+                  </div>
+                </div>
+        </div>
+        <div class="col-md-12">
+          <!-- <textarea [froalaEditor]="options" formControlName="formMessage" name="formMessage"></textarea> -->
+          <!-- <textarea id="" cols="60" rows="10" style="width:100%; display: block" formControlName="formMessage" name="formMessage"></textarea> -->
+          <app-ngx-editor [config]="editorConfig" [spellcheck]="true" [(ngModel)]="htmlContent" height="140px" minHeight="50px" formControlName="formMessage" name="formMessage"></app-ngx-editor>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" style="border: none">
+      <button class="btn btn-primary btn-special" id="email-info" data-dismiss="modal" type="submit">
+        Send</button>
+      <button type="button" class="btn btn-gray" data-dismiss="modal" (click)="modalRef?.hide();resetForm('sendMail'); clearEmailContent()">
+        Cancel</button>
+    </div>
+  </form>
+</ng-template>
+
+
+<ng-template #sendSms>
+
+  <div class="modal-header" style="border: none">
+    <h5 class="modal-title text-xl-center fw-bold mt">
+      Send SMS</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modalRef?.hide();resetForm('smsForm'); clearSmsContent()"> ×</button>
+  </div>
+  <form [formGroup]="smsForm" (ngSubmit)="sendNewSms(smsForm.value, cbuyer.appLoginId)" id="smsForm">
+  <div class="modal-body bg-gray-lighter">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="form-group" style="margin-bottom: 30px">
+          <input type="number" [ngClass]="{'form-control':true,'inputNotValid':erSmsStatus}" formControlName="mobileNo" [(ngModel)]="cbuyer.mobileNo" placeholder="Mobile Number" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" onKeyDown="if(this.value.length==10 && event.keyCode!=8) return false;">
+          <div *ngIf="smsSubmitted && !smsForm.controls['mobileNo'].valid || smsForm.controls['mobileNo'].touched && !smsForm.controls['mobileNo'].valid">
+            <span class="help-block" *ngIf="smsForm.controls['mobileNo'].hasError('required') ">Mobile is required</span>
+            <span class="help-block" *ngIf="smsForm.controls['mobileNo'].hasError('minlength') ">
+              Please enter valid mobile number
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+          <!-- <textarea [froalaEditor]="smsOptions" formControlName="message" name="message"></textarea> -->
+          <textarea id="" cols="60" rows="10" style="width:100%; display: block" formControlName="message" name="message"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer" style="border: none">
+    <button type="submit" class="btn btn-primary btn-special" id="email-info" data-dismiss="modal">
+      Send</button>
+    <button type="text" class="btn btn-gray" data-dismiss="modal" (click)="modalRef?.hide(); resetForm('smsForm'); clearSmsContent()">
+      Cancel</button>
+  </div>
+</form>
+</ng-template>
+
+<ng-template #activateUser>
+  <div class="modal-header" style="border: none">
+    <h5 class="modal-title text-xl-center fw-bold mt">Activate</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modalRef?.hide()">×</button>
+  </div>
+  <div class="modal-body text-xs-center">
+    <p>An activation email will be sent to the user.</p>
+    <p>Please confirm.</p>
+  </div>
+  <div class="modal-footer" style="border: none">
+    <button type="button" class="btn btn-primary btn-special" id="active-info" data-dismiss="modal" (click)="activate(cbuyer.appLoginId); modalRef?.hide()">Proceed</button>
+    <button type="button" class="btn btn-gray" data-dismiss="modal" (click)="modalRef?.hide()">Close</button>
+  </div>
+</ng-template>
+
+<ng-template #deactivateUser>
+  <div class="modal-header" style="border: none">
+    <h5 class="modal-title text-xl-center fw-bold mt">Deactivate</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modalRef?.hide()">×</button>
+  </div>
+  <div class="modal-body text-xs-center">
+    <p>An Deactivation email will be sent to the user.</p>
+    <p>Please confirm.</p>
+  </div>
+  <div class="modal-footer" style="border: none">
+    <button type="button" class="btn btn-primary btn-special" id="active-info" data-dismiss="modal" (click)="deactivate(cbuyer.appLoginId); modalRef?.hide()">Proceed</button>
+    <button type="button" class="btn btn-gray" data-dismiss="modal" (click)="modalRef?.hide()">Close</button>
+  </div>
+</ng-template>
+
+<ng-template #resetPassword>
+  <div class="modal-header" style="border: none">
+    <h5 class="modal-title text-xl-center fw-bold mt">
+      Reset Password</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modalRef?.hide()">
+          ×</button>
+  </div>
+  <div class="modal-body text-xs-center">
+    <p>
+      An email will be sent to the user with temporary password.</p>
+    <p>
+      Please confirm.</p>
+  </div>
+  <div class="modal-footer" style="border: none">
+    <button type="button" class="btn btn-primary btn-special" id="reset-password-info" data-dismiss="modal" (click)="resetPass(cbuyer.appLoginId); modalRef?.hide()">
+      Proceed</button>
+    <button type="button" class="btn btn-gray" data-dismiss="modal" (click)="modalRef?.hide()">Close</button>
+  </div>
+</ng-template>

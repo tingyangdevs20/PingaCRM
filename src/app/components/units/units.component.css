@@ -1,0 +1,13 @@
+.mt {margin-top: 0rem;}
+mfBootstrapPaginator {
+    float: right;
+}
+.loadData {
+    background-color: #efefef;
+    border: 1px solid #aaa;
+    padding: 12px 35px;
+    font-size: 1.2em;
+    position: absolute;
+    right: -200px;
+    top: 0;
+}

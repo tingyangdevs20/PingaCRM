@@ -1,0 +1,4 @@
+.navbar-collapse{flex-basis:80%;-ms-flex-preferred-size:80%;}
+.dropdown-menu {position: absolute;}
+.navbar > .container, .navbar > .container-fluid {display: inline-block;}
+.input-group-btn.show {display: table-cell !important;}

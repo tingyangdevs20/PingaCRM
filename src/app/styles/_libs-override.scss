@@ -1,0 +1,326 @@
+/***********************/
+/*    Animate.css      */
+/***********************/
+
+.animated{
+  animation-duration: .5s;
+}
+
+/***********************/
+/*glyphicons-halflings */
+/***********************/
+
+.glyphicon {
+  top: auto;
+  vertical-align: middle;
+}
+
+.glyphicon-comment:before {
+  content:"\E111";
+}
+
+/***********************/
+/*    Font Awesome     */
+/***********************/
+
+.fa {
+  vertical-align: middle;
+}
+
+.fa-xs {
+  font-size: 0.625em;
+}
+
+.fa-sm {
+  font-size: $font-size-sm;
+}
+
+.fa-lg {
+  font-size: 1.2rem;
+}
+
+.btn > .fa,
+.circle > .fa,
+.input-group-text > .fa {
+  vertical-align: baseline;
+}
+
+.#{$fa-css-prefix}-spin-fast {
+  -webkit-animation: fa-spin 1s infinite linear;
+  -moz-animation: fa-spin 1s infinite linear;
+  -o-animation: fa-spin 1s infinite linear;
+  animation: fa-spin 1s infinite linear;
+}
+
+/***********************/
+/*    NG2 Select2      */
+/***********************/
+
+.select2-container--bootstrap .select2-selection--single {
+  height: 35px !important;
+}
+
+.select2-container--bootstrap .select2-selection--multiple {
+  .select2-selection__choice {
+    margin: $spacer/2 0 0 $spacer/2 !important;
+  }
+}
+
+/***********************/
+/*  Bootstrap Select   */
+/***********************/
+
+.selectpicker.form-control {
+  height: auto;
+}
+
+.bootstrap-select {
+  z-index: 1;
+
+  &.show .dropdown-menu.inner {
+    display: block;
+  }
+
+  &.show {
+    z-index: 3;
+    display: inline-block !important;
+  }
+}
+
+.input-group-append .bootstrap-select .btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.input-group-prepend .bootstrap-select .btn {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/***********************/
+/*     Select 2        */
+/***********************/
+
+.select2-container .select2-choice abbr {
+  background: url('../../assets/select2/select2.png') right top no-repeat;
+}
+
+.select2-container .select2-choice .select2-arrow b {
+  background: url('../../assets/select2/select2.png') no-repeat 0 1px;
+}
+
+.select2-search input {
+  display: none;
+}
+
+html[dir="rtl"] .select2-search input {
+  display: none;
+}
+
+.select2-search-choice-close {
+  background: url('../../assets/select2/select2.png') right top no-repeat;
+}
+
+.select2-search input.select2-active {
+  background: #fff url('../../assets/select2/select2-spinner.gif') no-repeat 100%;
+  background: url('../../assets/select2/select2-spinner.gif') no-repeat 100%, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, #fff), color-stop(0.99, #eee));
+  background: url('../../assets/select2/select2-spinner.gif') no-repeat 100%, -webkit-linear-gradient(center bottom, #fff 85%, #eee 99%);
+  background: url('../../assets/select2/select2-spinner.gif') no-repeat 100%, -moz-linear-gradient(center bottom, #fff 85%, #eee 99%);
+  background: url('../../assets/select2/select2-spinner.gif') no-repeat 100%, linear-gradient(to bottom, #fff 85%, #eee 99%) 0 0;
+}
+
+.select2-more-results.select2-active {
+  background: #f4f4f4 url('../../assets/select2/select2-spinner.gif') no-repeat 100%;
+}
+
+.select2-container-multi .select2-choices .select2-search-field input.select2-active {
+  background: #fff url('../../assets/select2/select2-spinner.gif') no-repeat 100% !important;
+}
+
+/***********************/
+/*  Retina-ize icons   */
+/***********************/
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 2dppx)  {
+  .select2-search input,
+  .select2-search-choice-close,
+  .select2-container .select2-choice abbr,
+  .select2-container .select2-choice .select2-arrow b {
+    background-image: url('../../assets/select2/select2x2.png') !important;
+  }
+}
+
+/*************************************/
+/*         @ngx-loading-bar          */
+/*************************************/
+ngx-loading-bar {
+  position: relative;
+  top: $navbar-height;
+  left: 0;
+  right: 0;
+  display: block;
+}
+
+#loading-bar {
+  pointer-events: none;
+  transition: 350ms linear all;
+}
+
+#loading-bar .bar {
+  transition: width 350ms;
+  background: theme-color('warning');
+  position: absolute;
+  z-index: 1049;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  border-bottom-right-radius: 1px;
+  border-top-right-radius: 1px;
+}
+
+#loading-bar .peg {
+  position: absolute;
+  width: 70px;
+  right: 0;
+  top: 0;
+  height: 2px;
+  opacity: .45;
+  box-shadow: $blue 1px 0 6px 1px;
+  border-radius: 100%;
+}
+
+#loading-bar-spinner {
+  position: absolute;
+  color: theme-color('warning');
+}
+
+/*************************************/
+/*           ngx-bootstrap           */
+/*************************************/
+
+.tab-container {
+  display: block;
+  background: none;
+  border-radius: $border-radius;
+  box-shadow: var(--widget-shadow);
+}
+
+/*************************************/
+/*                Flot               */
+/*************************************/
+
+.chart-tooltip {
+  position: fixed;
+  padding: $input-btn-padding-y-sm $input-btn-padding-x-sm;
+  border: 1px solid $gray-light;
+  font-size: $font-size-mini;
+  background-color: $white;
+}
+
+/*************************************/
+/*              Dropdown             */
+/*************************************/
+.dropdown-toggle::after {
+  font-family: 'Line Awesome Free';
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 900;
+  content: "\f107";
+  border: none;
+  width: auto;
+  height: auto;
+  vertical-align: baseline;
+  opacity: .8;
+  font-size: 85%;
+}
+
+//  Easy Pie Chart
+
+.easy-pie-chart-md,
+.easy-pie-chart-lg {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  color: #798892;
+}
+
+.easy-pie-chart-md canvas,
+.easy-pie-chart-lg canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.easy-pie-chart-md {
+  line-height: 120px;
+  height: 120px;
+  width: 120px;
+}
+
+.easy-pie-chart-lg {
+  line-height: 140px;
+  height: 140px;
+  width: 140px;
+}
+
+
+/////// NGX Datatable ///////
+
+.ngx-datatable {
+  width: 100%;
+
+  .datatable-body-cell,
+  .datatable-header-cell {
+    padding: $table-cell-padding;
+  }
+
+  .datatable-header-cell {
+    text-transform: uppercase;
+    font-weight: $font-weight-semi-bold;
+  }
+
+  .datatable-body .datatable-body-row > div {
+    border-top: 1px solid $gray-300;
+  }
+
+  .datatable-row-center.datatable-row-group .datatable-body-cell {
+    overflow-x: visible;
+    overflow-y: visible;
+  }
+
+  .datatable-row-wrapper {
+    &:nth-of-type(odd) {
+      background-color: $table-accent-bg;
+    }
+  }
+
+  .datatable-pager {
+    font-size: $font-size-sm;
+
+    .pager > li {
+      > a {
+        padding: $pagination-padding-y $pagination-padding-x;
+        color: $text-color;
+        text-decoration: none;
+      }
+
+      &.active > a {
+        background-color: $pagination-active-bg;
+        border-radius: $border-radius;
+      }
+
+      &.disabled > a {
+        color: $text-muted;
+      }
+    }
+
+    .datatable-icon-left::before {
+      content: "<";
+    }
+
+    .datatable-icon-right::before {
+      content: ">";
+    }
+  }
+}

@@ -1,0 +1,9 @@
+.mt {margin-top: 0rem;}
+mfBootstrapPaginator {
+    float: right;
+}
+@media screen and (max-width:420px){
+    .widget{padding: 10px;}
+    table.dataTable thead th .text-nowrap {padding:10px 15px 10px 8px;}
+    table.dataTable thead th, table.dataTable thead td, table.dataTable.no-footer{font-size: 11px;}
+}

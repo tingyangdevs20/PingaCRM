@@ -1,0 +1,110 @@
+<div id="reciept">
+  <div class="modal-header" style="border: none">
+    <h5 class="modal-title text-xl-center fw-bold mt" style="text-decoration:underline;">
+      Acknowledgement Receipt</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="bsModalRef?.hide()">
+      ×</button>
+  </div>
+
+
+  <div class="modal-body">
+    <table style="width: 100%;">
+      <tr>
+        <td></td>
+        <td></td>
+        <td class="reciept-left-value"></td>
+        <td class="reciept-label text-right">Payment Date</td>
+        <td class="reciept-separator text-right"> : </td>
+        <td class="reciept-right-value text-right">{{details.transactionDate | date:"dd MMM yyyy"}}</td>
+      </tr>
+      <tr>
+        <td class="reciept-label">Company Name</td>
+        <td class="reciept-separator"> : </td>
+        <td class="reciept-left-value">{{details.companyName}}</td>
+        <td class="reciept-label text-right"><span *ngIf="details.meterNo">Meter No</span></td>
+        <td class="reciept-separator text-right"><span *ngIf="details.meterNo"> : </span></td>
+        <td class="reciept-right-value text-right"><span *ngIf="details.meterNo">{{details.meterNo}}</span></td>
+      </tr>
+      <tr>
+        <td class="reciept-label">Project Name</td>
+        <td class="reciept-separator"> : </td>
+        <td class="reciept-left-value">{{details.projectName}}</td>
+        <td class="reciept-label text-right"><span *ngIf=details.tokanNo>Token No</span></td>
+        <td class="reciept-separator text-right"><span *ngIf=details.tokanNo> : </span></td>
+        <td class="reciept-right-value text-right"><span *ngIf=details.tokanNo>{{details.tokanNo}}</span></td>
+      </tr>
+      <tr>
+        <td class="reciept-label">Unit No</td>
+        <td class="reciept-separator"> : </td>
+        <td class="reciept-left-value" colspan="4">{{details.unitNo}}</td>
+      </tr>
+      <tr>
+        <td class="reciept-label">Customer Name</td>
+        <td class="reciept-separator"> : </td>
+        <td class="reciept-left-value" colspan="4">{{details.custName}}</td>
+      </tr>
+      <tr>
+        <td colspan="6">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="reciept-label">Order ID</td>
+        <td class="reciept-separator"> : </td>
+        <td class="reciept-left-value" colspan="4">{{details.orderID}}</td>
+      </tr>
+      <tr>
+        <td class="reciept-label">Transaction ID</td>
+        <td class="reciept-separator"> : </td>
+        <td class="reciept-left-value" colspan="4">{{details.transactionID}}</td>
+      </tr>
+      <tr>
+        <td class="reciept-label">Payment Amount</td>
+        <td class="reciept-separator"> : </td>
+        <td class="reciept-left-value" colspan="4">{{details.amount}}</td>
+      </tr>
+      <tr>
+        <td class="reciept-label">Payment Mode</td>
+        <td class="reciept-separator"> : </td>
+        <td class="reciept-left-value" colspan="4">{{details.paymentMode}}</td>
+      </tr>
+      <tr>
+        <td colspan="6">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="6"><b>Instrument Details : </b></td>
+      </tr>
+      <tr>
+        <td class="reciept-label">Card Issuer</td>
+        <td class="reciept-separator"> : </td>
+        <td class="reciept-left-value" colspan="4">{{details.cardIssuer}}</td>
+      </tr>
+      <tr>
+        <td class="reciept-label">Card Type</td>
+        <td class="reciept-separator"> : </td>
+        <td class="reciept-left-value" colspan="4"></td>
+      </tr>
+      <tr>
+        <td class="reciept-label">Card Last 4</td>
+        <td class="reciept-separator"> : </td>
+        <td class="reciept-left-value" colspan="4">{{details.cardNo}}</td>
+      </tr>
+      <tr>
+        <td colspan="6">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="6"><b>Notes :</b>
+          <ol>
+            <li>This is computer generated payment receipt, no signature required.
+            </li>
+            <li>Subject to payment reconciliation.
+            </li>
+          </ol>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div class="modal-footer" style="border: none">
+  <button type="button" class="btn btn-primary btn-special" (click)="PrintReciept()">
+    Print</button>
+  <button type="button" class="btn btn-gray" data-dismiss="modal" (click)="bsModalRef?.hide()">Close</button>
+</div>

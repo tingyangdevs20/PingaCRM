@@ -1,0 +1,181 @@
+<div class="content-wrap scratchHeight">
+  <div id="content" class="content" role="main">
+    <pa-bread-crumb></pa-bread-crumb>
+    <h1 class="page-title">
+      <span class="fw-semi-bold">Transaction</span>List
+    </h1>
+    <div class="widget">
+      <section>
+        <div class="widget-body">
+          <ng-container *ngIf="bindCompany">
+            <div class="btn-group company-select" style="margin-right: 10px" *ngIf="loginUserRole == 'Client Admin'">
+              <!-- <select2 [data]="companyList" [width]='120' (valueChanged)="onCompanySelect($event)">
+              </select2> -->
+              <ngx-select-dropdown
+                class="ngx-select-dropdown"
+                (change)="onCompanySelect($event)"
+                tabindex="0"
+                [multiple]="false"
+                [config] = "config"
+                [(ngModel)] = "companyList[0]"
+                [options]="companyList">
+              </ngx-select-dropdown>
+            </div>
+          </ng-container>
+          <div class="btn-group location-select" style="margin-right: 10px" *ngIf="loginUserRole == 'Client Admin'">
+            <!-- <select2 [data]="locationList" [width]='100' (valueChanged)="onLocationSelect($event)">
+            </select2> -->
+            <ngx-select-dropdown
+              class="ngx-select-dropdown"
+              (change)="onLocationSelect($event)"
+              tabindex="0"
+              [multiple]="false"
+              [config] = "config"
+              [(ngModel)] = "locationList[0]"
+              [options]="locationList">
+            </ngx-select-dropdown>
+          </div>
+          <div class="btn-group project-select" style="margin-right: 10px" *ngIf="loginUserRole == 'Client Admin'">
+            <!-- <select2 [data]="projectList" [width]='180' (valueChanged)="onProjectSelect($event)">
+            </select2> -->
+            <ngx-select-dropdown
+              class="ngx-select-dropdown"
+              (change)="onProjectSelect($event)"
+              tabindex="0"
+              [multiple]="false"
+              [config] = "config"
+              [(ngModel)] = "projectList[0]"
+              [options]="projectList">
+            </ngx-select-dropdown>
+          </div>
+    
+          <div class="btn-group select_unit inv_select_unit" style="margin-right: 10px" *ngIf="loginUserRole == 'Client Admin'">
+            <!-- <select2 [data]="unitNoList" [width]='100' (valueChanged)="onUnitSelect2($event)">
+            </select2> -->
+            <ngx-select-dropdown
+              class="ngx-select-dropdown"
+              (change)="onUnitSelect2($event)"
+              tabindex="0"
+              [multiple]="false"
+              [config] = "config"
+              [(ngModel)] = "unitNoList[0]"
+              [options]="unitNoList">
+            </ngx-select-dropdown>
+          </div>
+          <div class="btn-group select_unit" *ngIf="loginUserRole == 'Buyer'" style="margin-right: 10px" >
+            <ngx-select-dropdown
+              class="ngx-select-dropdown"
+              (change)="onUnitSelect2($event)"
+              tabindex="0"
+              [multiple]="false"
+              [config] = "config"
+              [(ngModel)] = "unitNoList2[0]"
+              [options]="unitNoList2">
+            </ngx-select-dropdown>
+          </div>
+          <div class="btn-group width-200 dateRange">
+            <input type="text" class="width-200 form-control date-range" placeholder="Select From Date - To Date" bsDaterangepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', containerClass: 'theme-orange' }"
+              (change)="getDateRange($event)" readonly="">
+          </div>
+          <div class="mt">
+            <div>
+              <ngx-datatable
+                class="table table-striped table-hover"
+                [rows]="transaction"
+                [columnMode]="'force'"
+                [headerHeight]="50"
+                [footerHeight]="50"
+                [rowHeight]="38"
+                [externalPaging]="true"
+                [count]="count"
+                [scrollbarH]="true"
+                [scrollbarV]="false"
+                (page)="getPageData($event)"
+                [limit]="10">
+                <ngx-datatable-column name="orderid">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="fw-semi-bold" (click)="sortTableBy('orderid');">ORDER ID</span>
+                  </ng-template>
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                    {{value}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="amount">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="fw-semi-bold" (click)="sortTableBy('amount');">PAYMENT AMOUNT</span>
+                  </ng-template>
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                    <span class="fw-semi-bold">र&nbsp;{{value}}</span><br>
+                    <!-- <a href="#" >{{value}}</a> -->
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="transactionDate">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="fw-semi-bold" (click)="sortTableBy('transactionDate');">PAYMENT DATE</span>
+                  </ng-template>
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                    <span >{{ value | date}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="transactionid">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="fw-semi-bold" (click)="sortTableBy('transactionid');">TRANSACTION ID</span>
+                  </ng-template>
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                    <span>{{value}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="status">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="fw-semi-bold" (click)="sortTableBy('status');">STATUS</span>
+                  </ng-template>
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                    <span >{{value}}</span><br>
+                    <!-- <a href="#" >{{value}}</a> -->
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-footer>
+                  <ng-template
+                    ngx-datatable-footer-template
+                    let-rowCount="rowCount"
+                    let-pageSize="pageSize"
+                    let-selectedCount="selected"
+                    let-curPage="curPage"
+                    let-offset="offset"                    
+                  >
+                  <!-- <div style="padding: 5px 10px">
+                    <div>
+                      Showing&nbsp;&nbsp;&nbsp;{{(curPage - 1) == 0? 1 : (curPage - 1) * 10}} - {{curPage * 10}}&nbsp;&nbsp;of&nbsp;&nbsp;{{ rowCount }}&nbsp;entries
+                    </div>
+                  </div> -->
+
+                  <div class="page-count">
+                    Showing&nbsp;&nbsp;&nbsp;{{(curentPage - 1) * 10 + 1}} - {{curentPage * 10 > rowCount ? rowCount : curentPage * 10}}&nbsp;&nbsp;of&nbsp;&nbsp;{{ rowCount }}&nbsp;entries
+                  </div>
+                  <datatable-pager
+                    [pagerLeftArrowIcon]="'datatable-icon-left'"
+                    [pagerRightArrowIcon]="'datatable-icon-right'"
+                    [pagerPreviousIcon]="'datatable-icon-prev'"
+                    [pagerNextIcon]="'datatable-icon-skip'"
+                    [page]="curPage"
+                    [size]="pageSize"
+                    [count]="rowCount"
+                    [hidden]="!((rowCount / pageSize) > 1)"
+                    (change)="getPageData($event)">
+                  </datatable-pager>
+
+                    <!-- <div>
+                      Showing {{(curPage - 1) == 0? 1 : (curPage - 1) * 10}} - {{curPage * 10}} of {{ rowCount }}
+                      Rows: {{ rowCount }} | Size: {{ pageSize }} | Current:
+                      {{ curPage }} | Offset: {{ offset }}                      
+                    </div> -->
+                  </ng-template>                  
+                </ngx-datatable-footer>
+              </ngx-datatable>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

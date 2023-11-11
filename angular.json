@@ -1,0 +1,148 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "pinga": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/pinga",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [              
+              "node_modules/select2/dist/css/select2.min.css",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
+              "node_modules/@swimlane/ngx-datatable/assets/icons.css",
+              "node_modules/@swimlane/ngx-datatable/themes/material.css",
+              "node_modules/c3/c3.css",
+              "src/styles.min.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/popper.js/dist/umd/popper.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/hammerjs/hammer.min.js",
+              "node_modules/d3/dist/d3.min.js",
+              "node_modules/nvd3/build/nv.d3.min.js",
+              "node_modules/rickshaw/rickshaw.min.js",
+              "node_modules/moment/min/moment.min.js",
+              "node_modules/fullcalendar/dist/fullcalendar.js",
+              "node_modules/dropzone/dist/dropzone.js",
+              "node_modules/parsleyjs/dist/parsley.js",
+              "node_modules/jasny-bootstrap/dist/js/jasny-bootstrap.min.js",
+              "node_modules/markdown/lib/markdown.js",
+              "node_modules/bootstrap-markdown/js/bootstrap-markdown.js",
+              "node_modules/bootstrap-slider/dist/bootstrap-slider.js",
+              "node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js",
+              "node_modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js",
+              "node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js",
+              "node_modules/select2/dist/js/select2.min.js",
+              "node_modules/bootstrap-select/dist/js/bootstrap-select.js",
+              "node_modules/easy-pie-chart/dist/jquery.easypiechart.js",
+              "node_modules/jquery-ui/ui/core.js",
+              "node_modules/jquery-ui/ui/widget.js",
+              "node_modules/jquery-ui/ui/mouse.js",
+              "node_modules/jquery-ui/ui/sortable.js",
+              "node_modules/jquery-ui/ui/draggable.js",
+              "node_modules/jvectormap/jquery-jvectormap.min.js",
+              "node_modules/jquery-sparkline/jquery.sparkline.min.js",
+              "node_modules/magnific-popup/dist/jquery.magnific-popup.min.js",
+              "node_modules/jquery-flot/jquery.flot.js",
+              "node_modules/jquery-flot/jquery.flot.time.js",
+              "node_modules/morris.js/morris.js",              
+              "node_modules/c3/c3.js"
+            ],
+            "allowedCommonJsDependencies": [
+              "froala-editor",
+              "dropzone",
+              "c3"
+           ]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2.7mb",
+                  "maximumError": "3mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2.7mb",
+                  "maximumError": "3mb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "aot": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "pinga:build:production"
+            },
+            "development": {
+              "browserTarget": "pinga:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "pinga:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "tsconfig.spec.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": "e28936d9-a441-4613-a3c4-67050e98ea30"
+  }
+}

@@ -1,0 +1,180 @@
+
+<div class="content-wrap">
+  <div class="pace  pace-inactive">
+    <div class="pace-progress" data-progress-text="100%" data-progress="99" style="width: 100%;">
+      <div class="pace-progress-inner"></div>
+    </div>
+    <div class="pace-activity"></div>
+  </div>
+  <!-- main page content. the place to put widgets in. usually consists of .row > .col-lg-* > .widget.  -->
+  <main id="content" class="content" role="main">
+    <pa-bread-crumb></pa-bread-crumb>
+    <h1 class="page-title">
+      <span class="fw-semi-bold">Buyer </span>Details</h1>
+    <div class="row">
+      <div class="col-lg-12 col-md-12">
+        <section class="widget">
+          <div class="widget-body">
+            <form class="form-horizontal" role="form">
+              <div class="row">
+                <div class="col-lg-6 border-line">
+                  <fieldset>
+                    <legend>
+                      <strong>Buyer</strong> info</legend>
+                    <div class="form-group row">
+                      <label class="col-md-4   text-md-right">Name</label>
+                      <div class="col-md-7">
+                        <p class="name mb-0">{{ buyer.buyerName }}</p>
+                      </div>
+                    </div>
+                    <!-- <div class="form-group row">
+                      <label class="col-md-4   text-md-right" for="simple-select">Active</label>
+                      <div class="col-md-8">
+                        <label class="switch">
+                          <input type="checkbox" checked>
+                          <span class="slider round"></span>
+                        </label>
+                      </div>
+                    </div> -->
+                    <!-- <div class="form-group row">
+                      <label class="col-md-4  form-control-label text-md-right">Mailing Address</label>
+                      <div class="col-md-7">
+                        <div class="form-group mb-0">
+                          <p class="context mb-0">{{buyer.mailingAddress}}</p>
+                        </div>
+                         <div class="form-group mb-0">
+                          <p class="context mb-0">125 Tyler Avenue"</p>
+                        </div>
+                        <div class="form-group mb-0">
+                          <p class="context mb-0">CINCINNATI</p>
+                        </div>
+                        <div class="form-group mb-0">
+                          <p class="context mb-0 display-inline-block m-r-1">{{buyer.city}}, {{buyer.country}}, {{buyer.zip}}</p>
+                        </div>
+                      </div>
+                    </div> -->
+                    <div class="form-group row">
+                      <label class="col-md-4   text-md-right">Address</label>
+                      <div class="col-md-7">
+                        <div class="form-group">
+                          <p class="context mb-0">{{buyer.mailingAddress}}</p>
+                        </div>
+                        <div class="form-group">
+                          <p class="context mb-0">{{buyer.city}}</p>
+                        </div>
+                        <div class="form-group">
+                          <p class="context mb-0">{{buyer.state}}</p>
+                        </div>
+                        <div class="form-group">
+                          <p class="context mb-0">{{buyer.country}}</p>
+                        </div>
+                        <div class="form-group">
+                          <p class="context mb-0">{{buyer.zip}}</p>
+                        </div>
+                        <!-- <div class="form-group">
+                          <p class="context mb-0">{{}}</p>
+                        </div> -->
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-4   text-md-right">Contact Info</label>
+                      <div class="col-md-7">
+                        <div class="form-group">
+                          <p class="context mb-0">{{buyer.emaiID}}</p>
+                        </div>
+                        <div class="form-group">
+                          <p class="context mb-0">{{buyer.mobileNo}}</p>
+                        </div>
+                        <div class="form-group">
+                          <p class="context mb-0">{{buyer.phoneNo}}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+                <div class="col-lg-6">
+                  <fieldset>
+                    <legend>
+                      <strong>Property</strong> Info</legend>
+                  <div  *ngFor='let bunit of buyer.buyerUnits'>
+                    <div class="form-group row">
+                      <label class="col-md-4   text-md-right">Company</label>
+                      <div class="col-md-7">
+                        <p class="name mb-0">{{bunit.companyName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-4   text-md-right">Project</label>
+                      <div class="col-md-7">
+                        <p class="name mb-0">{{bunit.projectName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-4   text-md-right">Tower Name</label>
+                      <div class="col-md-7">
+                        <p class="name mb-0">{{bunit.towerName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-4   text-md-right">Application #</label>
+                      <div class="col-md-7">
+                        <p class="name mb-0">{{bunit.applicationNo}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-4   text-md-right">Unit #</label>
+                      <div class="col-md-7">
+                        <p class="name mb-0">{{bunit.unitNo}}</p>
+                      </div>
+                    </div>
+                    <!-- <div class="form-group row">
+                      <label class="col-md-4   text-md-right" for="simple-select">Buyer Role</label>
+                      <div class="col-md-8">
+                        <p class="name mb-0">{{buyer.buyerRole}}</p>
+                      </div>
+                    </div> -->
+                    <div class="form-group row">
+                      <label class="col-md-4   text-md-right">Booking Date</label>
+                      <div class="col-md-7">
+                        <p class="name mb-0">{{bunit.appDate | date: 'dd/MMM/yyyy'}}</p>
+                        <!-- <p class="name mb-0">{{bunit.appDate | }}</p> -->
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-4   text-md-right">Area</label>
+                      <div class="col-md-7">
+                        <p class="name mb-0">{{bunit.area}}</p>
+                      </div>
+                    </div>
+                    <!-- <div class="form-group row">
+                      <label class="col-md-4   text-md-right">Rate</label>
+                      <div class="col-md-7">
+                        <p class="name mb-0">{{bunit.rate}}</p>
+                      </div>
+                    </div> -->
+                    <!-- <div class="form-group row">
+                      <label class="col-md-4   text-md-right">Basic Sale Price</label>
+                      <div class="col-md-7">
+                        <p class="name mb-0">{{buyer.basicSalePrice}}</p>
+                      </div>
+                    </div> -->
+                    <hr>
+                  </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="form-actions">
+                <div class="row">
+                  <div class="col-md-offset-4 col-md-7">
+                    <!-- <button class="btn btn-primary btn-special" id="success-info">Save</button> -->
+                    <button class="btn btn-inverse" [routerLink]="['/pinga/client/buyers']" style="padding-left: 40px;padding-right: 40px">Back</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,8 @@
+<ol class="breadcrumb">
+  <li><a [routerLink]="[bashBoardUrl]">Dashboard</a></li>
+  <li class="active" *ngFor="let urlSlug of breadCrumb">
+    <a *ngIf="urlSlug['url']=='#'">{{urlSlug['label']}}</a>
+    <a *ngIf="urlSlug['url']!='#'" [routerLink]="urlSlug['url']">{{urlSlug['label']}}</a>
+  
+  </li>
+</ol>

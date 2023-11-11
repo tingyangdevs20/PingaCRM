@@ -1,0 +1,127 @@
+<div role="tabpanel" class="tab-pane clearfix active" id="email-server-settings" aria-labelledby="basic-tab" aria-expanded="true">
+  <div class="row">
+    <div class="col-lg-9">
+      <div class="widget" style="background: #f0f0f0">
+        <h5 style="margin-bottom: 30px">Email Server Settings</h5>
+
+        <div class="form-group row">
+          <label class="col-md-4 form-control-label text-md-right" for="simple-select">SMTP Server</label>
+          <div class="col-md-8">
+            <input type="text" id="normal-field" class="form-control" [(ngModel)]="smtpServer" #smtp>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-4 form-control-label text-md-right" for="simple-select">SMTP Port</label>
+          <div class="col-md-8">
+            <input type="text" id="normal-field" class="form-control" [(ngModel)]="port" #prt>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-4 form-control-label text-md-right" for="simple-select">From Email ID</label>
+          <div class="col-md-8">
+            <input type="text" id="normal-field" class="form-control" [(ngModel)]="senderEmailId" #sEmail>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-4 form-control-label text-md-right" for="simple-select">From Email Password</label>
+          <div class="col-md-8">
+            <input type="password" id="normal-field" class="form-control" [(ngModel)]="password" #pass>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-4 form-control-label text-md-right" for="simple-select">Sender Name</label>
+          <div class="col-md-8">
+            <input type="text" id="Text1" class="form-control" [(ngModel)]="senderName" #sender>
+          </div>
+        </div>
+        <div class="form-group row lPad-sm">
+          <div class="col-md-4 col-sm-1 col-1 text-md-right">
+            <span class="checkbox abc-checkbox center-checkbox center-label checkBox-wrp">
+              <input id="checkbox1" type="checkbox" [(ngModel)]="isSsl" #ssl (change)="mySslStatus($event)">
+              <label for="checkbox1"></label>
+            </span>
+          </div>
+          <div class="col-md-8 col-sm-8 col-8 p-l-1 form-control-label font-weight-normal">Use SSL</div>
+        </div>
+        <div class="form-group row lPad-sm">
+          <div class="col-md-4 col-sm-1 col-1 text-md-right">
+            <span class="checkbox abc-checkbox center-checkbox center-label checkBox-wrp">
+              <input id="checkbox2" type="checkbox" [(ngModel)]="setActive" (change)="setActiveStatus($event)" #active>
+              <label for="checkbox2"></label>
+            </span>
+          </div>
+          <div class="col-md-8 col-sm-8 col-8 p-l-1 form-control-label font-weight-normal">Is Active</div>
+        </div>
+        <div style="text-align: center">
+          <button class="btn btn-primary btn-special width-100 mb-xs" style="margin-right: 10px;" id="success-info-smtp" role="button" (click)="saveEmailSettings(smtp.value, prt.value, sEmail.value, pass.value,sender.value, ssl.checked, active.checked)">
+            Save
+          </button>
+          <button class="btn btn-inverse width-100 mb-xs" role="button" [routerLink]="['client/companies']" style="margin-right: 10px;">
+            Cancel
+          </button>
+          <button class="btn btn-inverse width-150 mb-xs" role="button" (click)="openTestSendEmail($event,sendTestEmail)" style="margin-right: 10px;">
+            Test Email Settings
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #sendTestEmail>
+
+  <div class="modal-header" style="border: none">
+    <h5 class="modal-title text-xl-center fw-bold mt">
+      Test Email Settings</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modalRef?.hide(); testForm.reset()"> ×</button>
+  </div>
+  <form [formGroup]="testForm" (ngSubmit)="sendtestEmail(testForm.value)">
+    <div class="modal-body">
+      <table class="table table-bordered mb-0">
+        <tbody>
+          <tr>
+            <td>
+              Email To
+            </td>
+            <td>
+              <input type="text" [ngClass]="{'form-control':true,'inputNotValid':erStatus}" placeholder="Email ID" formControlName="emailID"
+                name="emailID">
+              <div *ngIf="submitted && !testForm.controls['emailID'].valid || testForm.controls['emailID'].touched && !testForm.controls['emailID'].valid">
+                <span class="help-block" *ngIf="testForm.controls['emailID'].hasError('required') ">Email is required</span>
+                <span class="help-block" *ngIf="testForm.controls['emailID'].hasError('pattern') ">
+                  Please enter valid email
+                </span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Subject
+            </td>
+            <td>
+              <input type="text" [ngClass]="{'form-control':true,'inputNotValid':erStatus}" placeholder="Subject" formControlName="subject"
+                name="subject">
+              <div *ngIf="submitted && !testForm.controls['subject'].valid || testForm.controls['subject'].touched && !testForm.controls['subject'].valid">
+                <span class="help-block" *ngIf="testForm.controls['subject'].hasError('required') ">Subject is required</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Message
+            </td>
+            <td>
+              <input type="text" class="form-control" style="height: 100px;" placeholder="Message" formControlName="message">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer" style="border: none">
+      <button type="submit" class="btn btn-primary btn-special" id="email-info" data-dismiss="modal">
+        Send</button>
+      <button type="button" class="btn btn-gray" data-dismiss="modal" (click)="modalRef?.hide(); testForm.reset()">
+        Cancel</button>
+    </div>
+  </form>
+</ng-template>

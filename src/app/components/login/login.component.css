@@ -1,0 +1,21 @@
+.login-page {
+    height: 100%;
+}
+.btn-inverse {
+    width: 100%;
+}
+.wrapper_button {
+    text-align: center;
+}
+.invalidCrd {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 1px 0;
+    margin: 12px 0;
+    border: 1px solid;
+}
+@media (max-width:500px){
+    h3 {
+        font-size: 1.3rem;
+    }
+}

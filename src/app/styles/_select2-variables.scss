@@ -1,0 +1,55 @@
+@import "../../../node_modules/bootstrap-select/sass/variables";
+// Select 2 bootstrap theme
+
+$s2bs-border-radius-base: $border-radius;
+$s2bs-border-radius-large: $border-radius-lg;
+$s2bs-border-radius-small: $border-radius-sm;
+$s2bs-btn-default-border: transparent; // !!
+$s2bs-caret-width-base: 0.3rem;
+$s2bs-caret-width-large: 0.3rem;
+$s2bs-cursor-disabled: $cursor-disabled;
+$s2bs-dropdown-header-color: $dropdown-header-color;
+$s2bs-dropdown-link-active-bg: $dropdown-link-active-bg;
+$s2bs-dropdown-link-active-color: $dropdown-link-active-color;
+$s2bs-dropdown-link-disabled-color: $dropdown-link-disabled-color;
+$s2bs-dropdown-link-hover-bg: $dropdown-link-hover-bg;
+$s2bs-dropdown-link-hover-color: $dropdown-link-hover-color;
+$s2bs-font-size-base: $font-size-base;
+$s2bs-font-size-large: $font-size-lg;
+$s2bs-font-size-small: $font-size-sm;
+$s2bs-padding-base-horizontal: $padding-base-horizontal;
+$s2bs-padding-large-horizontal: $padding-large-horizontal;
+$s2bs-padding-small-horizontal: $padding-small-horizontal;
+$s2bs-padding-base-vertical: $padding-base-vertical;
+$s2bs-padding-large-vertical: $padding-large-vertical;
+$s2bs-padding-small-vertical: $padding-small-vertical;
+$s2bs-line-height-base: $line-height-base;
+$s2bs-line-height-large: $line-height-lg;
+$s2bs-line-height-small: $line-height-sm;
+$s2bs-input-bg: $input-bg;
+$s2bs-input-bg-disabled: $input-disabled-bg;
+$s2bs-input-color: $input-color;
+$s2bs-input-color-placeholder: $input-color-placeholder;
+$s2bs-input-border: $input-border-color;
+$s2bs-input-border-focus: $input-border-focus;
+$s2bs-input-border-radius: $input-border-radius;
+$s2bs-input-height-base: 35px;
+$s2bs-input-height-large: $input-height-lg;
+$s2bs-input-height-small: $input-height-sm;
+
+
+$s2bs-dropdown-arrow-color: $s2bs-input-color-placeholder;
+$s2bs-dropdown-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+$s2bs-dropdown-box-shadow-above: 0px -6px 12px rgba(0,0,0,.175);
+$s2bs-clear-selection-color: $s2bs-dropdown-arrow-color;
+$s2bs-clear-selection-hover-color: $btn-default-bg;
+$s2bs-remove-choice-color: $input-color-placeholder;
+$s2bs-remove-choice-hover-color: $btn-default-bg;
+$s2bs-selection-choice-border-radius: $border-radius;
+$s2bs-dropdown-header-padding-vertical: $s2bs-padding-base-vertical;
+$s2bs-dropdown-header-font-size: $s2bs-font-size-small;
+
+
+$state-warning-text: $warning;
+$state-danger-text: $danger;
+$state-success-text: $success;

@@ -1,0 +1,58 @@
+<nav id="sidebar" class="sidebar" role="navigation" (mouseenter)="navExpend()" (mouseleave)="navCollaps()">
+  <!-- need this .js class to initiate slimscroll -->
+  <div class="js-sidebar-content">
+    <header class="logo hidden-sm-down">
+      <div style="cursor: pointer;" (click)="gotoDashboard()">Pinga
+        <span class="">CRM</span>
+      </div>
+    </header>
+    <!-- seems like lots of recent admin template have this feature of user info in the sidebar.
+           looks good, so adding it and enhancing with notifications -->
+    <div class="sidebar-status hidden-md-up">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <span class="thumb-sm avatar pull-xs-right">
+          <img class="img-circle" src="assets/img/male-avatar.png" alt="...">
+        </span>
+        <!-- .circle is a pretty cool way to add a bit of beauty to raw data.
+                   should be used with bg-* and text-* classes for colors -->
+        <!-- <span class="circle bg-warning fw-bold text-gray-dark">
+
+        </span> -->
+        <span class="userName">&nbsp; {{firstName}}
+          <strong>{{lastName}}</strong>
+        </span>
+        <b class="caret"></b>
+      </a>
+      <!-- #notifications-dropdown-menu goes here when screen collapsed to xs or sm -->
+      <ul class="dropdown-menu dropdown-menu-right" id="notifications-dropdown-menu">
+        <li>
+          <a class="dropdown-item" href="javascript:void(0)" [routerLink]="[my_account_url]">
+            <i class="glyphicon glyphicon-user"></i> &nbsp; My Account</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="" (click)="logout($event)">
+            <i class="fa fa-sign-out"></i> &nbsp; Log Out</a>
+        </li>
+      </ul>
+    </div>
+    <div class="sidenav-wrp">
+    <!-- main notification links are placed inside of .sidebar-nav -->
+    <ul class="sidebar-nav">
+      <li [routerLinkActive]="['active']"  *ngFor="let item of menuItems">
+        <a [routerLink]="['/pinga/'+loginUserType+'/'+item.url.substring(1)]" (click)="onClick()">
+          <span *ngIf="item.menuId == 18" class="icon">
+              <i class="{{menuIcon1[item.menuId-18]}}"></i>
+          </span>
+          <span *ngIf="item.menuId == 19" class="icon">
+            <i class="{{menuTranIcon[item.menuId-19]}}"></i>
+        </span>
+          <span *ngIf="item.menuId != 18 && item.menuId != 19" class="icon">
+            <i class="{{menuIcon[item.menuId-2]}}"></i>
+          </span>
+          {{ item.menuName}}
+        </a>
+      </li>
+    </ul>
+    </div>
+  </div>
+</nav>

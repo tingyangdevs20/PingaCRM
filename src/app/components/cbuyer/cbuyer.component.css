@@ -1,0 +1,6 @@
+.abc-checkbox label::after{padding-left: 4px;padding-top: 2px;}
+input.ng-invalid.ng-touched,input.ng-invalid.inputNotValid{border: 1px solid #f44336}
+.help-block{color:#f44336}
+td.special small:last-child span {
+    display: none;
+}

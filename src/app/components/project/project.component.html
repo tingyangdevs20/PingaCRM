@@ -1,0 +1,22 @@
+<td class="sorting_1">
+  <small>
+    {{ project.projectName }}
+  </small>
+</td>
+<td class="hidden-sm-down">
+  <small>{{ project.address1 }}</small>
+  <br>
+  <small>{{ project.address2 }}</small>
+  <br>
+  <small>{{ project.city }}, {{ project.state }}</small>
+  <small>{{ project.country }}, {{ project.zip }}</small>
+</td>
+<td class="hidden-sm-down">
+  <small>{{project.module}}</small>
+</td>
+<td class="no-warp">
+  <a [routerLink]="['/pinga/client/projects/project/users', project.companyID, project.locationID, project.projectId]" class="icon-btn" (click)="redirectToUser()">
+    <span class="glyphicon glyphicon-user"></span>
+    <small>Manage Users</small>
+  </a>
+</td>

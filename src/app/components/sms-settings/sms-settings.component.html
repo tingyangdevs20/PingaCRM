@@ -1,0 +1,137 @@
+<div class="tab-pane" id="sms-settings" role="tabpanel" aria-labelledby="assumtion-tab" aria-expanded="false">
+  <div class="row">
+    <div class="col-lg-9">
+      <div class="widget" style="background: #f0f0f0">
+        <h5 style="margin-bottom: 30px">SMS Settings</h5>
+        <div class="form-group row">
+          <label class="col-md-4 form-control-label text-md-right" for="simple-select">URL</label>
+          <div class="col-md-8">
+            <input id="normal-field" class="form-control" type="text" [(ngModel)]="url" #link>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-4 form-control-label text-md-right" for="simple-select">Username</label>
+          <div class="col-md-8">
+            <input id="normal-field" class="form-control" type="text" [(ngModel)]="userName" #uName>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-4 form-control-label text-md-right" for="simple-select">Password</label>
+          <div class="col-md-8">
+            <input id="normal-field" class="form-control" type="password" [(ngModel)]="password" #pas>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-4 form-control-label text-md-right" for="simple-select">From</label>
+          <div class="col-md-8">
+            <input id="normal-field" class="form-control" type="text" [(ngModel)]="senderName" #sName>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-4 form-control-label text-md-right" for="simple-select">Country code</label>
+          <div class="col-md-8">
+            <input id="normal-field" class="form-control" type="text" [(ngModel)]="countryCode" #cCode>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-4 form-control-label text-md-right" for="simple-select">SMS Success Type</label>
+          <div class="col-md-8">
+            <select data="successTypeList" width="300" [value]="successTypeStartValue" (valueChanged)="onSuccessTypeSelect($event)" #successType class="sms-page-select2">
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-4 form-control-label text-md-right" for="simple-select">SMS Success Criteria</label>
+          <div class="col-md-8">
+            <select data="successCriteriaList" width="300" [value]="successCriteriaStartValue" (valueChanged)="onSuccessCriteriaSelect($event)" #successCrt class="sms-page-select2">
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-4 form-control-label text-md-right" for="simple-select">SMS Success Value</label>
+          <div class="col-md-8">
+            <input id="normal-field" class="form-control" type="text" [value]="smsSuccessValue" #successVal>
+          </div>
+        </div>
+        <!-- <div class="form-group row lPad-sm">
+          <div class="col-md-4 col-sm-1 col-1 text-md-right">
+            <span class="checkbox abc-checkbox center-checkbox center-label checkBox-wrp">
+              <input id="checkbox1" type="checkbox" [(ngModel)]="isSsl" (change)="sslStatus($event)" #sslStats>
+              <label for="checkbox1"></label>
+            </span>
+          </div>
+          <div class="col-md-8 col-sm-8 col-8 p-l-1 form-control-label font-weight-normal">Use SSL</div>
+        </div> -->
+
+        <div class="form-group row lPad-sm">
+          <div class="col-md-4 col-sm-1 col-1 text-md-right">
+            <span class="checkbox abc-checkbox center-checkbox center-label checkBox-wrp">
+              <input id="checkbox2" type="checkbox" [(ngModel)]="setActive" (change)="setActiveStatus($event)" #activeStats>
+              <label for="checkbox2"></label>
+            </span>
+          </div>
+          <div class="col-md-8 col-sm-8 col-8 p-l-1 form-control-label font-weight-normal">Is Active</div>
+        </div>
+        <div style="text-align: center">
+          <button class="btn btn-success btn-special width-100 mb-xs" id="success-info" role="button" (click)="saveSmsSetting(link.value, sName.value, cCode.value,successVal.value, activeStats.checked, uName.value, pas.value)">
+            Save
+          </button>
+          <button class="btn btn-inverse width-100 mb-xs" role="button" [routerLink]="['client/companies']">
+            Cancel
+          </button>
+
+          <button data-toggle="modal" data-target="#Div1" class="btn btn-inverse width-150 mb-xs" role="button" (click)="openTestSendSms($event,sendTestSms)">
+            Test SMS Settings
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #sendTestSms>
+  <div class="modal-header" style="border: none">
+    <h5 class="modal-title text-xl-center fw-bold mt">
+      Test SMS Settings</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modalRef?.hide(); testSmsForm.reset()"> ×</button>
+  </div>
+  <form [formGroup]="testSmsForm" (ngSubmit)="sendTestSMS(testSmsForm.value)">
+    <div class="modal-body">
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td>
+              SMS To
+            </td>
+            <td>
+              <div class="form-group">
+                <input type="tel" [ngClass]="{'form-control':true,'inputNotValid':erStatus}" placeholder="Mobile Phone" formControlName="testSmsMobileNo" name="testSmsMobileNo"
+                  (keypress)="numberOnly($event.keyCode)" pattern="^\d{10}$">
+                  <div *ngIf="submitted && !testSmsForm.controls['testSmsMobileNo'].valid || testSmsForm.controls['testSmsMobileNo'].touched && !testSmsForm.controls['testSmsMobileNo'].valid">
+                    <span class="help-block" *ngIf="testSmsForm.controls['testSmsMobileNo'].hasError('required') ">Mobile is required</span>
+                    <span class="help-block" *ngIf="testSmsForm.controls['testSmsMobileNo'].hasError('pattern') ">
+                      Please enter valid mobile number
+                    </span>
+                  </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Message
+            </td>
+            <td>
+              <input type="text" class="form-control" style="height: 100px;" placeholder="Message"  formControlName="testSmsMessage" name="testSmsMessage">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer" style="border: none">
+      <button type="submit" class="btn btn-primary btn-special" id="email-info" data-dismiss="modal">
+        Send</button>
+      <button type="button" class="btn btn-gray" data-dismiss="modal" (click)="modalRef?.hide(); testSmsForm.reset()">
+        Cancel</button>
+    </div>
+  </form>
+</ng-template>

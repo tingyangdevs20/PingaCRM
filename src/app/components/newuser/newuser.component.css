@@ -1,0 +1,17 @@
+input.ng-invalid.ng-touched,input.ng-invalid.inputNotValid{border: 1px solid #f44336}
+.help-block{color:#f44336}
+ng-select > div {
+    border: 1px solid #ccc;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 100%;
+    border-radius: 4px;
+    height: 35px;
+    margin-bottom: 15px;
+    padding-top: 2px;
+}

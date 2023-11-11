@@ -1,0 +1,52 @@
+<div class="content-wrap">
+  <div class="pace  pace-inactive">
+    <div class="pace-progress" style="width: 100%;" data-progress-text="100%" data-progress="99">
+      <div class="pace-progress-inner"></div>
+    </div>
+    <div class="pace-activity"></div>
+  </div>
+  <!-- main page content. the place to put widgets in. usually consists of .row > .col-lg-* > .widget.  -->
+  <main id="content" class="content" role="main">
+    <pa-bread-crumb></pa-bread-crumb>
+    <!-- <a [routerLink]="['/pinga/client/companies']" style="margin-bottom: 20px;display: inline-block;">
+      <span class="glyphicon glyphicon-chevron-left" style="top: 3px"></span> Back to Dashboard</a> -->
+    <h1 class="page-title">Setup
+      <span class="fw-semi-bold">Configuration</span>
+    </h1>
+    <div class="row mb-lg">
+      <div class="col-lg-12">
+        <div class="clearfix">
+          <tabset>
+            <tab heading="Email Server Settings" id="tab1" (select)="onEmailTab($event)">
+              <pa-emailserver-settings (fadeInState)="emailSettings($event)" (testStatusEmail)="testEmail($event)"></pa-emailserver-settings>
+            </tab>
+            <tab heading="SMS Settings" (select)="onSmsTab($event)">
+              <pa-sms-settings (fadeInState)="smsSettings($event)" (testStatusSms)="testSms($event)"></pa-sms-settings>
+            </tab>
+            <tab heading="General Settings" (select)="onSettingsTab($event)">
+              <pa-general-settings (fadeInState)="genSettings($event)"></pa-general-settings>
+            </tab>
+          </tabset>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<ul class="messenger messenger-fixed messenger-on-bottom messenger-on-right messenger-theme-air" [@animateOnAction]="bindVar"
+  style="opacity: 0;" (@animateOnAction.done)="animEnd($event)">
+  <li class="messenger-message-slot messenger-shown messenger-first messenger-last">
+    <div [ngClass]="(classStatus=='fail')?'messenger-message message alert error message-error alert-error messenger--retry-soon':'messenger-message message alert success message-success alert-success messenger-will-hide-after'">
+      <div *ngIf="emailStatus == 'success'" class="messenger-message-inner">Email settings saved successfully.</div>
+      <div *ngIf="emailStatus == 'fail'" class="messenger-message-inner">Error occured while saving email configuration.</div>
+      <div *ngIf="smsStatus == 'success'" class="messenger-message-inner">SMS settings saved successfully.</div>
+      <div *ngIf="smsStatus == 'fail'" class="messenger-message-inner">Error occured while saving sms configuration.</div>
+      <div *ngIf="genStatus == 'success'" class="messenger-message-inner">General settings saved successfully.</div>
+      <div *ngIf="genStatus == 'fail'" class="messenger-message-inner">Error occured while saving general settings.</div>
+      <div *ngIf="testSmsStatus == 'success'" class="messenger-message-inner">Test sms sent successfully.</div>
+      <div *ngIf="testSmsStatus == 'fail'" class="messenger-message-inner">Error occured while sending test sms.</div>
+      <div *ngIf="testEmailStatus == 'success'" class="messenger-message-inner">Test email sent successfully.</div>
+      <div *ngIf="testEmailStatus == 'fail'" class="messenger-message-inner">Error occured while sending test email.</div>
+    </div>
+  </li>
+</ul>

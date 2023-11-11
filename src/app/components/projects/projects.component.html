@@ -1,0 +1,138 @@
+
+<div class="content-wrap">
+  <div class="pace  pace-inactive">
+    <div class="pace-progress" data-progress-text="100%" data-progress="99" style="width: 100%;">
+      <div class="pace-progress-inner"></div>
+    </div>
+    <div class="pace-activity"></div>
+  </div>
+  <!-- main page content. the place to put widgets in. usually consists of .row > .col-lg-* > .widget.  -->
+  <main id="content" class="content" role="main">
+      <pa-bread-crumb></pa-bread-crumb>
+    <h1 class="page-title">Manage
+      <span class="fw-semi-bold">Projects</span>
+    </h1>
+    <section class="widget">
+      <div class="widget-body">
+        <div class="verticalcolumn">
+          <div class="btn-group company-select" style="margin-right: 10px" >
+            <!-- <select2 [data]="companyList" [width]='120' (valueChanged)="onCompanySelect($event)">
+            </select2> -->
+            <ngx-select-dropdown
+              class="ngx-select-dropdown"
+              (change)="onCompanySelect($event)"
+              tabindex="0"
+              [multiple]="false"
+              [config] = "config"
+              [(ngModel)] = "companyList[0]"
+              [options]="companyList">
+            </ngx-select-dropdown>
+          </div>
+          <div class="btn-group location-select" style="margin-right: 10px">
+            <!-- <select2 [data]="locationList" [width]='100' (valueChanged)="onLocationSelect($event)">
+            </select2> -->
+            <ngx-select-dropdown
+              class="ngx-select-dropdown"
+              (searchChange)="onLocationSelect($event)"
+              tabindex="0"
+              [multiple]="false"
+              [config] = "config"
+              [(ngModel)] = "locationList[0]"
+              [options]="locationList">
+            </ngx-select-dropdown>
+          </div>
+        </div>        
+        <div class="mt">
+          <div>
+            <ngx-datatable
+              class="ngx-custom-datatable"
+              [rows]="projects"
+              [columnMode]="'force'"
+              [headerHeight]="50"
+              [footerHeight]="50"
+              [rowHeight]="83"
+              [externalPaging]="true"
+              [count]="count"
+              [scrollbarH]="true"
+              [scrollbarV]="false"
+              (page)="getPageData($event)"
+              [limit]="10">
+              <ngx-datatable-column name="projectName">
+                <ng-template ngx-datatable-header-template>
+                  <span class="fw-semi-bold" (click)="sortTableBy('projectName');">PROJECT</span>
+                </ng-template>
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  <span ><small>{{value}}</small></span>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="address">
+                <ng-template ngx-datatable-header-template>
+                  <span class="fw-semi-bold" (click)="sortTableBy('address');">ADDRESS</span>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <span ><small>{{row.address1}}</small></span>,<br>
+                  <span ><small>{{row.address2}}</small></span>,<br>
+                  <span ><small>{{row.state}}</small></span>,&nbsp;<span ><small>{{row.country}}</small></span><br>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="module">
+                <ng-template ngx-datatable-header-template>
+                  <span class="fw-semi-bold" (click)="sortTableBy('module');">MODULE</span>
+                </ng-template>
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  <span ><small>{{value}}</small></span><br>
+                  <!-- <a href="#" >{{value}}</a> -->
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="contanctinfo">
+                <ng-template ngx-datatable-header-template>
+                  <span class="fw-semi-bold">ACTION</span>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <a class="icon-btn" [routerLink]="['/pinga/client/projects/project/users', row.companyID, row.locationID, row.projectId]" (click)="redirectToUser()"><span class="glyphicon glyphicon-user"></span><small>Manage Users</small></a><br>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-footer>
+                <ng-template
+                  ngx-datatable-footer-template
+                  let-rowCount="rowCount"
+                  let-pageSize="pageSize"
+                  let-selectedCount="selected"
+                  let-curPage="curPage"
+                  let-offset="offset"                    
+                >
+                <!-- <div style="padding: 5px 10px">
+                  <div>
+                    Showing&nbsp;&nbsp;&nbsp;{{(curPage - 1) == 0? 1 : (curPage - 1) * 10}} - {{curPage * 10}}&nbsp;&nbsp;of&nbsp;&nbsp;{{ rowCount }}&nbsp;entries
+                  </div>
+                </div> -->
+
+                <div class="page-count">
+                  Showing&nbsp;&nbsp;&nbsp;{{rowCount > 0 ? (curentPage - 1) * 10 + 1 : 0}} - {{rowCount > 0 ? curentPage * 10 > rowCount ? rowCount : curentPage * 10 : 0}}&nbsp;&nbsp;of&nbsp;&nbsp;{{ rowCount > 0 ? rowCount : 0 }}&nbsp;entries
+                </div>
+                <datatable-pager
+                  [pagerLeftArrowIcon]="'datatable-icon-left'"
+                  [pagerRightArrowIcon]="'datatable-icon-right'"
+                  [pagerPreviousIcon]="'datatable-icon-prev'"
+                  [pagerNextIcon]="'datatable-icon-skip'"
+                  [page]="curPage"
+                  [size]="pageSize"
+                  [count]="rowCount"
+                  [hidden]="!((rowCount / pageSize) > 1)"
+                  (change)="getPageData($event)">
+                </datatable-pager>
+
+                  <!-- <div>
+                    Showing {{(curPage - 1) == 0? 1 : (curPage - 1) * 10}} - {{curPage * 10}} of {{ rowCount }}
+                    Rows: {{ rowCount }} | Size: {{ pageSize }} | Current:
+                    {{ curPage }} | Offset: {{ offset }}                      
+                  </div> -->
+                </ng-template>                  
+              </ngx-datatable-footer>
+            </ngx-datatable>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

@@ -1,0 +1,219 @@
+<div class="content-wrap">
+  <div class="pace  pace-inactive">
+    <div class="pace-progress" data-progress-text="100%" data-progress="99" style="width: 100%;">
+      <div class="pace-progress-inner"></div>
+    </div>
+    <div class="pace-activity"></div>
+  </div>
+  <main id="content" class="content" role="main">
+    <pa-bread-crumb></pa-bread-crumb>
+
+    <h1 class="page-title">
+      <span class="fw-semi-bold">{{pageName}}</span> User</h1>
+    <div class="row">
+      <div class="col-lg-9">
+        <section class="widget">
+          <div class="widget-body">
+            <form class="form-horizontal" role="form" [formGroup]="newUser" (ngSubmit)="addNewUser(newUser?.value)" *ngIf="createUser">
+              <fieldset>
+                <legend>
+                  <strong>User</strong> info</legend>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="row">
+                      <label class="col-md-4 form-control-label text-md-right">Name</label>
+                      <div class="col-md-7">
+                        <div class="form-group">
+                          <input type="text" [ngClass]="{'form-control':true,'inputNotValid':erStatus}" placeholder="First Name" formControlName="fName" name="fName" (keypress)="alphabetOnly($event.keyCode)" [(ngModel)]="fName">
+                          <span class="help-block" *ngIf="submitted && !newUser!.controls['fName']!.valid || newUser!.controls['fName']!.touched && !newUser!.controls['fName']!.valid">Please enter first name</span>
+                        </div>
+                        <div class="form-group">
+                          <input type="text" class="form-control" placeholder="Middle Name" formControlName="mName" name="mName" (keypress)="alphabetOnly($event.keyCode)" [(ngModel)]="mName">
+                        </div>
+                        <div class="form-group">
+                          <input type="text" [ngClass]="{'form-control':true,'inputNotValid':erStatus}" placeholder="Last Name" formControlName="lName" name="lName" (keypress)="alphabetOnly($event.keyCode)" [(ngModel)]="lName">
+                          <span class="help-block" *ngIf="submitted && !newUser!.controls['lName']!.valid || newUser!.controls['lName']!.touched && !newUser!.controls['lName']!.valid">Please enter last name</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-md-4 form-control-label text-md-right">Contact Info</label>
+                      <div class="col-md-7">
+                        <div class="form-group">
+                          <input type="text" [ngClass]="{'form-control':true,'inputNotValid':erStatus}" placeholder="Email ID" formControlName="email" name="email" [(ngModel)]="email">
+                          <div *ngIf="submitted && !newUser!.controls['email']!.valid || newUser!.controls['email']!.touched && !newUser!.controls['email']!.valid">
+                            <span class="help-block" *ngIf="newUser!.controls['email']!.hasError('required') ">Email is required</span>
+                            <span class="help-block" *ngIf="newUser!.controls['email']!.hasError('pattern') ">
+                              Please enter valid email
+                            </span>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <input type="number" [ngClass]="{'form-control':true,'inputNotValid':erStatus}" placeholder="Work Phone" formControlName="workPhone" name="workPhone" (keypress)="numberOnly($event.keyCode)" minlength="10" maxlength="10" [(ngModel)]="workPhone">
+                          <div *ngIf="submitted && !newUser!.controls['workPhone']!.valid || newUser!.controls['workPhone']!.touched && !newUser!.controls['workPhone']!.valid">
+                            <span class="help-block" *ngIf="newUser!.controls['workPhone']!.hasError('required') ">Work Phone is required</span>
+                            <span class="help-block" *ngIf="newUser!.controls['workPhone']!.hasError('minlength') ">
+                              Phone number minimum length is 6
+                            </span>
+                            <span class="help-block" *ngIf="newUser!.controls['workPhone']!.hasError('maxlength') ">
+                              Phone number max length is 10
+                            </span>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <input type="tel" [ngClass]="{'form-control':true,'inputNotValid':erStatus}" placeholder="Mobile Phone" formControlName="mobNumber" name="mobNumber"
+                            (keypress)="numberOnly($event.keyCode)" minlength="10" maxlength="10" [(ngModel)]="mobNumber" pattern="^\d{10}$">
+                            <div *ngIf="submitted && !newUser!.controls['mobNumber']!.valid || newUser!.controls['mobNumber']!.touched && !newUser!.controls['mobNumber']!.valid">
+                              <span class="help-block" *ngIf="newUser!.controls['mobNumber']!.hasError('required') ">Mobile is required</span>
+                              <span class="help-block" *ngIf="newUser!.controls['mobNumber']!.hasError('pattern') ">
+                                Please enter valid mobile number
+                              </span>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="row">
+                      <label class="col-md-4 form-control-label text-md-right" for="project-multiple-select">
+                        Access Details
+                      </label>
+                      <div class="col-md-7 select2_cn_user">
+                        <div class="btn-group sl2Wrp" style="margin-right: 10px">
+                          <select data="roleList" (valueChanged)="getRole($event)">
+                          </select>
+                        </div>
+                        <div class="btn-group sl2Wrp" style="margin-right: 10px">
+                          <ng-select placeholder="Company" [options]="companyList" [multiple]="true" (selected)="onSelectedCompany($event)" (deselected)="onDeselectCompany($event)"
+                            (closed)="onClosedCompany($event)">
+                          </ng-select>
+                        </div>
+                        <div class="btn-group sl2Wrp" style="margin-right: 10px">
+                          <ng-select placeholder="Project" [options]="projectList" [multiple]="true" (selected)="onProjectSelect($event)" (deselected)="onProjectDeselect($event)">
+                          </ng-select>
+                        </div>                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+              <div class="form-actions">
+                <div class="row">
+                  <div class="col-md-offset-4 col-md-7">
+                    <button class="btn btn-primary btn-special" id="success-info" type="submit">Save</button>
+                    <button class="btn btn-inverse" [routerLink]="['/pinga/client/users']">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+
+            <form class="form-horizontal" role="form" [formGroup]="updateUserForm" (ngSubmit)="updateUser(updateUserForm.value)" *ngIf="editUser">
+              <fieldset>
+                <legend>
+                  <strong>User</strong> info</legend>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="row">
+                      <label class="col-md-4 form-control-label text-md-right">Name</label>
+                      <div class="col-md-7">
+                        <div class="form-group">
+                          <input type="text" [ngClass]="{'form-control':true,'inputNotValid':erStatus}" placeholder="First Name" formControlName="fName" name="fName" (keypress)="alphabetOnly($event.keyCode)" [(ngModel)]="fName">
+                          <span class="help-block" *ngIf="submitted && !newUser!.controls['fName']!.valid || newUser!.controls['fName']!.touched && !newUser!.controls['fName']!.valid">Please enter first name</span>
+                        </div>
+                        <div class="form-group">
+                          <input type="text" class="form-control" placeholder="Middle Name" formControlName="mName" name="mName" (keypress)="alphabetOnly($event.keyCode)" [(ngModel)]="mName">
+                        </div>
+                        <div class="form-group">
+                          <input type="text" [ngClass]="{'form-control':true,'inputNotValid':erStatus}" placeholder="Last Name" formControlName="lName" name="lName" (keypress)="alphabetOnly($event.keyCode)" [(ngModel)]="lName">
+                          <span class="help-block" *ngIf="submitted && !newUser!.controls['lName']!.valid || newUser!.controls['lName']!.touched && !newUser!.controls['lName']!.valid">Please enter last name</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-md-4 form-control-label text-md-right">Contact Info</label>
+                      <div class="col-md-7">
+                        <div class="form-group">
+                          <input type="text" [ngClass]="{'form-control':true,'inputNotValid':erStatus}" placeholder="Email ID" formControlName="email" name="email" [(ngModel)]="email">
+                          <div *ngIf="submitted && !newUser!.controls['email']!.valid || newUser!.controls['email']!.touched && !newUser!.controls['email']!.valid">
+                            <span class="help-block" *ngIf="newUser!.controls['email']!.hasError('required') ">Email is required</span>
+                            <span class="help-block" *ngIf="newUser!.controls['email']!.hasError('pattern') ">
+                              Please enter valid email
+                            </span>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <input type="number" [ngClass]="{'form-control':true,'inputNotValid':erStatus}" placeholder="Work Phone" formControlName="workPhone" name="workPhone" (keypress)="numberOnly($event.keyCode)" minlength="10" maxlength="10" [(ngModel)]="workPhone">
+                          <div *ngIf="submitted && !newUser!.controls['workPhone']!.valid || newUser!.controls['workPhone']!.touched && !newUser!.controls['workPhone']!.valid">
+                            <span class="help-block" *ngIf="newUser!.controls['workPhone']!.hasError('required') ">Work Phone is required</span>
+                            <span class="help-block" *ngIf="newUser!.controls['workPhone']!.hasError('minlength') ">
+                              Phone number minimum length is 6
+                            </span>
+                            <span class="help-block" *ngIf="newUser!.controls['workPhone']!.hasError('maxlength') ">
+                              Phone number max length is 10
+                            </span>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <input type="tel" [ngClass]="{'form-control':true,'inputNotValid':erStatus}" placeholder="Mobile Phone" formControlName="mobNumber" name="mobNumber"
+                            (keypress)="numberOnly($event.keyCode)" pattern="^\d{10}$" [(ngModel)]="mobNumber">
+                            <div *ngIf="submitted && !newUser!.controls['mobNumber']!.valid || newUser!.controls['mobNumber']!.touched && !newUser!.controls['mobNumber']!.valid">
+                              <span class="help-block" *ngIf="newUser!.controls['mobNumber']!.hasError('required') ">Mobile is required</span>
+                              <span class="help-block" *ngIf="newUser!.controls['mobNumber']!.hasError('pattern') ">
+                                Please enter valid mobile number
+                              </span>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="row">
+                      <label class="col-md-4 form-control-label text-md-right" for="project-multiple-select">
+                        Access Details
+                      </label>
+                      <div class="col-md-7 select2_cn_user">
+                        <div class="btn-group sl2Wrp" style="margin-right: 10px">
+                          <select data="roleList" (valueChanged)="getRole($event)" [value]="startValue">
+                          </select>
+                        </div>
+                        <div class="btn-group sl2Wrp" style="margin-right: 10px">
+                          <ng-select placeholder="Company" [options]="allCompanyListOnEditUser" [multiple]="true" (selected)="onSelectedCompany($event)" (deselected)="onDeselectCompany($event)"
+                            (closed)="onClosedCompany($event)" formControlName="companyDropdownList">
+                          </ng-select>
+
+                        </div>
+                        <div class="btn-group sl2Wrp" style="margin-right: 10px">
+                          <ng-select placeholder="Project" [options]="allProjectListOnEditUser" [multiple]="true" (selected)="onProjectSelect($event)" (deselected)="onProjectDeselect($event)" formControlName="projectDropdownList"></ng-select>
+                        </div>                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+              <div class="form-actions">
+                <div class="row">
+                  <div class="col-md-offset-4 col-md-7">
+                    <button class="btn btn-primary btn-special" id="success-info" type="submit">Update</button>
+                    <button class="btn btn-inverse" [routerLink]="['/pinga/client/users']">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+
+<ul class="messenger messenger-fixed messenger-on-bottom messenger-on-right messenger-theme-air" [@animateOnAction]="bindVar" style="opacity: 0;" (@animateOnAction.done)="animEnd()">
+  <li class="messenger-message-slot messenger-shown messenger-first messenger-last">
+    <div [ngClass]="(classStatus=='fail')?'messenger-message message alert error message-error alert-error messenger--retry-soon':'messenger-message message alert success message-success alert-success messenger-will-hide-after'">
+          <div *ngIf="userCreated == 'success'" class="messenger-message-inner">User created successfully.</div>
+          <div *ngIf="userCreated == 'fail'" class="messenger-message-inner">{{failureResponse}}</div>
+          <div *ngIf="userUpdated == 'success'" class="messenger-message-inner">User updated successfully.</div>
+          <div *ngIf="userUpdated == 'fail'" class="messenger-message-inner">{{failureResponse}}</div>
+    </div>
+  </li>
+</ul>

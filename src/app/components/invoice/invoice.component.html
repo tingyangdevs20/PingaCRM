@@ -1,0 +1,305 @@
+<td class="sorting_1">{{invoice.invoiceNo}}</td>
+<td class="hidden-sm-down">{{invoice.invoiceDate | date:'dd MMM y'}}</td>
+<td class="hidden-sm-down">{{invoice.installDate | date:'dd MMM y'}}</td>
+<td class="hidden-sm-down">
+  <span class="fw-semi-bold">&#2352;&nbsp;{{invoice.due | number:'1.0-0' }}</span>
+  <!-- | currency: '&#2352; '| number:'1.0-0' -->
+</td>
+<td class="hidden-sm-down">
+  <span class="fw-semi-bold">&#2352;&nbsp;{{invoice.tax | number:'1.0-0' }}</span>
+</td>
+<td class="hidden-sm-down">
+  <span class="fw-semi-bold">&#2352;&nbsp;{{invoice.netDue | number:'1.0-0' }}</span>
+</td>
+<td class="hidden-sm-down">
+  <span class="fw-semi-bold">&#2352;&nbsp;{{invoice.recivedAmount | number:'1.0-0' }}</span>
+</td>
+<td>
+  <span class="label label-pill" [class]="{
+    'label-success': invoice.status === 'Paid',
+    'label-danger': invoice.status === 'OverDue',
+    'label-warning': invoice.status === 'Due'
+  }">{{invoice.status}}</span>
+</td>
+<td>
+  <a href="#" class="icon-btn" (click)="openCharge(viewCharge, $event); showCharge()">
+    <small>View Charges</small>
+  </a>
+  <br>
+  <!-- <ng-container [class.check]="payBtnCheck1 == 0"> -->
+  <ng-container *ngIf="invoice.status === 'OverDue' || invoice.status === 'Due'">
+    <a href="#" *ngIf="invoice.isPaymentGatewayConfigured == 1" class="icon-btn" data-toggle="modal" data-target="#Div1"
+      (click)="openPay(payNow, $event); onPayNow();">
+      <span class="fa fa-credit-card"></span>
+      <small>Pay Now</small>
+    </a>
+    <a href="#" *ngIf="invoice.isPaymentGatewayConfigured == 0" [class.check]="invoice.isPaymentGatewayConfigured == 0"
+      class="icon-btn" id="tooltip" data-toggle="modal" data-target="#Div1">
+      <span class="fa fa-credit-card"></span>
+      <span id="tooltiptext">Payment Gateway is not configured for this project. Please contact your
+        administrator.</span>
+      <small>Pay Now</small>
+    </a>
+  </ng-container>
+  <!-- </ng-container> -->
+  <br>
+<a *ngIf="invoice.invoicePdf != '' && invoice.invoicePdf != 0" (click)="downloadInvoice(invoice, $event)" href="#" class="icon-btn">
+  <span class="fa fa-download"></span>
+  <small>Download</small></a>
+</td>
+<ng-template #viewCharge>
+  <div class="modal-header" style="border: none">
+    <h5 class="modal-title text-xl-center fw-bold mt" id="myModalLabel18">Charges List</h5>
+    <button type="button" class="close" (click)="modalRef?.hide()" aria-hidden="true">
+      ×</button>
+  </div>
+  <div class="modal-body">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>
+            Charge Name
+          </th>
+          <th>
+            Due
+          </th>
+          <th>
+            Tax
+          </th>
+          <th>
+            Net Due
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container>
+          <tr *ngFor="let chargeVal of charge">
+            <td>
+              {{chargeVal.chargeName }}
+            </td>
+            <td>
+              <span class="fw-semi-bold">&#2352;&nbsp;{{ chargeVal.due }}</span>
+            </td>
+            <td>
+              <span class="fw-semi-bold">&#2352;&nbsp;{{ chargeVal.tax }}</span>
+            </td>
+            <td>
+              <span class="fw-semi-bold">&#2352;&nbsp;{{ chargeVal.netDue }}</span>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer" style="border: none">
+    <button type="button" class="btn btn-gray" (click)="modalRef?.hide()">
+      Close</button>
+  </div>
+</ng-template>
+<ng-template #payNow>
+  <div class="modal-header payModal" style="border: none">
+    <h5 class="modal-title text-xl-center fw-bold mt" id="H1">Payment options</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="CloseModal()">
+      ×</button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="paymentPopupForm" (ngSubmit)="paymentPopup();CloseModal()">
+      <table class="table payFormBody">
+        <thead>
+          <tr>
+            <td>Projects<span class="astrictField">*</span>&nbsp;:</td>
+            <td>
+              <div class="btn-group" style="margin-right: 10px" id="myModal">
+                <select data="allProjects" [class.reviewCheck]="isReview" width='100' [value]="startValue1"
+                  (valueChanged)="onProjectSelect2($event)">
+                </select>
+              </div>
+            </td>
+
+          </tr>
+          <tr>
+            <td>Unit No<span class="astrictField">*</span>&nbsp;:</td>
+            <td>
+              <div class="btn-group" style="margin-right: 10px" id="myModal">
+                <select data="unitNoList" [class.reviewCheck]="isReview" width='100' [value]="startValue"
+                  [disabled]="isPaymentCinfigure == 0" (valueChanged)="onUnitSelectfromPayNow($event)">
+                </select>
+                <!-- <select class="form-control selectpicker" id="simple-select" data-style="btn-default" data-width="auto" tabindex="-1" (valueChanged)="onUnitSelect2($event)">
+                  <option *ngFor="let option of unitNoList2" role="menuitem">
+                    <a class="dropdown-item">{{option.value}}</a>
+                  </option>
+                </select> -->
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Payment Mode<span class="astrictField">*</span>&nbsp;:</td>
+            <td>
+              <div class="btn-group" style="margin-right: 10px" id="myModal">
+                <select data="paymentTypes" [class.reviewCheck]="isReview" width='100'
+                  (valueChanged)="onPaymentSelect($event)" >
+                </select>
+              </div>
+            </td>
+
+          </tr>
+          <tr *ngIf="isdemandDreft || isChaque">
+            <td>Bank Name<span class="astrictField">*</span>&nbsp;:</td>
+            <td>
+              <div class="btn-group" style="margin-right: 10px" id="myModal">
+                <select data="BankNameList" (valueChanged)="onBankSelect($event)" formControlName="bankname"
+                  [class.reviewCheck]="isReview" width='100'>
+                </select>
+                <div *ngIf="paymentPopupForm!.controls['bankname']!.invalid && paymentPopupForm!.controls['bankname']!.touched">
+                  <div *ngIf="paymentPopupForm!.controls['bankname']!.hasError('required')" class="text text-danger">Bank Name
+                    required</div>
+                </div>
+              </div>
+            </td>
+
+          </tr>
+
+          <tr *ngIf="isdemandDreft || isChaque">
+            <td>Branch Name<span class="astrictField">*</span>&nbsp;:</td>
+            <td>
+              <input type="text" maxlength="100" [class.reviewCheck]="isReview" (keyup)="setBranchName($event)"
+                formControlName="branchname" name="branchname" placeholder="Enter BranchName"
+                class="form-control amoutInput" required>
+              <!-- <div *ngIf="paymentPopupForm.controls.branchname.invalid && paymentPopupForm.controls.branchname.touched">
+                <div *ngIf="paymentPopupForm.controls.branchname.errors.required" class="text text-danger">Branch Name required</div>
+                <div *ngIf="paymentPopupForm.controls.branchname.errors.maxlength" class="text text-danger">maxlength 100 Digit</div>
+              </div> -->
+            </td>
+          </tr>
+          <tr *ngIf="isdemandDreft || isChaque">
+            <td>Instrument No.<span class="astrictField">*</span>&nbsp;:</td>
+            <td>
+              <input type="text" maxlength="20" [class.reviewCheck]="isReview" (keyup)="setInstrumentNo($event)"
+                name="instrumentno" formControlName="instrumentno" placeholder="Enter Instrument No."
+                class="form-control amoutInput"
+                onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                required>
+              <!-- <div *ngIf="paymentPopupForm.controls.instrumentno.invalid && paymentPopupForm.controls.instrumentno.touched">
+                  <div *ngIf="paymentPopupForm.controls.instrumentno.errors.required" class="text text-danger">Instrument No. required</div>
+                  <div *ngIf="paymentPopupForm.controls.instrumentno.errors.maxlength" class="text text-danger">maxlength 20 Digit</div>
+                </div> -->
+            </td>
+          </tr>
+          <tr *ngIf="isdemandDreft || isChaque">
+            <td>Instrument Date<span class="astrictField">*</span>&nbsp;:</td>
+            <td>
+              <input type="text" [class.reviewCheck]="isReview" class="form-control" formControlName="instrumentdate"
+              [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', showWeekNumbers: false }" class="form-control amoutInput" placeholder="Enter Instrument Date" #dp="bsDatepicker" bsDatepicker>
+              <!-- <div *ngIf="paymentPopupForm.controls.instrumentdate.invalid && paymentPopupForm.controls.instrumentdate.touched">
+                  <div *ngIf="paymentPopupForm.controls.instrumentdate.errors.required" class="text text-danger">Instrument Date required</div>
+                </div> -->
+            </td>
+          </tr>
+          <tr *ngIf="isOffline">
+            <td>Card Issuer:</td>
+            <td>
+              <input type="text" maxlength="100" [class.reviewCheck]="isReview" name="amount"
+                formControlName="cardissuer" placeholder="Enter Issuer" class="form-control amoutInput" required>
+              <!-- <div *ngIf="paymentPopupForm.controls.cardissuer.invalid && paymentPopupForm.controls.cardissuer.touched">
+                  <div *ngIf="paymentPopupForm.controls.cardissuer.errors.required" class="text text-danger">Card Issuer required</div>
+                  <div *ngIf="paymentPopupForm.controls.cardissuer.errors.maxlength" class="text text-danger">enter in limit</div>
+                </div> -->
+            </td>
+          </tr>
+          <tr *ngIf="isOffline">
+            <td>Card Type:</td>
+            <td>
+              <div class="btn-group" style="margin-right: 10px" id="myModal">
+                <select data="cardTypes" [class.reviewCheck]="isReview" width='100'
+                  (valueChanged)="onCardTypeSelect($event)">
+                </select>
+              </div>
+            </td>
+
+          </tr>
+          <tr *ngIf="isOffline">
+            <td>Card Number (Last 4 Only):</td>
+            <td>
+              <input type="text" maxlength="4" [class.reviewCheck]="isReview" formControlName="cardnumber"
+                placeholder="Enter Cardnumber" class="form-control amoutInput"
+                onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57">
+              <!-- <div *ngIf="paymentPopupForm.controls.cardnumber.invalid && paymentPopupForm.controls.cardnumber.touched">
+                 <div *ngIf="paymentPopupForm.controls.cardnumber.errors.required" class="text text-danger">Card Number required</div>
+                 <div *ngIf="paymentPopupForm.controls.cardnumber.errors.maxlength" class="text text-danger">Enter Only 4 digit</div>
+               </div> -->
+            </td>
+          </tr>
+          <tr>
+            <td>Payment For -</td>
+            <td></td>
+          </tr>
+          <tr>
+            <ng-container *ngIf="paymentMod==0 || paymentMod==2">
+              <td>
+                <div class="form-check abc-radio" [class.reviewCheck]="isReview">
+                  <input class="form-check-input" [class.reviewCheck]="isReview" type="radio" name="payment"
+                    (change)="getPaymentAgainst($event)" value="paymentAgainstBill" id="paymentAgainstBill">
+                  <label class="form-check-label" for="paymentAgainstBill">Payment Against Bill</label>
+                </div>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="paymentMod==1 || paymentMod==2">
+              <td>
+                <div class="form-check abc-radio" [class.reviewCheck]="isReview">
+                  <input class="form-check-input" [class.reviewCheck]="isReview" type="radio" name="payment"
+                    (change)="getPrepay($event)" value="prepay" id="payment">
+                  <label class="form-check-label" for="payment">Prepay</label>
+                </div>
+              </td>
+            </ng-container>
+          </tr>
+          <tr *ngIf="PrepayMeterCheck">
+            <td>Meter No:</td>
+            <td>
+              <div class="btn-group" style="margin-right: 10px" id="myModal">
+                <select data="meterNoList" [class.reviewCheck]="isReview" width='169' name="meterValue"
+                  [value]="startValue" (valueChanged)="onMeterSelect($event)" >
+                </select>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Amount<span class="astrictField">*</span>&nbsp;:</td>
+            <td>
+              <input type="number" [class.reviewCheck]="isReview" name="amount"
+                [class.editDisabled]="isPaymentCinfigure == 0" [(ngModel)]='amount' placeholder="Enter Amount"
+                (keyup)="unitValue2($event)" class="form-control amoutInput" formControlName="amount"
+                onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                required>
+                <p class="errorMsg" style="color: red;">{{ValidationMsg}}.</p>
+            </td>
+          </tr>
+          <tr>
+
+            <td>
+              <ng-container *ngIf="isPaymentCinfigure == 0">
+                <p class="errorMsg">Payment Gateway is not configured for this project. Please contact your
+                  administrator.</p>
+              </ng-container>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td class="mobilebtn">
+              <button type="submit" *ngIf="!isReview"
+                [class.prjctVal]="isDisable"
+                class="btn border-radius btn-success btn-special" (click)="reviewForm()"> Review</button>
+              <button type="submit" *ngIf="isReview" class="btn border-radius btn-success btn-special"
+                (click)="previousForm()"> Previous</button>
+              <button type="submit" *ngIf="isReview" class="btn border-radius btn-success btn-special"
+                [disabled]="!meterValue" [class.meterCheck]="!amountCheck1"> Submit</button></td>
+          </tr>
+        </thead>
+      </table>
+      <p *ngIf="!isReview"> * Please enter values for the mandatory fields to continue. <br>
+        * <span *ngIf="isBothpaymentFlag">Paytm and HDFC are payment gateways.</span><span *ngIf="isPaytmFlag">Paytm is payment gateways.</span><span *ngIf="isHdfcFlag">HDFC is payment gateways.</span> The payment options for Credit Card, Debit Card, UPI, NetBanking etc. will be available as per the Company
+        agreement with these providers</p>
+    </form>
+  </div>
+</ng-template>

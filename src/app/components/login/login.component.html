@@ -1,0 +1,69 @@
+<div class="login-page nav-static chat-sidebar-container">
+  <div class="container">
+    <main id="content" class="widget-login-container" role="main">
+      <div class="row">
+        <div class="col-xl-4 col-md-6 col-xs-10 col-xl-offset-4 col-md-offset-3 col-xs-offset-1">
+          <h5 class="widget-login-logo animated fadeInUp">
+            <i class="fa fa-circle text-gray"></i>
+            Pinga CRM
+            <i class="fa fa-circle text-warning"></i>
+          </h5>
+          <section class="widget widget-login animated fadeInUp">
+            <header>
+              <h3 class="text-xs-center">Login to your Pinga CRM</h3>
+            </header>
+            <div class="widget-body">
+              <p class="widget-login-info">
+                Don't have an account? Please contact your company or society!”
+              </p>
+              <form class="login-form mt-lg" (ngSubmit)="onFormSubmit()" [formGroup]="loginForm">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Username" formControlName="username" [(ngModel)]='logUserName' autocomplete="off" maxlength="100">
+                </div>
+                <div class="form-group">
+                  <input class="form-control" id="pswd" type="password" placeholder="Password" formControlName="password" autocomplete="off">
+                </div>
+                <div class="clearfix">
+                  <div class="btn-toolbar">
+                    <button class="btn btn-inverse btn-sm display-block mb-sm" type="submit">Login</button>
+                  </div>
+                  <div class="wrapper_button">
+                    <div class="abc-checkbox widget-login-info ml-n-lg">
+                      <div *ngIf="invalidCredentialMsg" class="text-danger invalidCrd">{{ invalidCredentialMsg }}</div>
+                    </div>
+
+                    <div *ngIf="errorMsg" class="text-danger invalidCrd">
+                         {{errorMsg}}
+                    </div>
+                  </div>
+
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="clearfix">
+                      <div class="wrapper_button">
+                        <div class="abc-checkbox widget-login-info ml-n-lg">
+                          <input type="checkbox" id="checkbox1" value="1" [checked]="checkedRemember" (click)="rememberMe()">
+                          <label for="checkbox1" style="font-size: 90%">Remember by user name</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="wrapper_button">
+                      <a class="mr-n-lg text-align-center" [routerLink]="['forget-password']" style="font-size: 75%;top: -2px;position: relative;">Forgot Username or Password</a>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+  </div>
+  <footer class="page-footer">
+    2020 © Pinga CRM.
+  </footer>
+</div>

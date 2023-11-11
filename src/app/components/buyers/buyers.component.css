@@ -1,0 +1,9 @@
+.mt{margin-top:0}
+.dropdown-menu{min-width: 100%;}
+.abc-checkbox label::after{padding-left: 4px;padding-top: 2px;}
+.p-r-0{padding-right: 0 !important;}
+.checkBuyer{padding-left: 3px;margin-top: -17px;}
+
+@media (max-width:500px){
+    .checkBuyer{padding-left:15px;margin-top:0px;}
+}

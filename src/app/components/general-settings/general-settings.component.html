@@ -1,0 +1,145 @@
+<div class="tab-pane" id="general-settings" role="tabpanel" aria-labelledby="assumtion-tab" aria-expanded="false">
+    <div class="row">
+        <div class="col-lg-5">
+            <div class="widget" style="background: #f0f0f0;width:249% !important">
+                <!-- <div class="form-group row m-l-0">
+                    <div class="col-md-12 checkbox abc-checkbox text-md-left font-weight-normal">
+                        <input id="checkbox7" type="checkbox">
+                        <label for="checkbox7">Allow buyers to submit tickets</label>
+                    </div>
+                </div> -->
+                <div class="form-group row m-l-0">
+
+                    <!-- <div class="col-md-12 checkbox abc-checkbox text-md-left font-weight-normal"> -->
+                    <!-- <input id="checkbox7" type="checkbox" [(ngModel)]="setActive" (change)="onPrepayPayment($event)"> -->
+                    <!-- <label for="checkbox7">Enable Prepay payments</label>                                            -->
+                    <!-- </div> -->
+                    <!-- <div style="padding-left: 10px;" [ngClass]="{setdisable: setRad}">
+                            <input type="radio" name="rd1" [value]="opt1" [checked]="opt1" (change)="setOptOne($event)" #op1> All charges will be paid through Prepay feature<br> 
+                             <input type="radio" name="rd1" [value]="opt2" [checked]="opt2" (change)="setOptTwo($event)" #op2> Separate options for Prepay and Pay Now <br>
+                             <input type="radio" name="rd1" [value]="opt3" [checked]="opt3" (change)="setOptThree($event)" #op3> Auto Adjustment <br>
+                          </div>[disabled]="!generalSettingForm.valid"  -->
+
+                    <div style="overflow-x:auto;">
+
+                        <table style="border: 1px solid gray;overflow-x:auto;overflow-y:auto;">
+                            <tr class="tableHead">
+                                <th>Enable Prepay Payment</th>
+                                <th>Project Name</th>
+                                <th>Prepay Options</th>
+                                <th>Auto Meter Recharge</th>
+                                <th>3rd Party Url For Meter Recharge</th>
+                            </tr>
+
+                            <tr class="tableData" *ngFor="let entityDetails of respData;let i = index;">
+
+                                <td class="td1">
+                                    <input #chkEnable [(ngModel)]="entityDetails.configured" ngModel class="chk1"
+                                        type="checkbox" [(ngModel)]="setActive"
+                                        (change)="onPrepayPayment(i,$event,entityDetails.projectID, 'configured');enablePaymentcheck($event,i)">
+                                </td>
+
+                                <td class="td2" style="font-size: 13px;text-align: center">
+                                    {{entityDetails.projectName}}
+                                </td>
+                                <td class="td3">
+
+                                    <!-- <div class="rdoLabel1"> -->
+                                    <form>
+                                        <input [disabled]="!chkEnable.checked" class="rdo1" type="radio" [value]="opt1"
+                                            name="rd1" [checked]="entityDetails.enablePrepayPayment == 1"
+                                            (change)="onPrepayPayment(i,$event,entityDetails.projectID, 'radio1');setOptOne($event,i)"
+                                            #op1>All charge will be paid through
+                                        prepay feature<br>
+                                        <!-- </div> -->
+                                        <!-- <div class="rdoLabel2"> -->
+                                        <input [disabled]="!chkEnable.checked" class="rdo2" type="radio" [value]="opt2"
+                                            name="rd1" [checked]="entityDetails.enablePrepayPayment == 2"
+                                            (change)="onPrepayPayment(i,$event,entityDetails.projectID, 'radio2');setOptTwo($event,i)"
+                                            #op2>Separate option for prapay and pay now<br>
+                                    </form>
+                                    <!-- </div> -->
+
+                                </td>
+
+                                <td class="td4">
+                                    <input [disabled]="!chkEnable.checked" [checked]="entityDetails.isMeterOnline == 1"
+                                        (change)="onPrepayPayment(i,$event,entityDetails.projectID, 'ismeteronline');meterRechargeCheck($event,i)"
+                                        class="chk2" type="checkbox">
+                                </td>
+
+                                <td class="td5">
+                                    <input style="width:100%;margin-bottom: 1%;" [disabled]="!chkEnable.checked"
+                                        type="text" maxlength="500"
+                                        (keyup)="onPrepayPayment(i,$event,entityDetails.projectID, 'text1');textValue1($event.target)"
+                                        [(ngModel)]="entityDetails.url_recharge_code" placeholder="Online recharge URL"
+                                        #url1 required>
+                                    <span class="text-danger"
+                                        *ngIf="!entityDetails.url_recharge_code && entityDetails.configured"
+                                        style="font-size:12px;">
+                                        Online recharge field is mandatory
+                                    </span>
+                                    <input style="width:100%;margin-bottom: 1%;" [disabled]="!chkEnable.checked"
+                                        type="text" maxlength="500"
+                                        (keyup)="onPrepayPayment(i,$event,entityDetails.projectID, 'text2');textValue2($event.target)"
+                                        [(ngModel)]="entityDetails.url_auto_recharge" placeholder="Auto recharge URL"
+                                        #url2 required>
+
+                                    <span class="text-danger"
+                                        *ngIf="!entityDetails.url_auto_recharge && entityDetails.isMeterOnline"
+                                        style="font-size:12px;">
+                                        Auto recharge url field is mandatory
+                                    </span>
+                                    <input style="width:100%;"
+                                        (keyup)="onPrepayPayment(i,$event,entityDetails.projectID, 'text3');textValue3($event.target)"
+                                        [(ngModel)]="entityDetails.url_check_status"
+                                        placeholder="Auto recharge status URL" [disabled]="!chkEnable.checked" #url3
+                                        type="text" maxlength="500">
+                                </td>
+
+                            </tr>
+                        </table>
+
+
+
+                    </div>
+
+                    <br>
+                    <div style="margin-top: 2%;">
+                        <div class="col-md-12  text-md-left font-weight-normal"
+                            style="margin-top:20px;padding-left: 0px;">
+                            <label for="checkbox7">Payment Related Emails</label>
+                        </div>
+                        <div style="padding-left: 10px;">
+                            <input id="checkbox6" type="checkbox" [(ngModel)]="setEmailActive"
+                                (change)="setEmail($event)" [checked]="setEmailCheck == 1" #autoEmail> Confirmation
+                            Email <br>
+                            <input id="checkbox7" type="checkbox" [checked]="setSmsCheck == 1"
+                                [(ngModel)]="setSmsActive" (change)="setSms($event)" #autoSms> Confirmation SMS <br>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="col-12" style="text-align: center;margin-top:20px">
+                        <!-- <button *ngIf="!text1Check" class="btn btn-success btn-special width-100 mb-xs" id="A1" role="button"
+                         (click)="saveGenSetting(opt1, opt2, autoEmail.checked, autoSms.checked)">
+                           Save
+                       </button> -->
+                        <button class="btn btn-success btn-special width-100 mb-xs" id="A1" role="button"
+                            [disabled]="text1Check" [class.text2Class]="text2Check"
+                            (click)="saveGenSetting(opt1, opt2, autoEmail.checked, autoSms.checked)">
+                            Save
+                        </button>
+
+                        <button class="btn btn-inverse width-100 mb-xs" role="button"
+                            [routerLink]="['client/companies']">
+                            Cancel
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

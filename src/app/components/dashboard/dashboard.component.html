@@ -1,0 +1,1874 @@
+<div class="content-wrap">
+  <div id="content" class="content" role="main">
+    <pa-bread-crumb></pa-bread-crumb>
+    <h1 class="page-title">Manage
+      <span class="fw-semi-bold">DashBoard</span>
+    </h1>
+    <!-- main page content. the place to put widgets in. usually consists of .row > .col-lg-* > .widget.  -->
+    <div id="content" class="content" role="main" style="padding: 15px 20px;background: white">
+      <div class="verticalcolumn"> 
+        <div class="form-horizontal widget widget-chart-stats-simple" style="margin-left: -10px;border-top: none;margin-bottom: 1px;margin-top: -14px;">
+          <div class="btn-group" style="margin-right: 10px; display: initial;">
+            <label>Module: </label>&nbsp;
+            <select class="search__categories" (change)="SelectModel($event)" style="width: 134px;height:34px;border-radius: 4px;border-color: lightgray;" aria-label="Category">
+              <option *ngFor="let modalName of ModuleList" [value]="modalName.key">
+                  {{modalName.value}}
+              </option>
+              <!-- (change)="SelectModel($event.target.value)" -->
+          </select>
+          
+          </div>
+          <div class="btn-group" style="margin-right: 10px">
+            <!-- <select [data]="companyList" [width]='120' (valueChanged)="onCompanySelect($event)">
+            </select> -->
+            <ngx-select-dropdown
+              class="ngx-select-dropdown"
+              (change)="onCompanySelect($event)"
+              tabindex="0"
+              [multiple]="false"
+              [config] = "config"
+              [(ngModel)] = "companyList[0]"
+              [options]="companyList">
+            </ngx-select-dropdown>
+          </div>
+          <div class="btn-group" style="margin-right: 10px">
+            <!-- <select [data]="locationList" [width]='120' (valueChanged)="onLocationSelect($event)">
+            </select> -->
+            <ngx-select-dropdown
+              class="ngx-select-dropdown"
+              (change)="onLocationSelect($event)"
+              tabindex="0"
+              [multiple]="false"
+              [config] = "config"
+              [(ngModel)] = "locationList[0]"
+              [options]="locationList">
+            </ngx-select-dropdown>
+          </div>
+          <div class="btn-group" style="margin-right: 10px">
+            <!-- <select [data]="projectList" [width]='120' (valueChanged)="onProjectSelect($event)">
+            </select> -->
+            <ngx-select-dropdown
+              class="ngx-select-dropdown"
+              (change)="onProjectSelect($event)"
+              tabindex="0"
+              [multiple]="false"
+              [config] = "config"
+              [(ngModel)] = "projectList[0]"
+              [options]="projectList">
+            </ngx-select-dropdown>
+          </div>
+        </div>  
+      </div>
+      <!-- *ngIf="selectModel == 'REMS'" -->
+      <ng-container *ngIf="selectModel == 'REMS' || selectModel == '1'">
+        <div class="row" style="background: #eee;padding-top: 18px;">
+
+          <div class="col-lg-3 col-md-6">
+            <div class="widget widget-card bg-gray text-white" style="border-top: none;">
+              <div class="widget-body clearfix">
+                <div class="row" id="smallWidgetRow1">
+                  <div class="col-xs-3">
+                    <span class="widget-icon"><i class="fa fa-refresh"></i></span>
+                  </div>
+                  <div class="col-xs-9">
+                    <h6 class="no-margin" style="font-size: 12px">Db Sync Date</h6>
+                    <p class="h4 no-margin fw-normal" style="font-size: 18px">{{syncDate}}</p>
+                  </div>
+                </div>
+                <div class="row" id="smallWidgetRow2">
+                  <div class="col-xs-6">
+                    <h6 class="no-margin" style="font-size: 12px">Day</h6>
+                    <p class="value5" id="TotalOverdueAmount" style="font-size: 16px">
+                      {{syncDay}}
+                    </p>
+                  </div>
+                  <div class="col-xs-6 fs-sm">
+                    <h6 class="no-margin" style="font-size: 12px">Time</h6>
+                    <p class="value5" id="TotalOverdueCustomer" style="margin-bottom: 2px;font-size: 16px;"
+                      class="value5">
+                      {{syncTime}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="widget widget-card bg-primary text-white" data-toggle="tooltip" data-placement="top" title=""
+              data-original-title="Allocated customers target amount" style="border-top: none;">
+              <div class="widget-body clearfix">
+                <div class="row" id="smallWidgetRow1">
+                  <div class="col-xs-3">
+                    <span class="widget-icon"><i class="fa fa-home"></i></span>
+                  </div>
+                  <div class="col-xs-9">
+                    <h6 class="no-margin" style="font-size: 12px">Units: Total / Sale Till Date
+                    </h6>
+                    <p class="h4 no-margin fw-normal" id="TargetAmount" style="font-size: 18px">
+                      {{totalSale | INRCurrency}}/{{saleTillDate | INRCurrency}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="row" id="smallWidgetRow2">
+                <div class="col-xs-6">
+                  <h6 class="no-margin" style="font-size: 12px;">Sale For The Month</h6>
+                  <p class="value5" id="AchievedAmount" style="font-size: 16px">
+                    {{monthSale | INRCurrency}}
+                  </p>
+                </div>
+                <div class="col-xs-6">
+                  <div class="live-tile" data-mode="carousel" data-speed="750" data-delay="3000"
+                    data-height="50">
+                    <div [@slideShow]="activeSlide1">
+                      <h6 class="no-margin" style="font-size: 12px;">Today Sale</h6>
+                      <p class="value5" id="Percentage" style="font-size: 16px">{{todaySale | INRCurrency}}</p>
+                    </div>
+                    <div [@slideShow]="activeSlide2">
+                      <h6 class="no-margin" style="font-size: 12px;">Yesterday Sale</h6>
+                      <p class="value5" id="Percentage" style="font-size: 16px">{{yesterdaySale | INRCurrency}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="widget widget-card bg-warning text-white" data-toggle="tooltip" data-placement="top" title=""
+              data-original-title="Allocated customers target amount" style="border-top: none;">
+              <div class="widget-body clearfix">
+                <div class="row" id="smallWidgetRow1">
+                  <div class="col-xs-3">
+                    <span class="widget-icon"><i class="fa fa-inr"></i></span>
+                  </div>
+                  <div class="col-xs-9">
+                    <h6 class="no-margin" style="font-size: 12px">Dues: Total Sale / Total Due
+                    </h6>
+                    <p class="h4 no-margin fw-normal" id="TargetAmount" style="font-size: 18px">
+                      {{totalSaleDue}} /{{totalDue}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="row" id="smallWidgetRow2">
+                <div class="col-xs-6">
+                  <h6 class="no-margin" style="font-size: 12px;">Due For The Month</h6>
+                  <p class="value5" id="AchievedAmount" style="font-size: 16px">
+                    {{monthDue}}
+                  </p>
+                </div>
+                <div class="col-xs-6">
+                  <div class="live-tile" data-mode="carousel" data-speed="750" data-delay="3000"
+                    data-height="50">
+                    <div [@slideShow]="activeSlide1">
+                      <h6 class="no-margin" style="font-size: 12px;">Today Due</h6>
+                      <p class="value5" id="Percentage" style="font-size: 16px">
+                        {{todayDue}}
+                      </p>
+                    </div>
+                    <div [@slideShow]="activeSlide2">
+                      <h6 class="no-margin" style="font-size: 12px;">Yesterday Due</h6>
+                      <p class="value5" id="Percentage" style="font-size: 16px">
+                        {{yesterdayDue}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="widget widget-card bg-success text-white" data-toggle="tooltip" data-placement="top" title=""
+              data-original-title="Allocated customers target amount" style="border-top: none;">
+              <div class="widget-body clearfix">
+                <div class="row" id="smallWidgetRow1">
+                  <div class="col-xs-3">
+                    <span class="widget-icon"><i class="fa fa-inr"></i></span>
+                  </div>
+                  <div class="col-xs-9">
+                    <h6 class="no-margin" style="font-size: 12px;">Total Received Amount
+                    </h6>
+                    <p class="h4 no-margin fw-normal" id="TargetAmount" style="font-size: 18px">
+                      {{totalReceipt}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="row" id="smallWidgetRow2">
+                <div class="col-xs-6">
+                  <h6 class="no-margin" style="font-size: 12px;">Received For The Month</h6>
+                  <p class="value5" id="AchievedAmount" style="font-size: 16px">
+                    {{monthReceived}}
+                  </p>
+                </div>
+                <div class="col-xs-6">
+                  <div class="live-tile" data-mode="carousel" data-speed="750" data-delay="3000"
+                    data-height="50">
+                    <div [@slideShow]="activeSlide1">
+                      <h6 class="no-margin" style="font-size: 12px;">Today Received</h6>
+                      <p class="value5" id="Percentage" style="font-size: 16px">
+                        {{todayReceived}}
+                      </p>
+                    </div>
+                    <div [@slideShow]="activeSlide2">
+                      <h6 class="no-margin" style="font-size: 12px;">Yesterday Received</h6>
+                      <p class="value5" id="Percentage" style="font-size: 16px">
+                        {{yesterdayReceived}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row" style="background: #eee;">
+          <!-- Inventary chart -->
+          <div class="col-lg-6">
+            <div style="position: absolute;width:100%" *ngIf="salesChartVCalue == false" class="row">
+              <div class="col-lg-12 widget-container">
+                <div class="widget widget-chart-stats-simple box-success">
+                  <header>
+                    <div class="row">
+                      <div class="col-xs-10">
+                        <h5><i class="fa fa-cog"></i>&nbsp; <span
+                            style="font-size:15px;font-family: -webkit-body;">Inventory Status</span>
+                        </h5>
+                      </div>
+                      <div class="col-xs-1">
+                        <span (click)="salesTable();" id="tblChartIcon"><i class="fa fa-table"></i>
+                        </span>
+                      </div>
+                      <div class="col-xs-1" id="iContantDiv">
+                        <!-- [outsideClick]="true" -->
+                        <span class="iContent" placement="bottom" popover="Displays the project wise status of the units.">
+                          <i class="fa fa-info-circle"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </header>
+                  <div class="widget-body">
+                    <div class="bg-body-light">
+                      <table class="table table-hover" id="tblConfigProject">
+                        <thead>
+                          <tr>
+                            <th *ngIf="projectId == 0">Unit Sales by Project
+                            </th>
+                            <th *ngIf="projectId != 0">Unit Sales by Tower
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="bg-body-light" style="overflow-x: auto;height: 340px;" id="chart2TrendDiv style-1"
+                      [class.chart1divngClass]="countValue == 0">
+                      <div id="chart" [class.chart1ngClass]="countValue == 1"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- inventory Table -->
+
+            <div id="InventtoryTable" *ngIf="salesChartVCalue == true" class="row">
+              <div class="col-lg-12">
+                <div class="widget widget-chart-stats-simple box-info">
+                  <header>
+                    <div class="row">
+                      <div class="col-xs-10">
+                        <h5><i class="fa fa-cog"></i>&nbsp;<span
+                            style="font-size:15px;font-family: -webkit-body;">Inventory Status</span>
+                        </h5>
+                      </div>
+                      <div class="col-xs-1">
+                        <span (click)="salesChart();" id="tblChartIcon"><i class="fa fa-bar-chart-o"></i>
+                        </span>
+                      </div>
+                      <div class="col-xs-1" id="iContantDiv">
+                        <!-- [outsideClick]="true" -->
+                        <span class="iContent" placement="bottom" title="" popover="Displays the project wise status of the units.">
+                          <i class="fa fa-info-circle"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </header>
+
+                  <div class="widget-body">
+                    <div id="InventoryStatustableContainer">
+                      <!-- class="fixed_headersInventoryTable" -->
+                      <table class="table table-bordered table-lg mt-lg mb-0" style="margin-top: -1px;">
+                        <thead>
+                          <tr>
+                            <th *ngIf="projectId == 0">Project Name
+                            </th>
+                            <th *ngIf="projectId != 0">Tower Name
+                            </th>
+                            <th>Direct Sale
+                            </th>
+                            <th>Broker Sale
+                            </th>
+                            <th>Other Sale
+                            </th>
+                            <th>Unsold
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let entity of SalesEntity1Data">
+                            <td style="text-align: left;border-left: 0px solid;">{{entity.project_name_erp}}</td>
+                            <td class="figureAlign">{{entity.direct_sale | INRCurrency}}</td>
+                            <td class="figureAlign">{{entity.broker_sale | INRCurrency}}</td>
+                            <td class="figureAlign">{{entity.other_sale | INRCurrency}}</td>
+                            <td class="figureAlign" style="border-left: 0px solid;">{{entity.unsold | INRCurrency}}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project By Dues & Collection Table -->
+
+          <div id="ProjectCollection" class="col-lg-6">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="widget widget-chart-stats-simple box-info">
+                  <header>
+                    <div class="row">
+                      <div class="col-xs-11">
+                        <h5><i class="fa fa-cog"></i>&nbsp;<span
+                            style="font-size:15px;font-family: -webkit-body;">Project Wise Dues & Collection (In
+                            Lakh)</span>
+                        </h5>
+                      </div>
+                      <div class="col-xs-1" style="cursor: pointer;" id="iContantDiv">
+                        <!-- [outsideClick]="true" -->
+                        <span class="iContent" placement="bottom" title="" popover="Displays the project wise total dues and collection.">
+                          <i class="fa fa-info-circle"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </header>
+                  <div class="widget-body">
+                    <div id="ProjectCollectiontableContainer">
+                      <!-- class="fixed_headersProjectCollection" -->
+                      <!-- fixed_headersProjectCollection -->
+                      <table class="table table-bordered table-lg mt-lg mb-0 " style="margin-top: 1px;">
+                        <thead>
+                          <tr>
+                            <th>Project Name
+                            </th>
+                            <th>Due
+                            </th>
+                            <th>Collection
+                            </th>
+                            <th>Net Due
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let collection of collectiontableData">
+                            <td style="text-align: left;border-left: 0px solid;">{{collection.project_name_erp}}</td>
+                            <td class="figureAlign">{{collection.due  | INRCurrency}}</td>
+                            <td class="figureAlign">{{collection.receipt | INRCurrency}}</td>
+                            <td class="figureAlign" style="border-right: 0px solid;">
+                              {{collection.netDue | INRCurrency}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" style="background: #eee;">
+          <div class="col-lg-6">
+            <!-- Progress of Dues & Collection Chart -->
+            <div class="row" *ngIf="progressDueChartValue == false">
+              <div class="col-lg-12 widget-container">
+                <div class="widget widget-chart-stats-simple box-success">
+                  <header>
+                    <div class="row">
+                      <div class="col-xs-10">
+                        <h5><i class="fa fa-cog"></i>&nbsp;<span
+                            style="font-size:15px;font-family: -webkit-body;">Progress of Dues & Collection (In
+                            Lakh)</span>
+                        </h5>
+                      </div>
+                      <div class="col-xs-1">
+                        <span (click)="duesProgressTable()" id="tblChartIcon"><i class="fa fa-table"></i>
+                        </span>
+                      </div>
+                      <div class="col-xs-1" id="iContantDiv">
+                        <!-- [outsideClick]="true" -->
+                        <span class="iContent" placement="bottom" title="" popover="Displays cumulative dues and receiving periodically.">
+                          <i class="fa fa-info-circle"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </header>
+
+                  <div class="widget-body">
+                    <!-- <div class="chart bg-body-light scroll-y"> -->
+                    <div class="bg-body-light scroll-y">
+                      <table style="margin-bottom: -1%;text-align: center;margin-top: 1%;margin-left: 0px;margin-bottom: 19px;
+                                  width: 100%;position: relative;" class="ChartPeriodprogressDue">
+                        <tr style="
+                                      border-bottom-color: lightgray;">
+                          <ng-container *ngFor="let an of periodsDueReceiptData">
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode1" *ngSwitchCase="'6M'" (click)="periodeValueforProgressDue('6M');"
+                                [class.tabHighlight]="duePeriod == '6M'">
+                                <span class="hidden-sm-down" style="cursor: pointer">6 Month</span>
+                                <span class="hidden1" style="cursor: pointer">6 M</span>
+                              </td>
+                            </ng-container>
+
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode1" *ngSwitchCase="'1y'" (click)="periodeValueforProgressDue('1y');"
+                                [class.tabHighlight]="duePeriod == '1y'">
+                                <span class="hidden-sm-down" style="cursor: pointer">1 Year</span>
+                                <span class="hidden1" style="cursor: pointer">1 Y</span>
+                              </td>
+                            </ng-container>
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode1" *ngSwitchCase="'2y'" (click)="periodeValueforProgressDue('2y');"
+                                [class.tabHighlight]="duePeriod == '2y'">
+                                <span class="hidden-sm-down" style="cursor: pointer">2 Year</span>
+                                <span class="hidden1" style="cursor: pointer">2 Y</span>
+                              </td>
+                            </ng-container>
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode1" *ngSwitchCase="'3y'" (click)="periodeValueforProgressDue('3y');"
+                                [class.tabHighlight]="duePeriod == '3y'">
+                                <span class="hidden-sm-down" style="cursor: pointer">3 Year</span>
+                                <span class="hidden1" style="cursor: pointer">3 Y</span>
+                              </td>
+                            </ng-container>
+
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode1" *ngSwitchCase="'5y'" (click)="periodeValueforProgressDue('5y');"
+                                [class.tabHighlight]="duePeriod == '5y'">
+                                <span class="hidden-sm-down" style="cursor: pointer">5 Year</span>
+                                <span class="hidden1" style="cursor: pointer">5 Y</span>
+                              </td>
+                            </ng-container>
+
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode1" *ngSwitchCase="'Max'" (click)="periodeValueforProgressDue('Max');"
+                                [class.tabHighlight]="duePeriod == 'Max'">
+                                <span style="cursor: pointer">Max</span></td>
+                            </ng-container>
+                          </ng-container>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="bg-body-light scroll-y" style="overflow-x: auto;height: 340px;"
+                      id="chart2TrendDiv style-1">
+                      <div id="chart1"></div>
+                      <!-- class="rl_shell" -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Progress of Dues & Collection Table -->
+            <div *ngIf="progressDueChartValue == true" class="row">
+              <div class="col-lg-12">
+                <div class="widget widget-chart-stats-simple box-info">
+                  <header>
+                    <div class="row">
+
+                      <div class="col-xs-10">
+                        <h5><i class="fa fa-cog"></i>&nbsp;<span
+                            style="font-size:15px;font-family: -webkit-body;">Progress of Dues & Collection (In
+                            Lakh)</span>
+                        </h5>
+                      </div>
+                      <div class="col-xs-1">
+                        <span (click)="duesProgressChart()" id="tblChartIcon"><i class="fa fa-line-chart"></i>
+                        </span>
+                      </div>
+                      <div class="col-xs-1" id="iContantDiv">
+                        <!-- [outsideClick]="true" -->
+                        <span class="iContent" placement="bottom" title="" popover="Displays cumulative dues and receiving periodically.">
+                          <i class="fa fa-info-circle"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </header>
+                  <div class="widget-body">
+                    <div class="bg-body-light scroll-y">
+                      <table style="margin-bottom: -1%;  text-align: center; margin-top: 1%;margin-left: 0px;margin-bottom: 15px; width: 100%;
+                                        position: relative;" class="ChartPeriodprogressDue">
+                        <tr style="border-bottom-color: lightgray;">
+                          <ng-container *ngFor="let an of periodsDueReceiptData">
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode1" *ngSwitchCase="'6M'" (click)="periodeValueforProgressDue('6M');"
+                                [class.tabHighlight]="duePeriod == '6M'">
+                                <span class="hidden-sm-down" style="cursor: pointer">6 Month</span>
+                                <span class="hidden1" style="cursor: pointer">6 M</span>
+                              </td>
+                            </ng-container>
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode1" *ngSwitchCase="'1y'" (click)="periodeValueforProgressDue('1y');"
+                                [class.tabHighlight]="duePeriod == '1y'">
+
+                                <span class="hidden-sm-down" style="cursor: pointer">1 Year</span>
+                                <span class="hidden1" style="cursor: pointer">1 Y</span>
+                              </td>
+                            </ng-container>
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode1" *ngSwitchCase="'2y'" (click)="periodeValueforProgressDue('2y');"
+                                [class.tabHighlight]="duePeriod == '2y'">
+                                <span class="hidden-sm-down" style="cursor: pointer">2 Year</span>
+                                <span class="hidden1" style="cursor: pointer">2 Y</span>
+                              </td>
+                            </ng-container>
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode1" *ngSwitchCase="'3y'" (click)="periodeValueforProgressDue('3y');"
+                                [class.tabHighlight]="duePeriod == '3y'">
+                                <span class="hidden-sm-down" style="cursor: pointer">3 Year</span>
+                                <span class="hidden1" style="cursor: pointer">3 Y</span>
+                              </td>
+                            </ng-container>
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode1" *ngSwitchCase="'5y'" (click)="periodeValueforProgressDue('5y');"
+                                [class.tabHighlight]="duePeriod == '5y'">
+                                <span class="hidden-sm-down" style="cursor: pointer">5 Year</span>
+                                <span class="hidden1" style="cursor: pointer">5 Y</span>
+                              </td>
+                            </ng-container>
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode1" *ngSwitchCase="'Max'" (click)="periodeValueforProgressDue('Max');"
+                                [class.tabHighlight]="duePeriod == 'Max'">
+                                <span style="cursor: pointer">Max</span></td>
+                            </ng-container>
+                          </ng-container>
+                        </tr>
+                      </table>
+                    </div>
+                    <div id="ProgressDuetableContainer">
+                      <!-- class="fixed_headersProgressDueCollection" -->
+                      <table class="table table-bordered table-lg mt-lg mb-0" style="margin-top: -1px;">
+                        <thead>
+                          <tr>
+                            <th>Duration
+                            </th>
+                            <th>Net Due
+                            </th>
+                            <th>Cumulative Due
+                            </th>
+                            <th>Cumulative Received
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let progress of progressCollectionData">
+                            <td style="border-left: 0px solid;text-align: left">{{progress.period}}</td>
+                            <td class="figureAlign">{{getNumericValue(progress.cummulative_net_due) | INRCurrency}}</td>
+                            <td class="figureAlign">{{getNumericValue(progress.cummulative_due) | INRCurrency}}</td>
+                            <td class="figureAlign" style="border-right: 0px solid;">
+                              {{getNumericValue(progress.cummulative_receive) | INRCurrency}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <!-- Progress of Dues & Collection Chart -->
+            <div *ngIf="receivingTrendValue == false" style="position: absolute;width: 100%;background: #eee;"
+              class="row">
+              <div class="col-lg-12 widget-container">
+                <div class="widget widget-chart-stats-simple box-success">
+                  <header>
+                    <div class="row">
+                      <div class="col-xs-10">
+                        <h5><i class="fa fa-cog"></i>&nbsp;<span
+                            style="font-size:15px;font-family: -webkit-body;">Receiving Trend against due (In
+                            Days)</span>
+                        </h5>
+                      </div>
+                      <div class="col-xs-1">
+                        <span (click)="receivingTrendTable()" id="tblChartIcon"><i class="fa fa-table"></i>
+                        </span>
+                      </div>
+                      <div class="col-xs-1" id="iContantDiv">
+                        <!-- [outsideClick]="true" -->
+                        <span class="iContent" placement="bottom" title="" popover="Displays receiving trend on quarterly bases in days.">
+                          <i class="fa fa-info-circle"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </header>
+
+                  <div class="widget-body">
+                    <!-- <div class="chart bg-body-light scroll-y"> -->
+                    <div class="bg-body-light scroll-y">
+                      <table class="receiptTrendChartPeriod">
+                        <tr style="
+                             border-bottom-color: lightgray;">
+                          <ng-container id="myDIV" *ngFor="let an of periodsTrendReceiptData">
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode2" *ngSwitchCase="'1y'" (click)="periodeValueforReceiveTrend('1y');"
+                                [class.tabHighlight]="receivePeriod == '1y'">
+                                <span class="hidden-sm-down" style="cursor: pointer">1 Year</span>
+                                <span class="hidden1" style="cursor: pointer">1 Y</span>
+                              </td>
+                            </ng-container>
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode2" *ngSwitchCase="'2y'" (click)="periodeValueforReceiveTrend('2y');"
+                                [class.tabHighlight]="receivePeriod == '2y'">
+                                <span class="hidden-sm-down" style="cursor: pointer">2 Year</span>
+                                <span class="hidden1" style="cursor: pointer">2 Y</span>
+                              </td>
+                            </ng-container>
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode2" *ngSwitchCase="'3y'" (click)="periodeValueforReceiveTrend('3y');"
+                                [class.tabHighlight]="receivePeriod == '3y'">
+                                <span class="hidden-sm-down" style="cursor: pointer">3 Year</span>
+                                <span class="hidden1" style="cursor: pointer">3 Y</span>
+                              </td>
+                            </ng-container>
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode2" *ngSwitchCase="'4y'" (click)="periodeValueforReceiveTrend('4y');"
+                                [class.tabHighlight]="receivePeriod == '4y'">
+                                <span class="hidden-sm-down" style="cursor: pointer">4 Year</span>
+                                <span class="hidden1" style="cursor: pointer">4 Y</span>
+                              </td>
+                            </ng-container>
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode2" *ngSwitchCase="'5y'" (click)="periodeValueforReceiveTrend('5y');"
+                                [class.tabHighlight]="receivePeriod == '5y'">
+                                <span class="hidden-sm-down" style="cursor: pointer">5 Year</span>
+                                <span class="hidden1" style="cursor: pointer">5 Y</span>
+                              </td>
+                            </ng-container>
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode2" *ngSwitchCase="'Max'" (click)="periodeValueforReceiveTrend('Max');"
+                                [class.tabHighlight]="receivePeriod == 'Max'">
+                                <span style="cursor: pointer">Max</span></td>
+                            </ng-container>
+                          </ng-container>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="bg-body-light" style="overflow-x: auto;height: 340px;" id="chart2TrendDiv style-1">
+                      <div id="chart2"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Progress of Dues & Collection Table -->
+            <div class="row" id="receiveTrendTable" *ngIf="receivingTrendValue == true" style="background: #eee;">
+              <div class="col-lg-12">
+                <div class="widget widget-chart-stats-simple box-info">
+                  <header>
+                    <div class="row">
+                      <div class="col-xs-10">
+                        <h5><i class="fa fa-cog"></i>&nbsp;<span
+                            style="font-size:15px;font-family: -webkit-body;">Receiving Trend against due (In
+                            Days)</span>
+                        </h5>
+                      </div>
+                      <div class="col-xs-1">
+                        <span (click)="receivingTrendChart()" id="tblChartIcon"><i class="fa fa-line-chart"></i>
+                        </span>
+                      </div>
+                      <div class="col-xs-1" id="iContantDiv">
+                        <!-- [outsideClick]="true" -->
+                        <span class="iContent" placement="bottom" title="" popover="Displays receiving trend on quarterly bases in days.">
+                          <i class="fa fa-info-circle"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </header>
+                  <div class="widget-body">
+                    <div class="bg-body-light scroll-y">
+                      <table class="receiptTrendChartPeriod">
+                        <tr style="
+                                  border-bottom-color: lightgray;">
+                          <ng-container id="myDIV" *ngFor="let an of periodsTrendReceiptData">
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode2" *ngSwitchCase="'1y'" (click)="periodeValueforReceiveTrend('1y');"
+                                [class.tabHighlight]="receivePeriod == '1y'">
+                                <span class="hidden-sm-down" style="cursor: pointer">1 Year</span>
+                                <span class="hidden1" style="cursor: pointer">1 Y</span>
+                              </td>
+                            </ng-container>
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode2" *ngSwitchCase="'2y'" (click)="periodeValueforReceiveTrend('2y');"
+                                [class.tabHighlight]="receivePeriod == '2y'">
+                                <span class="hidden-sm-down" style="cursor: pointer">2 Year</span>
+                                <span class="hidden1" style="cursor: pointer">2 Y</span>
+                              </td>
+                            </ng-container>
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode2" *ngSwitchCase="'3y'" (click)="periodeValueforReceiveTrend('3y');"
+                                [class.tabHighlight]="receivePeriod == '3y'">
+                                <span class="hidden-sm-down" style="cursor: pointer">3 Year</span>
+                                <span class="hidden1" style="cursor: pointer">3 Y</span>
+                              </td>
+                            </ng-container>
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode2" *ngSwitchCase="'4y'" (click)="periodeValueforReceiveTrend('4y');"
+                                [class.tabHighlight]="receivePeriod == '4y'">
+                                <span class="hidden-sm-down" style="cursor: pointer">4 Year</span>
+                                <span class="hidden1" style="cursor: pointer">4 Y</span>
+                              </td>
+                            </ng-container>
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode2" *ngSwitchCase="'5y'" (click)="periodeValueforReceiveTrend('5y');"
+                                [class.tabHighlight]="receivePeriod == '5y'">
+                                <span class="hidden-sm-down" style="cursor: pointer">5 Year</span>
+                                <span class="hidden1" style="cursor: pointer">5 Y</span>
+                              </td>
+                            </ng-container>
+                            <ng-container [ngSwitch]="an">
+                              <td id="periode2" *ngSwitchCase="'Max'" (click)="periodeValueforReceiveTrend('Max');"
+                                [class.tabHighlight]="receivePeriod == 'Max'">
+                                <span style="cursor: pointer">Max</span></td>
+                            </ng-container>
+                          </ng-container>
+                        </tr>
+                      </table>
+                    </div>
+                    <div id="ReceivingTrendtableContainer">
+                      <!-- class="fixed_headersRecevingTrend" -->
+                      <table class="table table-bordered table-lg mt-lg mb-0" style="margin-top: -1px;">
+                        <thead>
+                          <tr>
+                            <th>Duration
+                            </th>
+                            <th>Min
+                            </th>
+                            <th>Max
+                            </th>
+                            <th>Average
+                            </th>
+                            <th style="border-right: none;">90 Percentile
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let dueReceiveTrend of dueReceiveTrendData">
+                            <td style="border-left: 0px solid;text-align: left">{{dueReceiveTrend.period}}</td>
+                            <td class="figureAlign">{{getNumericValue(dueReceiveTrend.minmumvalue) | INRCurrency}}</td>
+                            <td class="figureAlign">{{getNumericValue(dueReceiveTrend.maximumvalue) | INRCurrency}}</td>
+                            <td class="figureAlign">{{getNumericValue(dueReceiveTrend.averagevalue) | INRCurrency}}</td>
+                            <td class="figureAlign" style="border-right: 0px solid;">
+                              {{getNumericValue(dueReceiveTrend.nintypercentile) | INRCurrency}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="GSTMainDiv" class="row" style="background: #eee;">
+          <div class="col-lg-6">
+            <!-- GST R1 Escalation Table -->
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="widget widget-chart-stats-simple box-info">
+                  <header>
+                    <div class="row">
+                      <div class="col-xs-7">
+                        <h5><i class="fa fa-cog"></i>&nbsp;<span style="font-size:15px;font-family: -webkit-body;">GST
+                            R1 Escalation</span>
+                        </h5>
+                      </div>
+                      <div class="col-xs-4">
+                        <div class="monthDrodwn">
+                          <div class="form-group">
+                            <select id="demo_overview_minimal" class="form-control" (change)="onMonthSelect($event)"
+                              data-role="select-dropdown" data-profile="minimal">
+                              <option *ngFor="let month of last6MonthsList" [value]="month">
+                                {{month}}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xs-1" style="cursor: pointer;" id="iContantDiv">
+                        <!-- [outsideClick]="true" -->
+                        <span class="iContent" placement="bottom" title="" popover="Please manually update the data in GST R1 escalation
+                                        matrix in Sales module to update data in this report.">
+                          <i class="fa fa-info-circle"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </header>
+
+                  <div class="widget-body">
+                    <div id="GSTR1tableContainer">
+                      <!-- <table class="fixed_headersGst1">
+                                      <thead>
+                                          <tr >
+                                              <th>GSTN No
+                                              </th>
+                                              <th>Received
+                                                  <hr>
+                                                <tr>
+                                                  <th style="width: 75px;border:none">Tentative Date
+                                                    </th>
+                                                    <th style="width: 75px;border:none">Actual Date
+                                                    </th>
+                                                  </tr>
+                                              </th>
+                                              <th>Verified
+                                                  <tr>
+                                                      <th style="width: 75px;border:none">Tentative Date
+                                                        </th>
+                                                        <th style="width: 75px;border:none">Actual Date
+                                                        </th>
+                                                      </tr>
+                                              </th>
+                                              <th>Submitted
+                                                  <tr>
+                                                      <th style="width: 75px">Tentative Date
+                                                        </th>
+                                                        <th style="width: 75px">Actual Date
+                                                        </th>
+                                                      </tr>
+                                              </th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr *ngFor="let gstNotigy of gstNotifyData">
+                                                    <td>{{gstNotigy.gstnno}}</td>
+                                                    <td>
+                                                  <tr>
+                                                    <td>{{gstNotigy.tentitive_received_date}}</td>
+                                                    <td>{{gstNotigy.actual_received_date | date:'dd MMM yyyy'}}</td>
+                                                  </tr>
+
+                                                  </td>
+                                                  <td>
+                                                    <tr>
+                                                      <td>{{gstNotigy.tentitive_verified_date | date:'dd MMM yyyy'}}</td>
+                                                      <td>{{gstNotigy.actual_verified_date | date:'dd MMM yyyy'}}</td>
+                                                    </tr>
+
+                                                  </td>
+                                                  <td>
+                                                    <tr>
+                                                      <td>{{gstNotigy.tentitive_submitted_date | date:'dd MMM yyyy'}}</td>
+                                                      <td>{{gstNotigy.actual_submitted_date | date:'dd MMM yyyy'}}</td>
+                                                    </tr>
+                                                  </td>
+
+                                                  </tr>
+                                            </tbody>
+                                  </table> -->
+                      <table style="width:200%">
+                        <tr>
+                          <th class="gst1Table_td_th" rowspan="2">GSTN No</th>
+                          <th class="gst1Table_td_th" colspan="2">Received</th>
+                          <th class="gst1Table_td_th" colspan="2">Verified</th>
+                          <th class="gst1Table_td_th" colspan="2">Submitted</th>
+
+                        </tr>
+                        <tr>
+
+                          <td class="gst1Table_td_th">Tentative Date</td>
+                          <td class="gst1Table_td_th">Actual Date</td>
+                          <td class="gst1Table_td_th">Tentative Date</td>
+                          <td class="gst1Table_td_th">Actual Date</td>
+                          <td class="gst1Table_td_th">Tentative Date</td>
+                          <td class="gst1Table_td_th">Actual Date</td>
+
+                        </tr>
+
+                        <tr *ngFor="let gstNotigy of gstNotifyData">
+                          <td>{{gstNotigy.gstnno}}</td>
+
+
+                          <td>{{gstNotigy.tentitive_received_date | date:'dd MMM yyyy'}}</td>
+                          <td>{{gstNotigy.actual_received_date | date:'dd MMM yyyy'}}</td>
+
+                          <td>{{gstNotigy.tentitive_verified_date | date:'dd MMM yyyy'}}</td>
+                          <td>{{gstNotigy.actual_verified_date | date:'dd MMM yyyy'}}</td>
+
+                          <td>{{gstNotigy.tentitive_submitted_date | date:'dd MMM yyyy'}}</td>
+                          <td>{{gstNotigy.actual_submitted_date | date:'dd MMM yyyy'}}</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-lg-6">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="widget widget-chart-stats-simple box-info">
+                  <header>
+                    <div class="row">
+                      <div class="col-xs-11">
+                        <h5><i class="fa fa-cog"></i>&nbsp;
+                          <span style="font-size:15px;font-family: -webkit-body;">3 Month Forecast (In Lakhs)</span>
+                        </h5>
+
+                      </div>
+                      <div class="col-xs-1" style="cursor: pointer;" id="iContantDiv">
+                        <!-- [outsideClick]="true" -->
+                        <span class="iContent" placement="bottom" title="" popover="Forecast amount is based on proposed dates enter in Sales module to update data in this report.">
+                          <i class="fa fa-info-circle"></i>
+                        </span>
+
+                      </div>
+                    </div>
+                  </header>
+                  <div class="widget-body">
+                    <div id="ForecasttableContainer">
+                      <!-- class="fixed_headersForecast" -->
+                      <table class="table table-bordered table-lg mt-lg mb-0" style="margin-top: -1px;">
+                        <thead>
+                          <tr>
+                            <th>Project Name
+                            </th>
+                            <ng-container *ngFor="let nextMonth of next3MonthsList">
+                              <th>{{nextMonth}}
+                              </th>
+                            </ng-container>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let forecast of forcastData">
+                            <td style="border-left: 0px solid;text-align: left">{{forecast.project_name_erp}}</td>
+                            <td class="figureAlign">{{forecast.month1 | INRCurrency}}</td>
+                            <td class="figureAlign">{{forecast.month2 | INRCurrency}}</td>
+                            <td class="figureAlign" style="border-right: 0px solid;">{{forecast.month3 | INRCurrency}}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </ng-container>
+
+      <!-- LM Model -->
+      <ng-container *ngIf="selectModel == 'LM' || selectModel == '2'">
+
+        <div class="row" style="background: #eee;padding-top: 18px;">
+          <div class="col-lg-3 col-md-6 smallWidgetBackground">
+            <div class="widget widget-card bg-gray text-white" style="border-top: none;">
+              <div class="widget-body clearfix">
+                <div class="row" id="smallWidgetRow1">
+                  <div class="col-xs-3">
+                    <span class="widget-icon"><i class="fa fa-refresh"></i></span>
+                  </div>
+                  <div class="col-xs-9">
+                    <h6 class="no-margin" style="font-size: 12px">Db Sync Date</h6>
+                    <p class="h4 no-margin fw-normal" style="font-size: 18px">{{syncDate}}</p>
+                  </div>
+                </div>
+                <div class="row" id="smallWidgetRow2">
+                  <div class="col-xs-6">
+                    <h6 class="no-margin" style="font-size: 12px">Day</h6>
+                    <p class="value5" id="TotalOverdueAmount" style="font-size: 16px">
+                      {{syncDay}}
+                    </p>
+                  </div>
+                  <div class="col-xs-6 fs-sm">
+                    <h6 class="no-margin" style="font-size: 12px">Time</h6>
+                    <p class="value5" id="TotalOverdueCustomer" style="margin-bottom: 2px;font-size: 16px;"
+                      class="value5">
+                      {{syncTime}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="widget widget-card bg-primary text-white" data-toggle="tooltip" data-placement="top" title=""
+              data-original-title="Allocated customers target amount" style="border-top: none;">
+              <div class="widget-body clearfix">
+                <div class="row" id="smallWidgetRow1">
+                  <div class="col-xs-3">
+                    <span class="widget-icon"><i class="fa fa-inr"></i></span>
+                  </div>
+                  <div class="col-xs-9">
+                    <h6 class="no-margin" style="font-size: 12px">Invoice to be Generated
+                    </h6>
+                    <p class="h4 no-margin fw-normal" id="TargetAmount" style="font-size: 18px">
+                      {{invoiceToBeGenerate | INRCurrency}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="row" id="smallWidgetRow2">
+                <div class="col-xs-6">
+                  <h6 class="no-margin" style="font-size: 12px;">Invoce Generated</h6>
+                  <p class="value5" id="AchievedAmount" style="font-size: 16px">
+                    {{invoiceGenerate | INRCurrency}}
+                  </p>
+                </div>
+
+                <div class="col-xs-6">
+                  <!-- <div live-tile class="live-tile" data-mode="carousel" data-speed="750" data-delay="3000"
+                    data-height="50"> -->
+                  <div>
+                    <h6 class="no-margin" style="font-size: 12px;">Invoice Not Converted</h6>
+                    <p class="value5" id="Percentage" style="font-size: 16px">
+                      {{invoiceNotGenerate | INRCurrency}}
+                    </p>
+                  </div>
+                  <!-- <div>
+                        <h6 class="no-margin" style="font-size: 12px;">Yesterday Sale</h6>
+                        <p class="value5" id="Percentage" style="font-size: 16px">
+                            {{yesterdaySale}}
+                        </p>
+                    </div> -->
+                  <!-- </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="widget widget-card bg-warning text-white" data-toggle="tooltip" data-placement="top" title=""
+              data-original-title="Allocated customers target amount" style="border-top: none;">
+              <div class="widget-body clearfix">
+                <div class="row" id="smallWidgetRow1">
+                  <div class="col-xs-3">
+                    <span class="widget-icon"><i class="fa fa-home"></i></span>
+                  </div>
+                  <div class="col-xs-9">
+                    <h6 class="no-margin" style="font-size: 12px">Units: Total | Sales Till Date
+                    </h6>
+                    <p class="h4 no-margin fw-normal" id="TargetAmount" style="font-size: 18px">
+                      {{Totalunits | INRCurrency}} | {{totalInvSale | INRCurrency}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="row" id="smallWidgetRow2">
+                <div class="col-xs-6">
+                  <div class="live-tile" data-mode="carousel" data-speed="750" data-delay="3000"
+                    data-height="50">
+                    <div>
+                      <h6 class="no-margin" style="font-size: 12px;">Company Owened</h6>
+                      <p class="value5" id="Percentage" style="font-size: 16px">
+                        {{compnayOwenedVal | INRCurrency}}
+                      </p>
+                    </div>
+                    <div>
+                      <h6 class="no-margin" style="font-size: 12px;">Company Rented</h6>
+                      <p class="value5" id="Percentage" style="font-size: 16px">
+                        {{companyRentedVal | INRCurrency}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xs-6">
+                  <div class="live-tile" data-mode="carousel" data-speed="750" data-delay="3000"
+                    data-height="50">
+                    <div>
+                      <h6 class="no-margin" style="font-size: 12px;">Vacant</h6>
+                      <p class="value5" id="Percentage" style="font-size: 16px">
+                        {{VacentVal | INRCurrency}}
+                      </p>
+                    </div>
+                    <div>
+                      <h6 class="no-margin" style="font-size: 12px;">Occupied</h6>
+                      <p class="value5" id="Percentage" style="font-size: 16px">
+                        {{OccupieVal | INRCurrency}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="widget widget-card bg-success text-white" data-toggle="tooltip" data-placement="top" title=""
+              data-original-title="Allocated customers target amount" style="border-top: none;">
+              <div class="widget-body clearfix">
+                <div class="row" id="smallWidgetRow1">
+                  <div class="col-xs-3">
+                    <span class="widget-icon"><i class="fa fa-inr"></i></span>
+                  </div>
+                  <div class="col-xs-9">
+                    <h6 class="no-margin" style="font-size: 12px;">Net Due:
+                    </h6>
+                    <p class="h4 no-margin fw-normal" id="TargetAmount" style="font-size: 18px">
+                      {{NetDue}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="row" id="smallWidgetRow2">
+                <div class="col-xs-6">
+                  <h6 class="no-margin" style="font-size: 12px;">Collection for the month:</h6>
+                  <p class="value5" id="AchievedAmount" style="font-size: 16px">
+                    {{collectionMonth | INRCurrency}}
+                  </p>
+                </div>
+                <div class="col-xs-6">
+                  <div class="live-tile" data-mode="carousel" data-speed="750" data-delay="3000"
+                    data-height="50">
+                    <div>
+                      <h6 class="no-margin" style="font-size: 12px;">Due till last month:</h6>
+                      <p class="value5" id="Percentage" style="font-size: 16px">
+                        {{dueTillMonth | INRCurrency}}
+                      </p>
+                    </div>
+                    <div>
+                      <h6 class="no-margin" style="font-size: 12px;">Due for the month:</h6>
+                      <p class="value5" id="Percentage" style="font-size: 16px">
+                        {{dueForMonth | INRCurrency}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="background: #eee;">
+          <div class="col-lg-12">
+            <!-- inventory Table -->
+            <div id="InventtoryTable" class="row">
+              <div class="col-lg-12 smallWidgetBackground">
+                <div class="widget widget-chart-stats-simple box-info">
+                  <header>
+                    <div class="row">
+
+                      <div class="col-xs-10">
+                        <h5><i class="fa fa-cog"></i>&nbsp;<span style="font-size:15px;font-family: -webkit-body;">LM-
+                            Collection Summary Project Wise (In Lakh)</span>
+                        </h5>
+                      </div>
+                      <div class="col-xs-1">
+                        <!-- <span (click)="salesChart();" id="tblChartIcon"><i class="fa fa-bar-chart-o"></i>
+                                      </span>  -->
+                      </div>
+                      <div class="col-xs-1" id="iContantDiv">
+                      </div>
+                    </div>
+                  </header>
+                  <div class="widget-body">
+                    <div id="InventoryStatustableContainer">
+                      <!-- class="fixed_headersInventoryTable" -->
+                      <table class="table table-bordered table-lg mt-lg mb-0" style="margin-top: -1px;">
+                        <thead>
+                          <tr>
+                            <th>
+                            </th>
+                            <th>
+                            </th>
+                            <th colspan="4" style="text-align: center;">Period : {{firstDay | date:'dd MMM yyyy'}} -
+                              {{currentDate | date:'dd MMM yyyy'}}
+                            </th>
+                            <!-- <th></th>
+                                          <th></th> -->
+                            <th>Till Date
+                            </th>
+                          </tr>
+                          <tr>
+                            <th>Project Name
+                            </th>
+                            <th>Net Due Till {{lastDate | date:'dd MMM yyyy'}}
+                            </th>
+                            <th>Due in the selected period
+                            </th>
+                            <th>Collection in the selected period
+                            </th>
+                            <th>Collection Against Current Due
+                            </th>
+                            <th>Collection Against Due Till {{lastDate | date:'dd MMM yyyy'}}
+                            </th>
+                            <th>Net Due
+                            </th>
+
+
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let entity of LMcollectionData">
+                            <td style="text-align: left;border-left: 0px solid;">{{entity.projectname}}</td>
+                            <td class="figureAlign">{{entity.duetilldate | INRCurrency}}</td>
+                            <td class="figureAlign">{{entity.dueinselectedperiod | INRCurrency}}</td>
+                            <td class="figureAlign">{{entity.collectioninselectedperiod | INRCurrency}}</td>
+                            <td class="figureAlign" style="border-left: 0px solid;">
+                              {{entity.collectionagainstcurrentdue | INRCurrency}}</td>
+                            <td class="figureAlign" style="border-left: 0px solid;">
+                              {{entity.collectionagainstpreviousdue | INRCurrency}}</td>
+                            <td class="figureAlign" style="border-left: 0px solid;">{{entity.netdue }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row LMProjectWise" style="background: #eee;">
+          <div class="col-lg-12">
+            <!-- inventory Table -->
+            <div id="InventtoryTable" class="row">
+              <div class="col-lg-12 smallWidgetBackground">
+                <div class="widget widget-chart-stats-simple box-info">
+                  <header>
+                    <div class="row">
+
+                      <div class="col-xs-10">
+                        <h5><i class="fa fa-cog"></i>&nbsp;<span style="font-size:15px;font-family: -webkit-body;">LM-
+                            Project Wise Invoice Summary (In Lakh)</span>
+                        </h5>
+                      </div>
+
+                      <div class="col-xs-1">
+                        <!-- <span (click)="salesChart();" id="tblChartIcon"><i class="fa fa-bar-chart-o"></i>
+                                      </span>  -->
+                      </div>
+                      <div class="col-xs-1" id="iContantDiv">
+                      </div>
+                    </div>
+                  </header>
+
+                  <div class="widget-body">
+                    <div id="InventoryStatustableContainer">
+                      <!-- class="fixed_headersInventoryTable" -->
+                      <table class="table table-bordered table-lg mt-lg mb-0" style="margin-top: -1px;">
+                        <thead>
+                          <tr>
+                            <th colspan="11" style="text-align: center;">Period : {{firstDay | date:'dd MMM yyyy'}} -
+                              {{currentDate | date:'dd MMM yyyy'}}
+                            </th>
+                          </tr>
+
+                          <tr>
+                            <th>Project Name
+                            </th>
+                            <th>No. of Parties
+                            </th>
+                            <th>No. of Invoice To be Generated
+                            </th>
+                            <th>No. of Invoice Generated
+                            </th>
+                            <th>No. of Invoice Not Generated
+                            </th>
+
+                            <th>Charge Amount
+                            </th>
+                            <th>SGST Amount
+                            </th>
+                            <th>CGST Amount
+                            </th>
+                            <th>Amount of Invoice
+                            </th>
+                            <th>Received Amount
+                            </th>
+                            <th>Balance Amount
+                            </th>
+
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let entity of LMInvoiceData">
+                            <td style="text-align: left;border-left: 0px solid;">{{entity.projectname}}</td>
+                            <td class="figureAlign">{{entity.countapplication | INRCurrency}}</td>
+                            <td class="figureAlign">{{entity.countinvoicetobegenerated | INRCurrency}}</td>
+                            <td class="figureAlign">{{entity.countinvoicegenerated | INRCurrency}}</td>
+                            <td class="figureAlign" style="border-left: 0px solid;">{{entity.igstamount | INRCurrency}}
+                            </td>
+                            <td class="figureAlign" style="border-left: 0px solid;">
+                              {{entity.chargeamount | INRCurrency}}</td>
+                            <td class="figureAlign" style="border-left: 0px solid;">{{entity.sgstamount | INRCurrency}}
+                            </td>
+                            <td class="figureAlign" style="border-left: 0px solid;">{{entity.cgstamount | INRCurrency}}
+                            </td>
+                            <td class="figureAlign" style="border-left: 0px solid;">
+                              {{entity.invoiceamount | INRCurrency}}</td>
+                            <td class="figureAlign" style="border-left: 0px solid;">
+                              {{entity.receiveamount | INRCurrency}}</td>
+                            <td class="figureAlign" style="border-left: 0px solid;">
+                              {{entity.balanceamount | INRCurrency}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row LMProjectWise" style="background: #eee;">
+          <div class="col-lg-12">
+            <!-- inventory Table -->
+            <div id="InventtoryTable" class="row">
+              <div class="col-lg-12 smallWidgetBackground">
+                <div class="widget widget-chart-stats-simple box-info">
+                  <header>
+                    <div class="row">
+
+                      <div class="col-xs-10">
+                        <h5><i class="fa fa-cog"></i>&nbsp;<span style="font-size:15px;font-family: -webkit-body;">LM-
+                            Inventory Status (Area In Thousand Sq. Ft.)</span>
+                        </h5>
+                      </div>
+
+                      <div class="col-xs-1">
+                        <!-- <span (click)="salesChart();" id="tblChartIcon"><i class="fa fa-bar-chart-o"></i>
+                                      </span>  -->
+                      </div>
+                      <div class="col-xs-1" id="iContantDiv">
+                      </div>
+                    </div>
+                  </header>
+
+                  <div class="widget-body">
+                    <div id="InventoryStatustableContainer">
+                      <!-- class="fixed_headersInventoryTable" -->
+                      <table class="table table-bordered table-lg mt-lg mb-0" style="margin-top: -1px;">
+                        <thead>
+                          <tr>
+                            <th>Project Name
+                            </th>
+                            <th></th>
+                            <th>Total Units
+                            </th>
+                            <th>Sold (Booked unit)
+                            </th>
+                            <th>UnSold/Company owned
+                            </th>
+                            <th>Company Rented
+                            </th>
+                            <th>Vacant
+                            </th>
+                            <th>Occupied
+                            </th>
+                            <th>Un-Occupied
+                            </th>
+
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let entity of LMInventoryData">
+                            <td style="text-align: left;border-left: 0px solid;">{{entity.projectname}}</td>
+                            <td>Unit <br>
+                                Area
+                            </td>
+                            <td class="figureAlign">{{entity.totalunit | INRCurrency}} <br>
+                              {{entity.totalarea | INRCurrency}}</td>
+                            <td class="figureAlign">{{entity.soldunit | INRCurrency}}
+                              <br>{{entity.soldarea | INRCurrency}}</td>
+                            <td class="figureAlign">{{entity.unsoldunit | INRCurrency}}
+                              <br>{{entity.unsoldarea | INRCurrency}}</td>
+                            <td class="figureAlign" style="border-left: 0px solid;">
+                              {{entity.companyrentedunit | INRCurrency}} <br>
+                              {{entity.companyrentedarea | INRCurrency}}</td>
+                            <td class="figureAlign" style="border-left: 0px solid;">
+                              {{entity.vacantunit | INRCurrency}} <br>
+                              {{entity.vacantarea | INRCurrency}}</td>
+                            <td class="figureAlign" style="border-left: 0px solid;">
+                              {{entity.occupiedunit | INRCurrency}} <br>
+                              {{entity.occupiedarea | INRCurrency}}</td>
+                            <td class="figureAlign" style="border-left: 0px solid;">
+                              {{entity.unoccupiedunit | INRCurrency}} <br>
+                              {{entity.unoccupiedarea | INRCurrency}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row LMProjectWise" style="background: #eee;">
+
+          <!-- Inventary chart -->
+          <div class="col-lg-6">
+            <!-- inventory Table -->
+            <div id="InventtoryTable" class="row">
+              <div class="col-lg-12">
+                <div class="widget widget-chart-stats-simple box-info">
+                  <header>
+                    <div class="row">
+
+                      <div class="col-xs-10">
+                        <h5><i class="fa fa-cog"></i>&nbsp;<span style="font-size:15px;font-family: -webkit-body;">LM-
+                            Virtual Inventory Status (Area in Thousand Sq. Ft.)</span>
+                        </h5>
+                      </div>
+
+                      <div class="col-xs-1">
+                        <!-- <span (click)="salesChart();" id="tblChartIcon"><i class="fa fa-bar-chart-o"></i>
+                                                        </span>  -->
+                      </div>
+                      <div class="col-xs-1" id="iContantDiv">
+                      </div>
+                    </div>
+                  </header>
+                  <div class="widget-body">
+                    <div id="InventoryStatustableContainer">
+                      <!-- class="fixed_headersInventoryTable" -->
+                      <table class="table table-bordered table-lg mt-lg mb-0" style="margin-top: -1px;">
+                        <thead>
+                          <tr>
+
+                            <th>Project Name
+                            </th>
+                            <th></th>
+                            <th>Total Unit / Area
+                            </th>
+                            <th>Occupied
+                            </th>
+                            <th>Vacant
+                            </th>
+
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let entity of LMVertualInventoryData">
+                            <td style="text-align: left;border-left: 0px solid;">{{entity.projectname}}</td>
+                            <td>Unit <br>
+                              Area
+                          </td>
+                            <td class="figureAlign">{{entity.totalunit | INRCurrency}}
+                              <br>{{entity.totalarea | INRCurrency}}</td>
+                            <td class="figureAlign">
+                              {{entity.occupiedunit | INRCurrency}}<br>{{entity.occupiedarea | INRCurrency}}</td>
+                            <td class="figureAlign">
+                              {{entity.vacantunit |INRCurrency}}<br>{{entity.vacantarea | INRCurrency}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project By Dues & Collection Table -->
+
+          <div id="ProjectCollection" class="col-lg-6">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="widget widget-chart-stats-simple box-info">
+                  <header>
+                    <div class="row">
+                      <div class="col-xs-11">
+                        <h5><i class="fa fa-cog"></i>&nbsp;<span
+                            style="font-size:15px;font-family: -webkit-body;">LM-Lease rent renewal</span>
+                        </h5>
+                      </div>
+                      <div class="col-xs-1" style="cursor: pointer;" id="iContantDiv">
+                        <!-- <span class="iContent" placement="bottom" title=""
+                                                [outsideClick]="true"  popover="Displays the project wise total dues and collection.">
+                                                 <i class="fa fa-info-circle"></i>
+                                                </span> -->
+                      </div>
+                    </div>
+                  </header>
+
+                  <div class="widget-body">
+                    <div id="ProjectCollectiontableContainer">
+                      <!-- class="fixed_headersProjectCollection" -->
+                      <!-- fixed_headersProjectCollection -->
+                      <table class="table table-bordered table-lg mt-lg mb-0 " style="margin-top: 1px;">
+                        <thead>
+                          <tr>
+                            <th>Project Name
+                            </th>
+                            <th>No. of units expired
+                            </th>
+                            <th>Expiring Between 0 to 30 days
+                            </th>
+                            <th>Expiring Between 31 to 60 days
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let collection of LMLeaseRentData">
+                            <td style="text-align: left;border-left: 0px solid;">{{collection.projectname}}</td>
+                            <td class="figureAlign">{{collection.numberofunitexpired | INRCurrency}}</td>
+                            <td class="figureAlign">{{collection.expiring0to30days | INRCurrency}}</td>
+                            <td class="figureAlign" style="border-right: 0px solid;">
+                              {{collection.expiring31to60days | INRCurrency}}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" style="background: #eee;">
+          <div class="col-lg-12">
+            <!-- inventory Table id="InventtoryTable"-->
+
+
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="widget widget-chart-stats-simple box-info">
+                  <header>
+                    <div class="row">
+
+                      <div class="col-xs-10">
+                        <h5><i class="fa fa-cog"></i>&nbsp;<span style="font-size:15px;font-family: -webkit-body;">LM-
+                            Assests status</span>
+                        </h5>
+                      </div>
+
+                      <div class="col-xs-1">
+                      </div>
+                      <div class="col-xs-1" id="iContantDiv">
+                      </div>
+                    </div>
+                  </header>
+
+                  <div class="widget-body">
+                    <div id="InventoryStatustableContainer">
+                      <!-- class="fixed_headersInventoryTable" -->
+                      <table class="table table-bordered table-lg mt-lg mb-0" style="margin-top: -1px;">
+                        <thead>
+                          <tr>
+                            <th>Asset Name
+                            </th>
+                            <th>Location
+                            </th>
+                            <th>Insurance renewal date
+                            </th>
+                            <th>AMC renewal date
+                            </th>
+                            <th>NOC renewal date
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let entity of LMAssetData">
+                            <td style="text-align: left;border-left: 0px solid;">{{entity.assetname}}</td>
+                            <td class="figureAlign">{{entity.location}}</td>
+                            <td class="figureAlign">{{entity.insuranceperiodto | date:'dd MMM yyyy'}}</td>
+                            <td class="figureAlign">{{entity.amcperiodto | date:'dd MMM yyyy'}}</td>
+                            <td class="figureAlign" style="border-left: 0px solid;">
+                              {{entity.nocperiodto | date:'dd MMM yyyy'}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="selectModel == '4'">
+
+        <div class="row" style="background: #eee;">
+          <div class="col-lg-12">
+            <!-- inventory Table -->
+
+
+            <div id="InventtoryTable" class="row">
+              <div class="col-lg-12 FAbackground">
+                <div class="widget widget-chart-stats-simple box-info">
+                  <header>
+                    <div class="row">
+
+                      <div class="col-xs-10">
+                        <h5><i class="fa fa-cog"></i>&nbsp;<span style="font-size:15px;font-family: -webkit-body;">Bank
+                            Position</span>
+                        </h5>
+                      </div>
+
+                      <div class="col-xs-1">
+                        <!-- <span (click)="salesChart();" id="tblChartIcon"><i class="fa fa-bar-chart-o"></i>
+                                                      </span>  -->
+                      </div>
+                      <div class="col-xs-1" id="iContantDiv">
+                      </div>
+                    </div>
+                  </header>
+
+                  <div class="widget-body">
+                    <div id="InventoryStatustableContainer">
+                      <!-- class="fixed_headersInventoryTable" -->
+                      <table class="table table-bordered table-lg mt-lg mb-0" style="margin-top: -1px;">
+                        <thead>
+                          <tr *ngFor="let sheetVal of balanceSheetData">
+                            <!-- <th colspan="6"> -->
+                            <th colspan="10">
+                              <div class="row">
+                                <div class="col-md-6">
+
+                          <tr>
+                            <th style="border: none;"> Year <br> {{sheetVal.prefinyear}}</th>
+                            <th style="border: none;"> Asset : {{sheetVal.preasset | INRCurrency}} <br>
+                              Profit :<ng-container *ngIf="0 <= sheetVal.preprofitloss"> {{sheetVal.preprofitloss | INRCurrency}}
+                              </ng-container>
+                            </th>
+                            <th style="border: none;"> Liability : {{sheetVal.preliability | INRCurrency}}
+                              <br>
+                              Loss : <ng-container *ngIf="0 > sheetVal.preprofitloss">{{sheetVal.preprofitloss | INRCurrency}}
+                              </ng-container>
+                            </th>
+                          </tr>
+                    </div>
+                    <!-- </th> -->
+                    <!-- <th colspan="4"> -->
+                    <div class="col-md-6" style="border-left: solid gray">
+                      <tr>
+                        <th style="border: none;"> Year <br> {{sheetVal.currentfinyear}}</th>
+                        <th style="border: none;"> Asset : {{sheetVal.currentasset | INRCurrency}} <br>
+                          Profit :<ng-container *ngIf="0 <= sheetVal.preprofitloss"> {{sheetVal.currentprofitloss | INRCurrency}}
+                          </ng-container>
+                        </th>
+                        <th style="border: none;"> Liability : {{sheetVal.currentliability | INRCurrency}}
+                          <br>
+                          Loss : <ng-container *ngIf="0 > sheetVal.preprofitloss">{{sheetVal.currentprofitloss | INRCurrency}}
+                          </ng-container>
+                        </th>
+                      </tr>
+                    </div>
+                  </div>
+                  <!-- </th> -->
+                  </th>
+                  </tr>
+                  <tr>
+                    <th colspan="2">Bank Name
+                    </th>
+                    <th colspan="2">Company Book Balance
+                    </th>
+                    <th colspan="2">Cheques Issue But Not Presented (CR)
+                    </th>
+                    <th colspan="2">Cheques deposited but Not Credited (DR)
+                    </th>
+                    <th colspan="2">Bank Book Balance
+                    </th>
+                  </tr>
+                  <tr>
+                    <th colspan="2"></th>
+                    <th>Debit</th>
+                    <th>Credit</th>
+                    <th>Nos.</th>
+                    <th>Amount</th>
+                    <th>Nos.</th>
+                    <th>Amount</th>
+                    <th>Debit</th>
+                    <th>Credit</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let entity of bankBalanceDetails">
+                      <td colspan="2" style="text-align: left;border-left: 0px solid;">{{entity.bankName}}</td>
+                      <!-- <td colspan="2"></td> -->
+                      <td class="figureAlign">
+                        <ng-container *ngIf="0 <= entity.companybookbalance">
+                          {{entity.companybookbalance | INRCurrency}}</ng-container>
+                      </td>
+                      <td class="figureAlign">
+                        <ng-container *ngIf="0 > entity.companybookbalance">{{entity.companybookbalance | INRCurrency}}
+                        </ng-container>
+                      </td>
+                      <td class="figureAlign">{{entity.chqissuenotpresentedcount | INRCurrency}}</td>
+                      <td class="figureAlign">{{entity.chqissuenotpresentedamount | INRCurrency}}</td>
+                      <td class="figureAlign">{{entity.chqdepositnotcreditedcount | INRCurrency}}</td>
+                      <td class="figureAlign">{{entity.chqdepositnotcreditedamount | INRCurrency}}</td>
+                      <td class="figureAlign">
+                        <ng-container *ngIf="0 <= entity.bankbookbal">{{entity.bankbookbal | INRCurrency}}
+                        </ng-container>
+                      </td>
+                      <td class="figureAlign">
+                        <ng-container *ngIf="0 > entity.bankbookbal">{{entity.bankbookbal | INRCurrency}}
+                        </ng-container>
+                      </td>
+                    </tr>
+                  </tbody>
+                  </table>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+
+  <div class="row LMProjectWise" style="background: #eee;">
+
+    <!-- Inventary chart -->
+    <div class="col-lg-6">
+      <div id="InventtoryTable" class="row">
+        <div class="col-lg-12">
+          <div class="widget widget-chart-stats-simple box-info">
+            <header>
+              <div class="row">
+                <div class="col-xs-10">
+                  <h5><i class="fa fa-cog"></i>&nbsp;<span
+                      style="font-size:15px;font-family: -webkit-body;">Profitability Charge Wise</span>
+                  </h5>
+                </div>
+
+                <div class="col-xs-1">
+                </div>
+                <div class="col-xs-1" id="iContantDiv">
+                </div>
+              </div>
+            </header>
+
+            <div class="widget-body">
+              <div id="InventoryStatustableContainer">
+                <!-- class="fixed_headersInventoryTable" -->
+                <table class="table table-bordered table-lg mt-lg mb-0" style="margin-top: -1px;">
+                  <thead>
+                    <tr>
+                      <th colspan="4" style="text-align: center;">
+                        {{fiscalyear | date:'dd MMM yyyy'}} - {{currentDate | date:'dd MMM yyyy'}}
+                      </th>
+                    </tr>
+                    <tr>
+
+                      <th>Charge Head
+                      </th>
+                      <th>Revenue against the charge head
+                      </th>
+                      <th>Expanse against the charge head
+                      </th>
+                      <th>Profit/lose against the charge head
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let entity of FATemplateWiseData">
+                      <td style="text-align: left;border-left: 0px solid;">{{entity.templatename}}</td>
+                      <td class="figureAlign">{{entity.revenue | INRCurrency}}</td>
+                      <td class="figureAlign">{{entity.expanse | INRCurrency}}</td>
+                      <td class="figureAlign">{{entity.profitability | INRCurrency}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project By Dues & Collection Table -->
+    <div id="ProjectCollection" class="col-lg-6">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="widget widget-chart-stats-simple box-info">
+            <header>
+              <div class="row">
+                <div class="col-xs-11">
+                  <h5><i class="fa fa-cog"></i>&nbsp;<span
+                      style="font-size:15px;font-family: -webkit-body;">Profitability Location Wise</span>
+                  </h5>
+                </div>
+                <div class="col-xs-1" style="cursor: pointer;" id="iContantDiv">
+                </div>
+              </div>
+            </header>
+
+            <div class="widget-body">
+              <div id="ProjectCollectiontableContainer">
+                <!-- class="fixed_headersProjectCollection" -->
+                <!-- fixed_headersProjectCollection -->
+                <table class="table table-bordered table-lg mt-lg mb-0 " style="margin-top: 1px;">
+                  <thead>
+                    <tr>
+                      <th colspan="4" style="text-align: center;">
+                        {{fiscalyear | date:'dd MMM yyyy'}} - {{currentDate | date:'dd MMM yyyy'}}
+                      </th>
+                    </tr>
+                    <tr>
+                      <th>Location Name
+                      </th>
+                      <th>Project Wise Revenue
+                      </th>
+                      <th>Project Wise Expanse
+                      </th>
+                      <th>Project Wise Profitability
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let collection of FALocationWiseData">
+                      <td style="text-align: left;border-left: 0px solid;">{{collection.locationname}}</td>
+                      <td class="figureAlign">{{collection.revenue | INRCurrency}}</td>
+                      <td class="figureAlign">{{collection.expanse | INRCurrency}}</td>
+                      <td class="figureAlign" style="border-right: 0px solid;">
+                        {{collection.profitability | INRCurrency}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  </ng-container>

@@ -1,0 +1,386 @@
+
+<div class="content-wrap scratchHeight">
+  <div id="content" class="content" role="main">
+      <pa-bread-crumb></pa-bread-crumb>
+    <h1 class="page-title">Manage 
+      <span class="fw-semi-bold">Buyers</span>
+    </h1>
+    <div class="widget">
+      <div class="widget-body">
+        <div class="">
+          <div class="btn-group company-select" style="margin-right: 10px">
+            <!-- <select2 [data]="companyList" [width]='120' (valueChanged)="onCompanySelect($event)">
+            </select2> -->
+            <ngx-select-dropdown
+              class="ngx-select-dropdown"
+              (change)="onCompanySelect($event)"
+              tabindex="0"
+              [multiple]="false"
+              [config] = "config"
+              [(ngModel)] = "companyList[0]"
+              [options]="companyList">
+            </ngx-select-dropdown>
+          </div>
+          <div class="btn-group location-select" style="margin-right: 10px">
+            <!-- <select2 [data]="locationList" [width]='100' (valueChanged)="onLocationSelect($event)">
+            </select2> -->
+            <ngx-select-dropdown
+              class="ngx-select-dropdown"
+              (change)="onLocationSelect($event)"
+              tabindex="0"
+              [multiple]="false"
+              [config] = "config"
+              [(ngModel)] = "locationList[0]"
+              [options]="locationList">
+            </ngx-select-dropdown>
+          </div>
+          <div class="btn-group project-select" style="margin-right: 10px">
+            <!-- <select2 [data]="projectList" [width]='180' (valueChanged)="onProjectSelect($event)">
+            </select2> -->
+            <ngx-select-dropdown
+              class="ngx-select-dropdown"
+              (chagne)="onProjectSelect($event)"
+              tabindex="0"
+              [multiple]="false"
+              [config] = "config"
+              [(ngModel)] = "projectList[0]"
+              [options]="projectList">
+            </ngx-select-dropdown>
+          </div>
+          <div class="btn-group typeStatus-select" style="margin-right: 10px">
+            <!-- <select2 [data]="unitNoList" [width]='120' (valueChanged)="onUnitSelect($event)">
+            </select2> -->
+            <ngx-select-dropdown
+              class="ngx-select-dropdown"
+              (chagne)="onUserTypeSelect($event)"
+              tabindex="0"
+              [multiple]="false"
+              [config] = "config"
+              [(ngModel)] = "userTypeSelect[0]"
+              [options]="userTypeSelect">
+            </ngx-select-dropdown>
+          </div>
+          <div class="btn-group float-right" style="width: 180px; flex-direction: column;">
+            <button class="btn border-radius btn-success btn-special" (click)="toogleDropDown()">
+              Send Activation Email
+              <i class="fa fa-caret-down"></i>
+            </button>            
+            <ul class="dropdown-menu" *ngIf="isDropDownShow">
+              <li>
+                <a class="dropdown-item" href="#" (click)="sendToSelectedBuyers($event)">Selected</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" (click)="sendToAllInactiveBuyers($event)">All Inactive Buyers</a>
+              </li>
+            </ul>
+          </div>
+        </div>        
+        <div class="mt"> 
+          <div>          
+            <ngx-datatable
+              class="ngx-custom-datatable"
+              [rows]="cBuyers"
+              [columnMode]="'force'"
+              [headerHeight]="50"
+              [footerHeight]="50"
+              [rowHeight]="100"
+              [externalPaging]="true"
+              [selectCheck]="true"
+              [count]="count"
+              [scrollbarH]="true"
+              [scrollbarV]="false"
+              (page)="getPageData($event)"
+              [limit]="10">
+              <ngx-datatable-column [width]="100"  [sortable]="false" [canAutoResize]="false" [frozenLeft]="true"
+                [headerCheckboxable]="true" >
+                <ng-template ngx-datatable-header-template let-value="value" class="checkboxalign" let-allRowsSelected="allRowsSelected"
+                  let-selectFn="selectFn">
+                  <label class="checkbox-container" style="margin-left: 13px;">
+                    <input type="checkbox" class="ngx-datatable-checkbox " [checked]="allRowsSelected"
+                      (change)="selectFn(!allRowsSelected)" />
+                    <span class="checkmark header-checkmark"></span>
+                  </label>
+                  <!-- <div class="form-check form-check-sm form-check-custom form-check-solid mt-3">
+                    <input class="form-check-input" type="checkbox" value="1">
+                  </div> -->
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-value="value" let-isSelected="isSelected"
+                  let-onCheckboxChangeFn="onCheckboxChangeFn">
+                  <label class="checkbox-container" style="margin-left: 20px; margin-top: 3px;">
+                    <input type="checkbox" class="ngx-datatable-checkbox" [checked]="isSelected"
+                      (change)="onCheckboxChangeFn($event)" />
+                    <span class="checkmark"></span>
+                  </label>
+                </ng-template>
+              </ngx-datatable-column> 
+              <ngx-datatable-column name="buyerName" [sortable]="true">
+                <ng-template ngx-datatable-header-template>
+                  <span class="special fw-semi-bold" (click)="sortTableBy('buyerName');">NAME</span>
+                </ng-template>
+                <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                  <a [routerLink]="['/pinga/client/buyers/buyer/buyer-detail']" (click)="sendBuyerID($event, row.appLoginId)">
+                    <span class="special fw-semi-bold">{{row.buyerName}}</span>
+                    <br>
+                  </a>
+                </ng-template>                
+              </ngx-datatable-column>
+              <ngx-datatable-column name="emailid">
+                <ng-template ngx-datatable-header-template>
+                  <span class="special fw-semi-bold" >UNIT</span>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <span *ngFor="let unitDetail of row.unitDetails">
+                    <a [routerLink]="['/pinga/client/buyers/unit-detail/', unitDetail.buyerId]" href=""><span class="unitNumber"><small>{{unitDetail.unitNo}}</small>,<br></span></a>
+                    <!-- <a href="#" (click)="goTo(unitDetail, $event)"><span class="special fw-semi-bold">{{unitDetail.unitNo}},<br></span></a> -->
+                  </span>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="address">
+                <ng-template ngx-datatable-header-template>
+                  <span class="special fw-semi-bold" (click)="sortTableBy('mailingAddress');">ADDRESS</span>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <span><small>{{row.mailingAddress}}</small></span><br>
+                  <span><small>{{row.city}}</small></span><br>
+                  <span><small>{{row.state}}</small></span>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="contactinfo">
+                <ng-template ngx-datatable-header-template>
+                  <span class="special fw-semi-bold" (click)="sortTableBy('emaiID');">CONTACT INFO</span>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <span><small>{{row.emaiID}}</small></span><br>
+                  <span><small>{{row.phoneNo}}</small></span><br>
+                  <span><small>{{row.mobileNo}}</small></span>
+                  <!-- <a href="#" >{{value}}</a> -->
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="contanctinfo" [width]="100">
+                <ng-template ngx-datatable-header-template>
+                  <span class="special fw-semi-bold">ACTION</span>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <ng-container *ngIf="row.isActive == 0">
+                    <a href="#" class="icon-btn" data-toggle="modal" data-target="activate_user1" (click)="openActivateUser($event, activateUser, row)">
+                      <span class="glyphicon glyphicon-check"></span>
+                      <small>Activate</small>
+                    </a>
+                  </ng-container>
+                  <ng-container *ngIf="row.isActive == 1">
+                    <a href="#" class="icon-btn" data-toggle="modal" data-target="de_activate_user1" (click)="openDeactivateUser($event, deactivateUser, row)">
+                      <span class="glyphicon glyphicon-check"></span>
+                      <small>Deactivate</small>
+                    </a>
+                  </ng-container>
+                  <br>
+                  <a href="#" class="icon-btn" data-toggle="modal" data-target="#reset_password1" (click)="openResetPassword($event, resetPassword, row)">
+                    <span class="fa fa-asterisk"></span>
+                    <small>Reset Password</small>
+                  </a>
+                  <br>
+                  <a href="#" class="icon-btn" data-toggle="modal" data-target="#send_email1" (click)="openSendEmail($event,sendEmail, row)">
+                    <span class="fa fa-envelope"></span>
+                    <small>Send Email</small>
+                  </a>
+                  <br>
+                  <a href="#" class="icon-btn" data-toggle="modal" data-target="#send_sms1" (click)="openSendSms($event, sendSms, row)">
+                    <span class="fa fa-envelope-o"></span>
+                    <small>Send SMS</small>
+                  </a>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-footer>
+                <ng-template
+                  ngx-datatable-footer-template
+                  let-rowCount="rowCount"
+                  let-pageSize="pageSize"
+                  let-selectedCount="selected"
+                  let-curPage="curPage"
+                  let-offset="offset"                            
+                >
+                <!-- <div style="padding: 5px 10px">
+                  <div>
+                    Showing&nbsp;&nbsp;&nbsp;{{(curPage - 1) == 0? 1 : (curPage - 1) * 10}} - {{curPage * 10}}&nbsp;&nbsp;of&nbsp;&nbsp;{{ rowCount }}&nbsp;entries
+                  </div>
+                </div> -->
+
+                <div class="page-count">
+                  Showing&nbsp;&nbsp;&nbsp;{{rowCount > 0 ? (curentPage - 1) * 10 + 1 : 0}} - {{rowCount > 0 ? curentPage * 10 > rowCount ? rowCount : curentPage * 10 : 0}}&nbsp;&nbsp;of&nbsp;&nbsp;{{ rowCount > 0 ? rowCount : 0 }}&nbsp;entries
+                </div>
+                <datatable-pager
+                  [pagerLeftArrowIcon]="'datatable-icon-left'"
+                  [pagerRightArrowIcon]="'datatable-icon-right'"
+                  [pagerPreviousIcon]="'datatable-icon-prev'"
+                  [pagerNextIcon]="'datatable-icon-skip'"
+                  [page]="curPage"
+                  [size]="pageSize"
+                  [count]="rowCount"
+                  [hidden]="!((rowCount / pageSize) > 1)"
+                  (change)="getPageData($event)">
+                </datatable-pager>
+
+                  <!-- <div>
+                    Showing {{(curPage - 1) == 0? 1 : (curPage - 1) * 10}} - {{curPage * 10}} of {{ rowCount }}
+                    Rows: {{ rowCount }} | Size: {{ pageSize }} | Current:
+                    {{ curPage }} | Offset: {{ offset }}                      
+                  </div> -->
+                </ng-template>                  
+              </ngx-datatable-footer>
+            </ngx-datatable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ul class="messenger messenger-fixed messenger-on-bottom messenger-on-right messenger-theme-air" [@animateOnAction]="bindVar" style="opacity: 0;" (@animateOnAction.done)="animEnd()">
+    <li class="messenger-message-slot messenger-shown messenger-first messenger-last">
+      <div [ngClass]="(classStatus=='fail')?'messenger-message message alert error message-error alert-error messenger--retry-soon':'messenger-message message alert success message-success alert-success messenger-will-hide-after'">
+            <div *ngIf="activateStatus == 'success'" class="messenger-message-inner">Activation email sent successfully.</div>
+            <div *ngIf="activateStatus == 'fail'" class="messenger-message-inner">{{failureResponse}}</div>
+            <div *ngIf="deactivateStatus == 'success'" class="messenger-message-inner">User has been deactivated successfully.</div>
+            <div *ngIf="deactivateStatus == 'fail'" class="messenger-message-inner">{{failureResponse}}</div>
+            <div *ngIf="mailSent == 'success'" class="messenger-message-inner">Email sent successfully.</div>
+            <div *ngIf="mailSent == 'fail'" class="messenger-message-inner">{{failureResponse}}</div>
+            <div *ngIf="smsSent == 'success'" class="messenger-message-inner">SMS sent successfully.</div>
+            <div *ngIf="smsSent == 'fail'" class="messenger-message-inner">{{failureResponse}}</div>
+            <div *ngIf="resetPassEmailSent == 'success'" class="messenger-message-inner">Reset password email sent successfully.</div>
+            <div *ngIf="resetPassEmailSent == 'fail'" class="messenger-message-inner">{{failureResponse}}</div>
+            <div *ngIf="activateSelectedEmailSent == 'success'" class="messenger-message-inner">Activation email sent successfully to the selected users.</div>
+            <div *ngIf="activateSelectedEmailSent == 'fail'" class="messenger-message-inner">{{failureResponse}}</div>
+            <div *ngIf="bulkEmailSent == 'success'" class="messenger-message-inner">Your request for buyer activation has been submitted. System will send activation email to buyers.</div>
+            <div *ngIf="bulkEmailSent == 'fail'" class="messenger-message-inner">{{failureResponse}}</div>
+      </div>
+    </li>
+  </ul>
+
+  <ng-template #sendSms>
+
+    <div class="modal-header" style="border: none">
+      <h5 class="modal-title text-xl-center fw-bold mt">
+        Send SMS</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modalRef?.hide();resetForm('smsForm'); clearSmsContent()"> ×</button>
+    </div>
+    <form [formGroup]="smsForm" (ngSubmit)="sendNewSms(smsForm.value, cbuyer.appLoginId)" id="smsForm">
+    <div class="modal-body bg-gray-lighter">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group" style="margin-bottom: 30px">
+            <input type="number" [ngClass]="{'form-control':true,'inputNotValid':erSmsStatus}" formControlName="mobileNo" [(ngModel)]="cbuyer.mobileNo" placeholder="Mobile Number" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" onKeyDown="if(this.value.length==10 && event.keyCode!=8) return false;">
+            <div *ngIf="smsSubmitted && !smsForm.controls['mobileNo'].valid || smsForm.controls['mobileNo'].touched && !smsForm.controls['mobileNo'].valid">
+              <span class="help-block" *ngIf="smsForm.controls['mobileNo'].hasError('required') ">Mobile is required</span>
+              <span class="help-block" *ngIf="smsForm.controls['mobileNo'].hasError('minlength') ">
+                Please enter valid mobile number
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+            <!-- <textarea [froalaEditor]="smsOptions" formControlName="message" name="message"></textarea> -->
+            <textarea id="" cols="60" rows="10" style="width:100%; display: block" formControlName="message" name="message"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" style="border: none">
+      <button type="submit" class="btn btn-primary btn-special" id="email-info" data-dismiss="modal">
+        Send</button>
+      <button type="text" class="btn btn-gray" data-dismiss="modal" (click)="modalRef?.hide(); resetForm('smsForm'); clearSmsContent()">
+        Cancel</button>
+    </div>
+  </form>
+  </ng-template>
+  
+  <ng-template #activateUser>
+    <div class="modal-header" style="border: none">
+      <h5 class="modal-title text-xl-center fw-bold mt">Activate</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modalRef?.hide()">×</button>
+    </div>
+    <div class="modal-body text-xs-center">
+      <p>An activation email will be sent to the user.</p>
+      <p>Please confirm.</p>
+    </div>
+    <div class="modal-footer" style="border: none">
+      <button type="button" class="btn btn-primary btn-special" id="active-info" data-dismiss="modal" (click)="activate(cbuyer.appLoginId); modalRef?.hide()">Proceed</button>
+      <button type="button" class="btn btn-gray" data-dismiss="modal" (click)="modalRef?.hide()">Close</button>
+    </div>
+  </ng-template>
+  
+  <ng-template #deactivateUser>
+    <div class="modal-header" style="border: none">
+      <h5 class="modal-title text-xl-center fw-bold mt">Deactivate</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modalRef?.hide()">×</button>
+    </div>
+    <div class="modal-body text-xs-center">
+      <p>An Deactivation email will be sent to the user.</p>
+      <p>Please confirm.</p>
+    </div>
+    <div class="modal-footer" style="border: none">
+      <button type="button" class="btn btn-primary btn-special" id="active-info" data-dismiss="modal" (click)="deactivate(cbuyer.appLoginId); modalRef?.hide()">Proceed</button>
+      <button type="button" class="btn btn-gray" data-dismiss="modal" (click)="modalRef?.hide()">Close</button>
+    </div>
+  </ng-template>
+  
+  <ng-template #resetPassword>
+    <div class="modal-header" style="border: none">
+      <h5 class="modal-title text-xl-center fw-bold mt">
+        Reset Password</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modalRef?.hide()">
+            ×</button>
+    </div>
+    <div class="modal-body text-xs-center">
+      <p>
+        An email will be sent to the user with temporary password.</p>
+      <p>
+        Please confirm.</p>
+    </div>
+    <div class="modal-footer" style="border: none">
+      <button type="button" class="btn btn-primary btn-special" id="reset-password-info" data-dismiss="modal" (click)="resetPass(cbuyer.appLoginId); modalRef?.hide()">
+        Proceed</button>
+      <button type="button" class="btn btn-gray" data-dismiss="modal" (click)="modalRef?.hide()">Close</button>
+    </div>
+  </ng-template>
+
+  <ng-template #sendEmail>
+    <div class="modal-header" style="border: none">
+      <h5 class="modal-title text-xl-center fw-bold mt">
+        Send Email</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modalRef?.hide();resetForm('sendMail'); clearEmailContent()">×</button>
+    </div>
+    <form [formGroup]="sendMail" (ngSubmit)="sendNewMail(sendMail.value, cbuyer.appLoginId)">
+      <div class="modal-body bg-gray-lighter">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group">
+              <input type="email" [ngClass]="{'form-control':true,'inputNotValid':erStatus}" placeholder="Email Address" formControlName="formEmail" name="formEmail" [(ngModel)]="cbuyer.emaiID">
+              <div *ngIf="submitted && !sendMail.controls['formEmail'].valid || sendMail.controls['formEmail'].touched && !sendMail.controls['formEmail'].valid">
+                  <span class="help-block" *ngIf="sendMail.controls['formEmail'].hasError('required') ">Email is required</span>
+                  <span class="help-block" *ngIf="sendMail.controls['formEmail'].hasError('pattern') ">
+                    Please enter valid email
+                  </span>
+                </div>
+            </div>
+          </div>
+          <div class="col-lg-8">
+            <div class="form-group">
+              <input type="text" [ngClass]="{'form-control':true,'inputNotValid':erStatus}" placeholder="Subject" formControlName="formSubject" name="formSubject">
+                  <div  *ngIf="submitted && !sendMail.controls['formSubject'].valid || sendMail.controls['formSubject'].touched && !sendMail.controls['formSubject'].valid">
+                      <span class="help-block" *ngIf="sendMail.controls['formSubject'].hasError('required') ">Subject is required</span>
+                    </div>
+                  </div>
+          </div>
+          <div class="col-md-12">
+            <!-- <textarea [froalaEditor]="options" formControlName="formMessage" name="formMessage"></textarea> -->
+            <!-- <textarea id="" cols="60" rows="10" style="width:100%; display: block" formControlName="formMessage" name="formMessage"></textarea> -->
+            <app-ngx-editor [config]="editorConfig" [spellcheck]="true" [(ngModel)]="htmlContent" height="140px" minHeight="50px" formControlName="formMessage" name="formMessage"></app-ngx-editor>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="border: none">
+        <button class="btn btn-primary btn-special" id="email-info" data-dismiss="modal" type="submit">
+          Send</button>
+        <button type="button" class="btn btn-gray" data-dismiss="modal" (click)="modalRef?.hide();resetForm('sendMail'); clearEmailContent()">
+          Cancel</button>
+      </div>
+    </form>
+  </ng-template>
