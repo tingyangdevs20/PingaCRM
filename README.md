@@ -1,5 +1,8 @@
 # Pinga
 
+'npm install -force'
+This project is Angular16 project.
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0.
 
 ## Development server
